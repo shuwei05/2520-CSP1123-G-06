@@ -1,0 +1,281 @@
+/*Header*/
+body{
+    margin: 0;
+    padding:0;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+.navbar{
+    position: fixed;
+    top:0 ;
+    left: 0;
+    height: 80px;
+    width: 100%;
+    background: rgb(164, 231, 250);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 999;
+}
+.logo{
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.logo img{
+    height: 85px;
+    transform: translateX(-50px);
+}
+
+/*Content*/
+form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 25px; 
+}
+
+.container {
+    display: inline-block;
+    margin-top: 10px;
+    margin-bottom: 100px;
+}
+
+/*Container 1*/
+.container-1 {
+    position: relative;
+    padding-top: 75px;
+}
+
+.home-icon {
+    position: absolute;
+    padding-top: 18px;
+    padding-left: 18px;
+}
+
+.container-1 i {
+    font-size: 40px;
+}
+
+.container-1 h1 {
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 8px;
+}
+/*Container 2 and 3*/
+.container-2 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.product-name,.product-type,#pt-text,#pt-selection {
+    display: inline-block;
+    vertical-align: top;
+}
+.product-name {
+    margin-right: 60px;
+}
+.product-name label,.container-3 label,.container-5 label {
+    display: block; 
+    padding-bottom: 5px;
+}
+.product-name input,.container-3 input {
+    height: 45px;
+    width: 250px;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 5px 2px 0 black;
+    margin-bottom: 20px;
+}
+#pt-selection label {
+    display: block;
+    padding-bottom: 10px;
+}
+
+#pt-selection .product-type-checkbox {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+}
+
+#pt-text {
+    margin-right: 20px;
+}
+
+.product-type-checkbox input, .product-cuisine input{
+    transform: scale(1.5625);
+}
+
+/*Container 4*/
+.container-4 #text {
+    padding-top: 30px;
+    padding-bottom: 18px;
+}
+
+.product-cuisine {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: normal;
+    font-size: 22px;
+    line-height: 40px;
+}
+
+.product-cuisine {
+    display: flex;
+    justify-content: space-between;   
+}
+
+.container-4 {
+    width: 600px;
+}
+
+.checkbox {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+/*container 5*/
+.container-5 {
+    margin-top: 40px;
+}
+
+.container-5 textarea {
+    height: 135px;
+    width: 600px;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 14px 7px 0 black;
+    margin-bottom: 20px;
+}
+
+/*container 6*/
+.container-6 input {
+    display: none;
+}
+
+.upload-img-icon {
+    font-size: 140px;
+}
+
+/*container 7*/
+.container-7 {
+    display: flex;
+    margin-top: 50px;
+    justify-content: flex-end;
+}
+
+.container-7 button {
+    margin-top: 35px;
+    padding: 18px 42px;
+    border-radius: 20px;
+    border-style: none;
+    background-color: #0081cc;
+    color: white;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+    font-size: 26px;
+}
+
+.container-7 button:active {
+    background-color: #0066b5;
+}
+
+
+@media screen and (max-width: 780px) {
+form {
+    font-size: 3.204vw; 
+}
+
+.home-icon {
+    padding-top: 2.308vw;
+    padding-left: 2.308vw;
+}
+
+.container {
+    margin-top: 1.282vw;
+    margin-bottom: 12.821vw;
+}
+
+.container-1 i {
+    font-size: 5.128vw;
+}
+
+.container-1 h1 {
+    font-size: 5.128vw;
+    padding-top: 1.026vw;
+}
+
+.product-name {
+    margin-right: 7.692vw;
+}
+.product-name label,.container-3 label,.container-5 label {
+    padding-bottom: 0.641vw;
+}
+.product-name input,.container-3 input {
+    height: 5.769vw;
+    width: 32.051vw;
+    border-radius: 1.282vw;
+    border-width: 0.128vw;
+    box-shadow: 0.641vw 0.256vw 0 black;
+    margin-bottom: 2.563vw;
+}
+#pt-selection label {
+    padding-bottom: 1.282vw;
+}
+
+#pt-selection .product-type-checkbox {
+    gap: 6.41vw;
+}
+
+#pt-text {
+    margin-right: 2.564vw;
+}
+
+.container-4 #text {
+    padding-top: 3.846vw;
+    padding-bottom: 2.308vw;
+}
+
+.product-cuisine {
+    font-size: 2.821vw;
+    line-height: 5.128vw;
+}
+
+.container-4 {
+    width: 76.923vw;
+}
+
+.container-5 {
+    margin-top: 5.128vw;
+}
+
+.container-5 textarea {
+    height: 17.308vw;
+    width: 76.923vw;
+    border-radius: 1.282vw;
+    border-style: solid;
+    border-width: 0.128vw;
+    box-shadow: 1.795vw 0.897vw 0 black;
+    margin-bottom: 2.564vw;
+}
+
+.upload-img-icon {
+    font-size: 17.949vw;
+}
+
+.container-7 {
+    margin-top: 6.41vw;
+}
+
+.container-7 button {
+    margin-top: 4.487vw;
+    padding: 2.308vw 5.385vw;
+    border-radius: 2.564vw;
+    font-size: 3.333vw;
+}
+}
