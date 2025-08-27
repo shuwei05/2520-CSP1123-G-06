@@ -7,6 +7,15 @@ from datetime import datetime
 
 auth = Blueprint('auth',__name__)
 
+@auth.route("/map", methods=["GET"])
+def map_page():
+    seller_coordinates = db.session.query(Stall.latitude,Stall.longitude).all()
+    coordinates = []
+    for coordinate in seller_coordinates:
+        coordinates.append(list(coordinate))
+    return render_template("map.html",coordinates=coordinates)
+
+
 @auth.route('/Usign', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
