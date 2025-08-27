@@ -9,6 +9,61 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     
+    <!--Map CSS-->
+    <style>
+        body,html {
+            margin: 0;
+            padding: 0;
+        }
+        
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar{
+            position: fixed;
+            top:0 ;
+            left: 0;
+            height: 80px;
+            width: 100%;
+            background: rgb(164, 231, 250);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 999;
+        }
+
+        .logo{
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo img{
+            height: 85px;
+            transform: translateX(-50px);
+        }
+        /*Map*/
+        #map {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            margin-top: 80px;
+        }
+        /*Map Zoom In and Zoom*/
+        .map-zoom {
+            width: 60%;
+            left: 40%;
+        }
+        /*Seller Info*/
+        .seller-info-sidebar {
+            position: fixed;
+            width: 40%;
+            margin-top: 100px;
+            background-color: rgb(227, 227, 227);
+            z-index: 500;
+        }
+    </style>
 </head>
 <body>
     <nav>
