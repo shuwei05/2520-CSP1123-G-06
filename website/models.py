@@ -23,3 +23,5 @@ class Stall(db.Model, UserMixin):
     password1 = db.Column(db.String(150), nullable=False)
     openhour = db.Column(db.Time, nullable=False)
     closehour = db.Column(db.Time, nullable=False)
+    latitude = db.Column(db.Float,nullable=False)
+    longitude = db.Column(db.Float,nullable=False)
