@@ -11,6 +11,21 @@
     
 </head>
 <body>
+    <nav>
+        <div class="navbar">
+            <div class="logo">
+                <img src="{{ url_for('static',filename='photos/logo.png') }}" alt="mmu logo">
+            </div> 
+        </div>
+    </nav>
     
+    <div id="map"></div> <!--1 element cnt have 2 id-->
+
+    <aside id="seller-sidebar" class="seller-info-sidebar">
+        <div>
+            <div class="shop-info"></div>
+            <div class="comment"></div>
+        </div>
+    </aside>
 </body>
 </html>
