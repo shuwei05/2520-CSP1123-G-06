@@ -18,7 +18,7 @@
             </div> 
         </div>
     </nav>
-    
+
     <div id="map"></div> <!--1 element cnt have 2 id-->
 
     <aside id="seller-sidebar" class="seller-info-sidebar">
@@ -28,4 +28,45 @@
         </div>
     </aside>
 </body>
+
+<!--Map JavaScript-->
+<script>
+    const map = L.map("map");
+    map.setView([2.92790,101.64188],17);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 20, //Setting Max Zoom to 20(Enough)
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map)
+
+    document.getElementById("seller-sidebar").classList.remove("seller-info-sidebar");
+
+
+    const coordinates = {{ (coordinates | tojson | safe) }};
+
+    for (const[latitude,longitude] of coordinates){
+        const marker = L.marker([latitude,longitude]).addTo(map);
+        
+        //Zoom Map When Click
+        marker.on("click",function() {
+            map.setView([latitude,longitude],19);
+
+            document.getElementById("map").classList.add("map-zoom");
+            document.getElementById("seller-sidebar").classList.add("seller-info-sidebar");
+            
+            exitZoomMap() //got some problem
+        })
+    }
+
+    function exitZoomMap() {
+        map.on("click", function() {
+            document.getElementById("map").classList.remove("map-zoom");
+            document.getElementById("seller-sidebar").classList.remove("seller-info-sidebar");
+            
+            map.setView([2.92790,101.64188],17);
+        })
+    }
+    //L.icon({}) if any customize marker
+
+</script>
 </html>
