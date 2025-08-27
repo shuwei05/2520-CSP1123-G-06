@@ -116,5 +116,56 @@
             previewImage(this, "bg-preview");
         });
     </script>
+
+    <!--Map JavaScript-->
+    <script>
+        const map = L.map("map");
+        map.setView([2.92836,101.64188],16);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 20, //Setting Max Zoom to 20(Enough)
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map)
+
+        //https://youtu.be/NyjMmNCtKf4?si=SwNnJNahhkbyNH-h
+        //marker
+        let marker;
+        
+        navigator.geolocation.watchPosition(success, error);
+
+        function success(pos) {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+
+            if (!marker) {
+                marker = L.marker([lat,lng],{
+                draggable: true
+                }).addTo(map);
+
+                marker.on("dragend",position);
+            }
+
+            else {
+                marker.setLatLng([lat,lng]);
+                position();
+            }
+        }
+
+        function error(err) {
+            if (err.code === 1) {
+                alert("Please allow geolocation access")
+            } else {
+                alert("Cannot get current location")
+            }
+        }
+
+        function position() {
+            const GetPosition = marker.getLatLng();
+            document.getElementById("latitude").value = GetPosition.lat
+            document.getElementById("longitude").value = GetPosition.lng
+            console.log(GetPosition.lat,GetPosition.lng)
+            }
+            
+    </script>
 </body>
 </html>
