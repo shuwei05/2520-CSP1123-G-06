@@ -1,0 +1,269 @@
+body {
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: rgba(234, 231, 231, 0.849);
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.logo2 img{
+    width: 300px;
+    height: auto;
+    margin-bottom: 15px;
+    display: block;
+    margin:5px 20px;
+    transform: translateY(-140px);
+}
+
+.wrapper{
+    width: 350px;
+    background: white;
+    color: black;
+    height: 500px;
+    border-radius: 20px;
+     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
+}
+
+.wrapper h1{
+    font-size: 36px;
+    text-align: center;
+    transform: translateY(-90px);
+}
+
+.input-box{
+    text-align: center;
+    margin-bottom: 20px;
+    transform: translateY(-60px);
+}
+
+ .input-box input::placeholder {
+            color: black;
+}
+
+.input-box input{
+    width: 60%;
+    height: 80%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 1px solid #2b2b2b;
+    border-radius: 40px;
+    font-size: 12px;
+    color: rgb(22, 21, 21);
+    padding: 10px 20px;
+    box-sizing: border-box;
+}
+
+.sign{
+    text-align: center;
+     transform: translateY(-50px);
+}
+
+.btn{
+    width: 80px;
+    height: 40px;
+    border: none;
+    border-radius: 40px;
+    background: blue;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 20px auto;
+    display: block;
+    transform: translateY(-50px);
+}
+
+.btn:hover{
+    background: #0056b3;
+}
+
+
+
+
+
+
+
+
+.wrapper1{
+    width: 300px;
+    background: white;
+    color: black;
+    height: 600px;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
+}
+.logo3 img{
+    width: 200px;
+    height: auto;
+    margin-bottom: 15px;
+    display: block;
+    margin: 20px 50px;
+}
+
+.logo4 img{
+    width: 150px;
+    height: auto;
+    display: block;
+    margin: 0 auto 15px;
+}
+
+.choose h1{
+    color: rgb(159, 158, 157);
+    font-stretch: condensed;
+    text-align: center;
+}
+
+.btn-grp{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.s-btn button,
+.u-btn button{
+    width: 160px;
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+     border: 1px solid #2b2b2b;
+}
+
+.s-btn button:hover {
+    background: #08ed88;
+}
+.u-btn button:hover {
+    background: #08ed88;
+}
+
+
+
+
+
+
+.signb{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 120vh;
+    background: rgba(238, 237, 237,);
+    
+}
+
+.wrapper2{
+    width: 350px;
+    background: white;
+    color: black;
+    height: 700px;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    text-align: center;
+    margin-top: 150px;
+    transform: translateX(-10px);
+    position: relative;
+}
+
+.logo2 img{
+    transform: translateY(-150px);
+    align-items: center;
+}
+
+
+.form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form h1{
+    font-size: 50px;
+    margin: 10px 10px;
+    transform: translateY(-100px);
+}
+
+.descri{
+    font-size: 16px;
+    color: black;
+    margin-top: 1px;
+    transform: translateY(-100px);
+}
+
+label {
+  display: block;
+  text-align: left;
+  width: 70%;
+  margin: 8px 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.input-box2{
+    margin-bottom: 15px;
+    width: 70%;
+    margin: 10px 10px;
+    transform: translateY(-90px);
+}
+
+.input-box2 input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: 0.2s;
+}
+
+input-box2 label{
+    position: absolute;
+    top: -18px;
+    right: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.btn2 {
+  width: 70%;
+  padding: 12px;
+  background: #0047ff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transform: translateY(-60px
+  );
+}
+
+.btn2:hover {
+  background: #0036cc;
+}
+
+.remember label{
+  display: flex;
+  margin-top: 10px;
+  gap: 5px;
+  position: absolute;
+  left: 75px;
+  bottom: 20px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.remember input {
+  margin-right: 230px;
+  transform: translateY(-27px);
+}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intro Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">"
+</head>
+<body>
+    <nav>
+        <div class="navbar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='photos/mmulogo2.png') }}" alt="mmu logo">
+            </div>   
+            <ul class="nav-link">
+                <li><a href="role.html">Sign up</a></li>
+                <li><a href="login.html">Log in</a></li>
+            </ul>
+        </div>
+    </nav>
+     
+    
+
+    <section class="pink-section">
+        <div class="text-content animated-text">
+            <h1>Track Your Food,</h1>
+            <p><strong>Anytime,Anywhere.</strong></p>
+        </div>
+       <div class="map-con">
+            <img src="{{ url_for('static', filename='photos/map-app.png') }}" alt="Map">
+       </div>
+    </section>
+
+    <section class="menu-section">
+        <div class="menu-image">
+            <img src="{{ url_for('static', filename='photos/menu.png') }}" alt="menu image">
+        </div>
+        <div class="menu-text">
+            <h2><strong>Discover MMU's</strong></h2>
+            <h2><strong>tastiest spots in</strong></h2>
+            <h2><strong>one click.</strong></h2>
+        </div>
+    </section>
+
+    <section>
+        <div class="welcome">
+            <div class="blue-box">
+                <h1>WELCOME</h1>
+                <p>MMU Starbees helps you save time, avoid long queues and discover new food around campus-all in one easy-to-use-app.</p>
+                <a href="login.html">
+                    <button type="button">Start Now</button>
+                </a>
+            </div>
+           
+        </div>
+    </section>
+
+    <section>
+        <div class="last-section">
+            <a href="aboutus.html">About Us</a>
+        </div>
+        <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
+    </section>
+        
+</body>
+</html>
