@@ -51,6 +51,9 @@ def Ssignup():
         openhour_str = request.form.get('openhour', '00:00')
         closehour_str = request.form.get('closehour', '00:00')
 
+        latitude = request.form.get("latitude")
+        longitude = request.form.get("longitude")
+
         openhour = datetime.strptime(openhour_str, "%H:%M").time()
         closehour = datetime.strptime(closehour_str, "%H:%M").time()
 
@@ -58,6 +61,11 @@ def Ssignup():
         if existing_stall:
             flash('Email already registered. Please use another one.', category='error')
             return render_template('Ssign.html', text='Signup Page')
+
+        existing_location = Stall.query.filter_by(latitude=latitude,longitude=longitude).first()
+        if existing_location:
+            flash("Same location",category="error")
+            return render_template("Ssign.html",text="Signup Page")
 
         if len(email) < 4:
             flash('Email must be greater than 3 characters', category='error')
@@ -78,7 +86,9 @@ def Ssignup():
             email=email,
             password1=generate_password_hash(password1, method='pbkdf2:sha256'),
             openhour = datetime.strptime(openhour_str, "%H:%M").time(),
-            closehour = datetime.strptime(closehour_str, "%H:%M").time()
+            closehour = datetime.strptime(closehour_str, "%H:%M").time(),
+            latitude=float(latitude),
+            longitude=float(longitude)
             )
             db.session.add(new_stall)
             db.session.commit()
