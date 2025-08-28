@@ -85,7 +85,7 @@ def Ssignup():
             flash('Email already registered. Please use another one.', category='error')
             return render_template('Ssign.html', text='Signup Page')
 
-        existing_location = Stall.query.filter_by(latitude=latitude,longitude=longitude).first()
+        existing_location = Stall.query.filter_by(latitude=Stall.latitude,longitude=Stall.longitude).first()
         if existing_location:
             flash("Same location",category="error")
             return render_template("Ssign.html",text="Signup Page")
@@ -110,8 +110,8 @@ def Ssignup():
             password1=generate_password_hash(password1, method='pbkdf2:sha256'),
             openhour = datetime.strptime(openhour_str, "%H:%M").time(),
             closehour = datetime.strptime(closehour_str, "%H:%M").time(),
-            latitude=float(latitude),
-            longitude=float(longitude)
+            latitude=float(Stall.latitude),
+            longitude=float(Stall.longitude)
             )
             db.session.add(new_stall)
             db.session.commit()
