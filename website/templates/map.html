@@ -58,10 +58,36 @@
         /*Seller Info*/
         .seller-info-sidebar {
             position: fixed;
+            right: 0;
+            top: 80px;
             width: 40%;
-            margin-top: 100px;
-            background-color: rgb(227, 227, 227);
+            background-color: white;
             z-index: 500;
+            display: none;
+        }
+
+        .seller-info-sidebar.active {
+            display: block;
+        }
+
+        /*Return Button*/
+        .return-button {
+            position: fixed;
+            width: 30px;
+            height: 60px;
+            top: 50%;
+            left: 40%;
+            border-style: none;
+            border-top-right-radius: 15px;
+            border-bottom-right-radius: 15px;
+            background-color: white;
+            z-index: 600;
+            cursor: pointer;
+            display: none;
+        }
+
+        .return-button.active {
+            display: block;
         }
     </style>
 </head>
@@ -82,6 +108,8 @@
             <div class="comment"></div>
         </div>
     </aside>
+
+    <button id="return" class="return-button">&#10094;</button>
 </body>
 
 <!--Map JavaScript-->
@@ -96,7 +124,6 @@
 
     document.getElementById("seller-sidebar").classList.remove("seller-info-sidebar");
 
-
     const coordinates = {{ (coordinates | tojson | safe) }};
 
     for (const[latitude,longitude] of coordinates){
@@ -108,20 +135,27 @@
 
             document.getElementById("map").classList.add("map-zoom");
             document.getElementById("seller-sidebar").classList.add("seller-info-sidebar");
-            
+            document.getElementById("return").classList.add("active");
+
             exitZoomMap() //got some problem
         })
     }
 
     function exitZoomMap() {
-        map.on("click", function() {
+        map.once("click", function() {
             document.getElementById("map").classList.remove("map-zoom");
             document.getElementById("seller-sidebar").classList.remove("seller-info-sidebar");
-            
+            document.getElementById("return").classList.remove("active")
             map.setView([2.92790,101.64188],17);
         })
     }
-    //L.icon({}) if any customize marker
+
+    document.getElementById("return").addEventListener("click",function() {
+        document.getElementById("map").classList.remove("map-zoom");
+        document.getElementById("seller-sidebar").classList.remove("active");
+        document.getElementById("return").classList.remove("active")
+        map.setView([2.92790,101.64188],17); 
+    });
 
 </script>
 </html>
