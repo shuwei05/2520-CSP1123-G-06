@@ -58,9 +58,9 @@
         /*Seller Info*/
         .seller-info-sidebar {
             position: fixed;
-            right: 0;
             top: 80px;
             width: 40%;
+            height: 100%;
             background-color: white;
             z-index: 500;
             display: none;
@@ -69,14 +69,71 @@
         .seller-info-sidebar.active {
             display: block;
         }
+        /*Stall Info*/
+        .stall-photo {
+            background-color: rgb(224, 224, 224);
+            width: 100%;
+            height: 30%;
+        }
 
+        .stallname-and-rating {
+            display: flex;
+            background-color: rgb(200, 200, 200);
+            padding: 10px;
+        }
+        
+        .about-and-reviews-tab {
+            display: flex;
+            position: relative;
+            width: 100%;
+        }
+
+        .about-and-reviews-tab input {
+            display: none;
+        }
+
+        .about-and-reviews-tab label {
+            display: flex;
+            flex: 1 1;
+            padding: 10px;
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .sidebar-content {
+            display: block;
+            position: absolute;
+            margin-top: 38.5px;
+            padding: 10px;
+            background-color: lightblue;
+        }
+
+        .sidebar-content div {
+            display: none;
+        }
+
+        .about-and-reviews-tab input:checked + label{
+            background-color: grey;
+        }
+
+        #about:checked ~ .sidebar-content .stall-details {
+            display: block;
+        }
+
+        #reviews:checked ~ .sidebar-content .comment {
+            display: block;
+        }
+        /*+ close; ~ far*/
+        
         /*Return Button*/
         .return-button {
-            position: fixed;
+            position: absolute;
             width: 30px;
             height: 60px;
-            top: 50%;
-            left: 40%;
+            top: 40%;
+            right: -30px;
             border-style: none;
             border-top-right-radius: 15px;
             border-bottom-right-radius: 15px;
@@ -100,16 +157,37 @@
         </div>
     </nav>
 
-    <div id="map"></div> <!--1 element cnt have 2 id-->
-
+    <div id="map"></div> 
+    
     <aside id="seller-sidebar" class="seller-info-sidebar">
-        <div>
-            <div class="shop-info"></div>
-            <div class="comment"></div>
+        <div class="stall-photo">
+            Stall Image
         </div>
+
+        <div class="stallname-and-rating">
+            <p>Stall Name</p>
+            <p>rating</p>
+        </div>
+
+        <div class="about-and-reviews-tab">
+            <input type="radio" id="about" name="tab" checked>
+            <label for="about">About</label>
+            <input type="radio" id="reviews" name="tab">
+            <label for="reviews">Reviews</label>
+
+            <div class="sidebar-content">
+                <div class="stall-details">
+                    <p class="stall-status">Open</p>    
+                </div>
+
+                <div class="comment">
+                    <p class="comment">Comments</p>    
+                </div>
+            </div>
+        </div>
+        <button id="return" class="return-button">&#10094;</button>
     </aside>
 
-    <button id="return" class="return-button">&#10094;</button>
 </body>
 
 <!--Map JavaScript-->
@@ -122,8 +200,6 @@
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map)
 
-    document.getElementById("seller-sidebar").classList.remove("seller-info-sidebar");
-
     const coordinates = {{ (coordinates | tojson | safe) }};
 
     for (const[latitude,longitude] of coordinates){
@@ -134,17 +210,17 @@
             map.setView([latitude,longitude],19);
 
             document.getElementById("map").classList.add("map-zoom");
-            document.getElementById("seller-sidebar").classList.add("seller-info-sidebar");
+            document.getElementById("seller-sidebar").classList.add("active");
             document.getElementById("return").classList.add("active");
 
-            exitZoomMap() //got some problem
+            exitZoomMap() 
         })
     }
 
     function exitZoomMap() {
         map.once("click", function() {
             document.getElementById("map").classList.remove("map-zoom");
-            document.getElementById("seller-sidebar").classList.remove("seller-info-sidebar");
+            document.getElementById("seller-sidebar").classList.remove("active");
             document.getElementById("return").classList.remove("active")
             map.setView([2.92790,101.64188],17);
         })
