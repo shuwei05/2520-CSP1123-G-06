@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/989b6a6559.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="filter.css">
+    <title>Filter Page</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="logo.png" alt="mmu logo">
+            </div>   
+        </nav>
+    </header>
+
+    <main>
+        <section class="title">
+            <div class="return-icon">
+                <i class="fa-solid fa-circle-arrow-left">
+                    <a href="#"></a>
+                </i>
+            </div>
+            <div class="filter">
+                <h1>Filter</h1>
+            </div>
+        </section>
+        
+        <form>
+            <div class="container">
+                <section class="cuisine">
+                    <label class="option-title">Cuisine</label>
+                    <div>
+                        <label class="product-cuisine">Malay Cuisine<input type="checkbox"></label>
+                        <label class="product-cuisine">Chinese Cuisine<input type="checkbox"></label>
+                        <label class="product-cuisine">Western Cuisine<input type="checkbox"></label>
+                        <label class="product-cuisine">Drinks<input type="checkbox"></label>
+                        <label class="product-cuisine">Dessert<input type="checkbox"></label>
+                    </div>
+                </section>
+
+                <div class="dashed-border-line"></div>
+                
+                <section class="review">
+                    <label class="option-title">Star</label>
+                    <div class="star-review">
+                        <input type="radio" name="rating" id="5-star"> <!--radio = only 1 can selected-->
+                        <label for="5-star"></label>
+                        <input type="radio" name="rating" id="4-star"> <!--name put the same so that only can choose 1 option-->
+                        <label for="4-star"></label>
+                        <input type="radio" name="rating" id="3-star"> <!--id must equal to for, which mean the label is for that input-->
+                        <label for="3-star"></label>
+                        <input type="radio" name="rating" id="2-star">
+                        <label for="2-star"></label>
+                        <input type="radio" name="rating" id="1-star">
+                        <label for="1-star"></label>
+                    </div>
+                </section>
+
+                <div class="dashed-border-line"></div>
+
+                <section class="price">
+                    <label class="option-title">Price</label>
+                    <div class="price-selection-container">
+                        <input type="radio" name="price-select" id="low">
+                        <label for="low">RM 10 below</label>
+                        <input type="radio" name="price-select" id="medium">
+                        <label for="medium">RM 10 - RM 20</label>
+                        <input type="radio" name="price-select" id="high">
+                        <label for="high">RM 20 above</label>
+                    </div><!--!!!!!!!!--> 
+                </section>
+
+                <section class="apply">
+                    <button type="submit">Apply</button>
+                </section>
+            </div>
+        </form>
+    </main>
+</body>
+
+</html>

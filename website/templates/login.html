@@ -7,10 +7,50 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style1.css') }}">
 </head>
 <body>
+
+<style>
+    .forgot {
+      text-align: left;
+      width: 100%;
+      margin: -10px 0 15px 5px; /* adjust spacing */
+    transform: translate(85px , -70px);
+   
+    }
+
+    .forgot a {
+      font-size: 12px;
+      color: #373839;
+      text-decoration: none;
+      transition: 0.2s;
+      
+    }
+
+    .forgot a:hover {
+      text-decoration: underline;
+    }
+
+     .seller-link {
+  display: block;
+  margin-top: -15px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #000;         /* 黑色 */
+  text-decoration: none;
+  text-align: center;  /* 居中 */
+}
+
+.seller-link:hover {
+  text-decoration: underline;
+  color: #333;         /* 鼠标悬停稍微变灰 */
+}
+
+</style>
+
+
     <div class="wrapper">
 
         <div class="logo2">
-            <img src="{{ url_for('static', filename='photos/mmulogo2.png') }}" alt="mmu logo">
+                <img src="{{ url_for('static', filename='photos/mmulogo2.png') }}" alt="mmu logo">
         </div>
 
 <div class="flash-messages">
@@ -24,22 +64,30 @@
         {% endif %}
     {% endwith %}
 </div>
-
+        
 
         <form method="POST" action="{{ url_for('auth.login') }}" class="form">
             <h1>User Login</h1>
             <div class="input-box">
-                <input type="text" name=user_name placeholder="Username" required>
+                <input type="text" placeholder="Username" required>
             </div>
             <div class="input-box">
-                <input type="text" name=password1 placeholder="Password" required>
+                <input type="text" placeholder="Password" required>
             </div>
             
-            <div class="sign">
-                <a href="role.html">Sign up?</a>
-            </div>
+            <!-- Forgot password link here -->
+        <div class="forgot">
+            <a href="email.html">Forgot Password?</a>
+        </div>
 
             <button type="submit" class="btn">Login</button>
+
+            <div class="sign">
+                <p>Don't have an account?<a href="role.html">Sign up</a></p>
+            </div>
+
+            <a href="Slogin.html" class="seller-link"> > GO TO SELLER LOGIN</a>
+
         </form>
     </div>
 </body>
