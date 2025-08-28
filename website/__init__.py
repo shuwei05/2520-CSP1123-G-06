@@ -6,6 +6,8 @@ from flask_login import LoginManager
 db = SQLAlchemy()
 DB_Name = "database.db"
 
+UPLOAD_FOLDER = 'static/uploads/'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 def create_database(app):
     if not path.exists('website/' + DB_Name):
@@ -20,6 +22,7 @@ def create_database(app):
 def create_app():
     app  = Flask(__name__)
     app.config['SECRET_KEY'] = 'MINI IT'
+    app.config["UPLOAD_FOLDER"] = "website/static/uploads"
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_Name}'
     db.init_app(app)
 
@@ -27,6 +30,7 @@ def create_app():
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
     
+
     @login_manager.user_loader
     def load_user(id):
         return User.query.get(int(id))
