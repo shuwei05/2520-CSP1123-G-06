@@ -62,6 +62,9 @@ def Ssignup():
         openhour_str = request.form.get('openhour', '00:00')
         closehour_str = request.form.get('closehour', '00:00')
 
+        latitude = request.form.get("latitude")
+        longitude = request.form.get("longitude")
+
 
         openhour = datetime.strptime(openhour_str, "%H:%M").time()
         closehour = datetime.strptime(closehour_str, "%H:%M").time()
