@@ -154,8 +154,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 120vh;
-    background: rgba(238, 237, 237,);
+    min-height: 130vh;
+    background: rgba(234, 231, 231, 0.849);
+    width: 100%;
     
 }
 
@@ -163,7 +164,7 @@ body {
     width: 350px;
     background: white;
     color: black;
-    height: 700px;
+    height: 750px;
     border-radius: 20px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
     text-align: center;
@@ -175,6 +176,7 @@ body {
 .logo2 img{
     transform: translateY(-150px);
     align-items: center;
+    height: 130px;
 }
 
 
@@ -265,5 +267,5 @@ input-box2 label{
 
 .remember input {
   margin-right: 230px;
-  transform: translateY(-27px);
+  transform: translateY(-36px);
 }
