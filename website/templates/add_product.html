@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seller Add Product Page</title>
+   <link rel="stylesheet" href="add_product.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+</head>
+
+<body>
+    <nav>
+        <div class="navbar">
+            <div class="logo">
+                <img src="logo.png" alt="mmu logo">
+            </div>   
+        </div>
+    </nav>
+    
+    <main>
+        <header class="container-1">
+            <div class="home-icon">
+                <i class="fa-solid fa-house home-icon"></i>
+            </div>
+            <div class="title">
+                <h1>Add Product</h1>
+            </div>
+        </header>
+
+        <form>
+            <div class="container">
+                <section class="container-2">
+                    <div class="product-name">
+                        <label for="product-name">Product Name:</label>
+                        <input type="text" id="product-name">
+                    </div>
+
+                    <div class="product-type">
+                        <label id="pt-text">Product Type:</label>
+                        <div id="pt-selection">
+                            <label class="product-type-checkbox">Food<input type="checkbox"></label>
+                            <label class="product-type-checkbox">Beverages<input type="checkbox"></label>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="container-3">
+                    <label for="product-price">Product Price:</label>
+                    <input type="text" id="product-price">
+                </section>
+
+                <section class="container-4">
+                    <div id="text">
+                        <label>Product Cuisine:</label>
+                    </div>
+                    <label class="product-cuisine">Malay Cuisine<input type="checkbox"></label>
+                    <label class="product-cuisine">Chinese Cuisine<input type="checkbox"></label>
+                    <label class="product-cuisine">Western Cuisine<input type="checkbox"></label>
+                    <label class="product-cuisine">Drinks<input type="checkbox"></label>
+                    <label class="product-cuisine">Dessert<input type="checkbox"></label>
+                </section>
+
+                <section class="container-5">
+                    <label for="product-des">Product Ingredients/Descriptions:</label>
+                    <textarea id="product-des"></textarea>
+                </section>
+
+                <section class="container-6">
+                    <label>Photos: (0/1)</label>
+                    <div class="photo-upload">
+                        <label class="fa-regular fa-image upload-img-icon"><input type="file" accept="image/*"></label>
+                    </div>
+                </section>
+
+                <section class="container-7">
+                    <button type="submit">ADD</button>
+                </section>
+            </div>    
+        </form>
+    </main>
+
+
+    
+</body>
+</html>
