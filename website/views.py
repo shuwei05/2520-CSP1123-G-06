@@ -4,7 +4,6 @@ from flask_login import login_required, current_user
 
 views = Blueprint('views',__name__)
 
-@views.route('/aboutus')
-@login_required
+@views.route('/')
 def home():
-    return render_template('aboutus.html', text='Home Page')
+    return render_template('intro.html', text='Home Page')
