@@ -23,3 +23,5 @@ class Stall(db.Model, UserMixin):
     password1 = db.Column(db.String(150), nullable=False)
     openhour = db.Column(db.Time, nullable=False)
     closehour = db.Column(db.Time, nullable=False)
+    profile_picture = db.Column(db.String(200), nullable=True)
+    background_picture = db.Column(db.String(200), nullable=True)
