@@ -128,6 +128,10 @@ def login():
 def intro():
     return render_template('intro.html', text='Intro Page')
 
+@auth.route('/role')
+def role():
+    return render_template('role.html', text='Role')
+
 @auth.route('/admin' , methods=['GET', 'POST'])
 def admin():
     if request.method == 'POST':
