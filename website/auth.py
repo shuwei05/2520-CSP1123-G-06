@@ -1,9 +1,11 @@
-from flask import Blueprint ,  render_template ,request , flash ,redirect, url_for
+from flask import Blueprint ,  render_template ,request , flash ,redirect, url_for , current_app
 from .models import User , Stall
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from . import db   
 from datetime import datetime
+from werkzeug.utils import secure_filename
+import os
 
 auth = Blueprint('auth',__name__)
 
@@ -51,8 +53,23 @@ def Ssignup():
         openhour_str = request.form.get('openhour', '00:00')
         closehour_str = request.form.get('closehour', '00:00')
 
+
         openhour = datetime.strptime(openhour_str, "%H:%M").time()
         closehour = datetime.strptime(closehour_str, "%H:%M").time()
+
+        prof_file = request.files.get("prof_pic")
+        bg_file = request.files.get("bg_pic")
+
+        prof_file = None
+        bg_file = None
+
+        if prof_file and prof_file.filename != "":
+            profile_filename = secure_filename(prof_file.filename)
+            prof_file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], profile_filename))
+
+        if bg_file and bg_file.filename != "":
+            bg_filename = secure_filename(bg_file.filename)
+            bg_file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], bg_filename))
 
         existing_stall = Stall.query.filter_by(email=email).first()
         if existing_stall:
@@ -105,9 +122,6 @@ def login():
             flash('Email does not exist.', category='error')
     return render_template('login.html', text='Login Page')
 
-@auth.route('/intro',  methods=['GET', 'POST'])
-def intro():
-    return render_template('intro.html', text='Intro Page')
 
 @auth.route('/role')
 def role():
@@ -126,7 +140,11 @@ def admin():
             flash('Invalid admin credentials, try again.', category='error')
     return render_template('admin.html', text='Admin Page')
 
-@auth.route('/logout')  
+@auth.route('/aboutus')
+def aboutus():
+    return render_template('aboutus.html', text='About Us')
+
+@auth.route('/logout') 
 @login_required
 def logout():
     logout_user()
