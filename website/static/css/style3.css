@@ -138,7 +138,7 @@ form-row top-row {
 }
 
 .form-row-middle{
-    align-item:center ;
+    align-items:center ;
 }
 
 /* Photo Upload */
