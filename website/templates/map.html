@@ -133,16 +133,17 @@
             display: block;
             position: absolute;
             margin-top: 45px;
+            margin-left: 10px;
             padding: 10px;
-            background-color: lightblue;
         }
 
-        .sidebar-content div {
+        .sidebar-content > div { /* > child combinator*/
             display: none;
         }
 
         .about-and-reviews-tab input:checked + label{
             background-color: rgb(225,225,225);
+            box-shadow: inset 0 2px 3px rgba(0,0,0,0.3);
         }
 
         #about:checked ~ .sidebar-content .stall-details {
@@ -152,8 +153,13 @@
         #reviews:checked ~ .sidebar-content .comment {
             display: block;
         }
+
         /*+ close; ~ far*/
-        
+        .stall-details {
+            line-height: 30px;
+        }
+
+
         /*Return Button*/
         .return-button {
             position: fixed;
@@ -173,6 +179,34 @@
 
         .return-button.active {
             display: block;
+        }
+
+        /*Comment*/
+        .comment-list {
+            width: 36vw;
+            height: 250px;
+        }
+
+        .comment-send-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .comment-box {
+            resize: none;
+            width: 29vw;
+            height: 25px;
+            border-style: none;
+            border-radius: 25px;
+            padding-left: 10px;
+            margin-right: 10px;
+            line-height: 25px; 
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
+
+        .send-btn {
+            vertical-align: top;
         }
     </style>
 </head>
@@ -209,11 +243,18 @@
             <div class="sidebar-content">
                 <div class="stall-details">
                     <p class="stall-status">Open</p>
-                        
+                    <p class="stall-opening-time">Opening Hours : 12:00 to 18:00</p>
+                    <p class="price-category">RM 10 - RM 20</p>   
                 </div>
 
                 <div class="comment">
-                    <p class="comment">Comments</p>    
+                    <div class="comment-list">
+                        <p>comment</p>
+                    </div>
+                    <div class="comment-send-area">
+                        <textarea class="comment-box" placeholder="comment here"></textarea>
+                        <button class="send-btn">&#10148;</button>
+                    </div>
                 </div>
             </div>
         </div>    
