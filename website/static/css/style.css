@@ -173,7 +173,7 @@
 
 .welcome {
     height: 700px;
-    background-image: url(moun.jpg);
+    background-image: url(/static/photos/moun.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -296,7 +296,7 @@
 
 .about-back{
     height: 700px;
-    background-image: url(mmu\ photo.jpeg);
+    background-image:  url(/static/photos/mmu\ photo.jpeg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
