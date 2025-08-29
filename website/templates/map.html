@@ -55,7 +55,7 @@
             width: 60%;
             left: 40%;
         }
-        /*Seller Info*/
+        /*Sidebar*/
         .seller-info-sidebar {
             position: fixed;
             top: 80px;
@@ -72,21 +72,47 @@
         }
         /*Stall Info*/
         .stall-photo {
-            background-color: rgb(224, 224, 224);
             width: 100%;
             height: 30%;
-        }
-
-        .stallname-and-rating {
-            display: flex;
-            background-color: rgb(200, 200, 200);
-            padding: 10px;
+            box-shadow: 0 2px 2px rgba(0,0,0,0.3);
         }
         
+        .stall-photo img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+        /*Stall Name & Rating*/
+        .stallname-and-rating {
+            display: flex;
+            padding: 10px;
+            align-items: flex-end;
+            box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+        }
+        
+        .stall-name {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .rating {
+            display: flex;
+            align-items: flex-end;
+            font-size: 12px;
+            color: rgb(150, 150, 150);
+        }
+
+        #star {
+            margin-right: 20px;
+            color: yellow;
+        }
+
+        /*Tab*/
         .about-and-reviews-tab {
             display: flex;
             position: relative;
             width: 100%;
+            box-shadow: 0 2px 2px rgba(0,0,0,0.3);
         }
 
         .about-and-reviews-tab input {
@@ -106,7 +132,7 @@
         .sidebar-content {
             display: block;
             position: absolute;
-            margin-top: 38.5px;
+            margin-top: 45px;
             padding: 10px;
             background-color: lightblue;
         }
@@ -116,7 +142,7 @@
         }
 
         .about-and-reviews-tab input:checked + label{
-            background-color: grey;
+            background-color: rgb(225,225,225);
         }
 
         #about:checked ~ .sidebar-content .stall-details {
@@ -130,16 +156,17 @@
         
         /*Return Button*/
         .return-button {
-            position: absolute;
+            position: fixed;
             width: 30px;
             height: 60px;
-            top: 40%;
-            right: -30px;
+            top: 50%;
+            left: 40%;
             border-style: none;
             border-top-right-radius: 15px;
             border-bottom-right-radius: 15px;
             background-color: white;
-            z-index: 600;
+            z-index: 100;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
             cursor: pointer;
             display: none;
         }
@@ -162,12 +189,15 @@
     
     <aside id="seller-sidebar" class="seller-info-sidebar">
         <div class="stall-photo">
-            Stall Image
+            <img class="stall-photo" src="{{ url_for('static',filename='photos/smile.png') }}">
         </div>
 
         <div class="stallname-and-rating">
-            <p>Stall Name</p>
-            <p>rating</p>
+            <div class="stall-name"><p>Rasa Shiokk</p></div>
+            <div class="rating">
+                <p>4.0</p>
+                <p id="star">&#9733;</p>
+            </div>
         </div>
 
         <div class="about-and-reviews-tab">
@@ -178,16 +208,17 @@
 
             <div class="sidebar-content">
                 <div class="stall-details">
-                    <p class="stall-status">Open</p>    
+                    <p class="stall-status">Open</p>
+                        
                 </div>
 
                 <div class="comment">
                     <p class="comment">Comments</p>    
                 </div>
             </div>
-        </div>
-        <button id="return" class="return-button">&#10094;</button>
+        </div>    
     </aside>
+    <button id="return" class="return-button">&#10094;</button>
 
 </body>
 
