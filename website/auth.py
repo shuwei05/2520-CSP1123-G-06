@@ -123,6 +123,24 @@ def Ssignup():
         
     return render_template('Ssign.html', text='Signup Page')
 
+@auth.route('/Slogin',  methods=['GET', 'POST'])
+def Slogin():
+    if request.method == 'POST':
+        stallname = request.form.get('stallname')
+        password1 = request.form.get('password1')
+
+        stall = Stall.query.filter_by(stallname=stallname).first()
+        if stall:
+            if check_password_hash(stall.password1, password1):
+                flash('Stall Logged in successfully!', category='success')
+                login_user(stall, remember=True)
+                return redirect(url_for('views.home'))
+            else:
+                flash('Incorrect password, try again.', category='error')
+        else:
+            flash('Stallname does not exist.', category='error')
+    return render_template('Slogin.html', text='Login Page')
+
 @auth.route('/login',  methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
