@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>role page</title>
-    <link rel="stylesheet" href="style1.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style1.css') }}">
 </head>
 <body>
     <div class="wrapper1">
          <div class="logo3">
-                <img src="mmulogo3.png" alt="mmu logo">
+                <img src="{{ url_for('static', filename='photos/mmulogo3.png') }}" alt="mmu logo">
         </div>
         <div class="logo4">
-                <img src="mmu mascot.jpeg" alt="mmu logo">
+                <img src="{{ url_for('static', filename='photos/mmu mascot.jpeg') }}" alt="mmu logo">
         </div>
         <div class="choose">
             <h1>Choose your role</h1>
@@ -20,13 +20,13 @@
 
         <div class="btn-grp">
             <div class="s-btn">
-                <a href="Ssign.html">
+                <a href="/Ssign">
                     <button>Seller</button>
                 </a>
             </div>
        
             <div class="u-btn">
-                <a href="Usign.html">
+                <a href="/Usign">
                     <button>User</button>
                 </a>
             </div>
