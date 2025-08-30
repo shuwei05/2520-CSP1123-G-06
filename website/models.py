@@ -23,7 +23,7 @@ class Stall(db.Model, UserMixin):
     password1 = db.Column(db.String(150), nullable=False)
     openhour = db.Column(db.Time, nullable=False)
     closehour = db.Column(db.Time, nullable=False)
-    profile_pic = db.Column(db.String(200), nullable=True)
+    prof_pic = db.Column(db.String(200), nullable=True)
     bg_pic = db.Column(db.String(200), nullable=True)
     latitude = db.Column(db.Float,nullable=False)
     longitude = db.Column(db.Float,nullable=False)

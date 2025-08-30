@@ -72,12 +72,12 @@ def Ssignup():
         prof_file = request.files.get("prof_pic")
         bg_file = request.files.get("bg_pic")
 
-        prof_file = None
-        bg_file = None
+        prof_filename = None
+        bg_filename = None
 
         if prof_file and prof_file.filename != "":
-            profile_filename = secure_filename(prof_file.filename)
-            prof_file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], profile_filename))
+            prof_filename = secure_filename(prof_file.filename)
+            prof_file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], prof_filename))
 
         if bg_file and bg_file.filename != "":
             bg_filename = secure_filename(bg_file.filename)
@@ -113,6 +113,8 @@ def Ssignup():
             password1=generate_password_hash(password1, method='pbkdf2:sha256'),
             openhour = datetime.strptime(openhour_str, "%H:%M").time(),
             closehour = datetime.strptime(closehour_str, "%H:%M").time(),
+            prof_pic=prof_filename if prof_file else None,
+            bg_pic=bg_filename if bg_file else None,
             latitude=float(latitude),
             longitude=float(longitude)
             )
