@@ -60,32 +60,26 @@
 
                 <textarea placeholder="Stall Description" required></textarea>
             </div>
-    <form class="form-box" method="POST" action="{{ url_for('auth.Ssignup') }}" enctype="multipart/form-data">
 
-    <div class="image-upload">
-        <div class="image-box">
-            <p class="upload-title">Stall Image:</p>
-            <label class="upload-area">
-                <i class="fa-solid fa-image"></i>
-                <input type="file" name="prof_pic" id="prof_pic" accept="image/*">
-            </label>
-            <p class="file-name" id="prof_pic_name"></p>
-            <img id="stall-preview" src="#" alt="Stall Preview" 
-                style="max-width:200px; display:none;">
-        </div>
+            <div class="image-upload">
 
-        <div class="image-box">
-            <p class="upload-title">Background Image:</p>
-            <label class="upload-area">
-                <i class="fa-solid fa-image"></i>
-                <input type="file" name="bg_pic" id="bg_pic" accept="image/*"> 
-            </label>
-            <p class="file-name" id="bg_pic_name"></p>
-            <!-- Preview image -->
-            <img id="bg-preview" src="#" alt="Background Preview" 
-                style="max-width:400px; display:none;">
-        </div>
-    </div>
+                <div class="image-box">
+                    <p class="upload-title">Stall Image:</p>
+                    <label class="upload-area">
+                        <i class="fa-solid fa-image"></i>
+                        <input type="file" id="prof_pic" accept="image/*">
+                    </label>
+                </div>
+
+                <div class="image-box">
+                    <p class="upload-title">Background Image:</p>
+                    <label class="upload-area">
+                        <i class="fa-solid fa-image"></i>
+                        <input type="file" id="bg_pic" accept="image/*"> 
+                    </label>
+                </div>
+            </div>
+
             <div class="map-section">
                 <p class="map-title">📍 Pin Your Location Here:</p>
             </div>
@@ -105,26 +99,26 @@
 
     </section>
 
-            <script>
-            // Function for preview
-            function previewImage(input, previewId) {
-                const file = input.files[0];
-                if (file) {
-                    const preview = document.getElementById(previewId);
-                    preview.src = URL.createObjectURL(file);
-                    preview.style.display = "block"; // show the preview image
-                }
+    <script>
+        // 预览上传的图片
+        function previewImage(input, previewId) {
+            const file = input.files[0];// 获取用户选择的第一个文件
+            if (file) {
+                // 把这个文件转换成一个临时的 URL，然后设置到 img 的 src 上
+                document.getElementById(previewId).src = URL.createObjectURL(file);
             }
-
-            // Listen for changes
-            document.getElementById("prof_pic").addEventListener("change", function() {
-                previewImage(this, "stall-preview");
-            });
-
-            document.getElementById("bg_pic").addEventListener("change", function() {
-                previewImage(this, "bg-preview");
-            });
+        }
+        // 当用户上传 stall image 时，触发预览
+        document.getElementById("prof_pic").addEventListener("change", function() {
+            previewImage(this, "stall-preview");
+        });
+        // 当用户上传 background image 时，触发预览
+        document.getElementById("bg_pic").addEventListener("change", function() {
+            previewImage(this, "bg-preview");
+        });
     </script>
+</body>
+</html>
 
     <!--Map JavaScript-->
    <script>
@@ -176,5 +170,3 @@
             }
 
     </script>
-</body>
-</html>

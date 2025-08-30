@@ -113,8 +113,8 @@ def Ssignup():
             password1=generate_password_hash(password1, method='pbkdf2:sha256'),
             openhour = datetime.strptime(openhour_str, "%H:%M").time(),
             closehour = datetime.strptime(closehour_str, "%H:%M").time(),
-            latitude=float(latitude),
-            longitude=float(longitude)
+            latitude=float(Stall.latitude),
+            longitude=float(Stall.longitude)
             )
             db.session.add(new_stall)
             db.session.commit()
@@ -189,7 +189,12 @@ def logout():
     return redirect(url_for('auth.login'))
 
 @auth.route('/add_product', methods=['GET', 'POST'])
+@login_required
 def add_product():
+    if current_user.role != "seller":
+        flash("You are not authorized to access this page.", "danger")
+        return redirect(url_for("home"))
+    
     if request.method == 'POST':
         product_name = request.form.get('product_name')
         product_des = request.form.get('description')

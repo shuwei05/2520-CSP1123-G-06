@@ -113,8 +113,8 @@ def Ssignup():
             password1=generate_password_hash(password1, method='pbkdf2:sha256'),
             openhour = datetime.strptime(openhour_str, "%H:%M").time(),
             closehour = datetime.strptime(closehour_str, "%H:%M").time(),
-            latitude=float(latitude),
-            longitude=float(longitude)
+            latitude=float(Stall.latitude),
+            longitude=float(Stall.longitude)
             )
             db.session.add(new_stall)
             db.session.commit()
