@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <script src="https://kit.fontawesome.com/fc6d546fde.js" crossorigin="anonymous"></script>
+
+
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #ffffffff;
+    }
+
+    /* 顶部 header */
+    .header {
+      background-color:rgb(164, 231, 250);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .header img {
+      height: 40px;
+    }
+
+    /* 下方导航区域 */
+    .sub-header {
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
+      background-color: #ffffffff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .back-btn {
+       position: absolute;           /* 脱离文档流 */
+      left: 20px;                   /* 固定在左侧 */
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .back-btn i {
+  font-size: 28px;
+  color: #333;
+}
+
+
+    .sub-header h1 {
+      margin: 0 auto;
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    /* Profile 区块 */
+    .profile-container {
+      background-color: #e0f0ff;
+      margin: 40px auto;
+      width: 90%;
+      max-width: 400px;
+      padding: 30px 20px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .profile-container img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+    }
+
+    .profile-container h2 {
+      margin: 5px 0;
+      font-size: 20px;
+      color: #333;
+    }
+
+    .profile-container p {
+      margin: 5px 0 20px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .logout-btn {
+      background-color: #007bff;
+      border: none;
+      color: white;
+      padding: 10px 30px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .logout-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 顶部 Header 只显示 Logo -->
+  <div class="header">
+    <img src="{{ url_for('static', filename='photos/logo.png') }}" alt="MMU Logo">
+  </div>
+
+  <!-- 下方 Sub-header: back button + Profile title -->
+  <div class="sub-header">
+    <button class="back-btn" onclick="window.location.href='menu.html'">
+      <i  class="fa-regular fa-house"></i>
+    </button>
+ 
+    <h1>Profile</h1>
+  </div>
+
+  <!-- Profile 区块 -->
+  <div class="profile-container">
+    <img src="https://www.svgrepo.com/show/452030/avatar-default.svg" alt="User Avatar">
+    <h2 id="username">Pikachu</h2>
+    <p id="email">pikachu@gmail.com</p>
+    <button class="logout-btn" onclick="logout()">Log out</button>
+  </div>
+
+  <script>
+    document.getElementById("username").innerText = localStorage.getItem("username") || "Pikachu";
+    document.getElementById("email").innerText = localStorage.getItem("email") || "pikachu@gmail.com";
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "signup.html"; // 登出后跳回 signup
+    }
+  </script>
+
+</body>
+</html>
