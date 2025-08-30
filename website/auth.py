@@ -1,5 +1,5 @@
 from flask import Blueprint ,  render_template ,request , flash ,redirect, url_for , current_app
-from .models import User , Stall
+from .models import User , Stall , Product
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from . import db   
@@ -181,9 +181,44 @@ def admin():
 def aboutus():
     return render_template('aboutus.html', text='About Us')
 
+@auth.route('/forgot-password')
+def forgot_password():
+    return render_template('reset-password.html', text='Forgot Password')
+
 @auth.route('/logout') 
 @login_required
 def logout():
     logout_user()
     flash('You have been logged out.', category='success')
     return redirect(url_for('auth.login'))
+
+@auth.route('/add-product', methods=['GET', 'POST'])
+def add_product():
+    if request.method == 'POST':
+        product_name = request.form.get('product_name')
+        product_des = request.form.get('product_des')
+        product_type = request.form.getlist('product_type')
+        product_cuisine = request.form.getlist('product_cuisine')
+        price = request.form.get('price')
+
+        if not product_name or not price:
+            flash('Product name and price are required.', category='error')
+        else:
+            try:
+                price = float(price)
+                new_product = Product(
+                    product_name=product_name,
+                    product_des=product_des,
+                    product_cuisine=product_cuisine,
+                    product_type=product_type,
+                    price=price,
+                    stall_id=current_user.id
+                )
+                db.session.add(new_product)
+                db.session.commit()
+                flash('Product added successfully!', category='success')
+                return redirect(url_for('views.home'))
+            except ValueError:
+                flash('Invalid price format. Please enter a number.', category='error')
+
+    return render_template('add_product.html', text='Add Product')

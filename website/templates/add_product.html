@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seller Add Product Page</title>
-   <link rel="stylesheet" href="add_product.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/add_product.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 </head>
 
@@ -12,7 +12,7 @@
     <nav>
         <div class="navbar">
             <div class="logo">
-                <img src="logo.png" alt="mmu logo">
+                <img src= "{{ url_for('static', filename='photos/logo.png') }}" alt="mmu logo">
             </div>   
         </div>
     </nav>
@@ -30,39 +30,39 @@
         <form>
             <div class="container">
                 <section class="container-2">
-                    <div class="product-name">
-                        <label for="product-name">Product Name:</label>
-                        <input type="text" id="product-name">
+                    <div class="product_name">
+                        <label for="product_name">Product Name:</label>
+                        <input type="text" id="product_name">
                     </div>
 
-                    <div class="product-type">
+                    <div class="product_type">
                         <label id="pt-text">Product Type:</label>
                         <div id="pt-selection">
-                            <label class="product-type-checkbox">Food<input type="checkbox"></label>
-                            <label class="product-type-checkbox">Beverages<input type="checkbox"></label>
+                            <label class="product_type_checkbox" name="product_type">Food<input type="checkbox"></label>
+                            <label class="product_type_checkbox" name="product_type">Beverages<input type="checkbox"></label>
                         </div>
                     </div>
                 </section>
 
                 <section class="container-3">
-                    <label for="product-price">Product Price:</label>
-                    <input type="text" id="product-price">
+                    <label for="price">Product Price:</label>
+                    <input type="text" id="price">
                 </section>
 
                 <section class="container-4">
                     <div id="text">
                         <label>Product Cuisine:</label>
                     </div>
-                    <label class="product-cuisine">Malay Cuisine<input type="checkbox"></label>
-                    <label class="product-cuisine">Chinese Cuisine<input type="checkbox"></label>
-                    <label class="product-cuisine">Western Cuisine<input type="checkbox"></label>
-                    <label class="product-cuisine">Drinks<input type="checkbox"></label>
-                    <label class="product-cuisine">Dessert<input type="checkbox"></label>
+                    <label class="product_cuisine" name="product_cuisine">Malay Cuisine<input type="checkbox"></label>
+                    <label class="product_cuisine" name="product_cuisine">Chinese Cuisine<input type="checkbox"></label>
+                    <label class="product_cuisine" name="product_cuisine">Western Cuisine<input type="checkbox"></label>
+                    <label class="product_cuisine" name="product_cuisine">Drinks<input type="checkbox"></label>
+                    <label class="product_cuisine" name="product_cuisine">Dessert<input type="checkbox"></label>
                 </section>
 
                 <section class="container-5">
-                    <label for="product-des">Product Ingredients/Descriptions:</label>
-                    <textarea id="product-des"></textarea>
+                    <label for="product_des">Product Ingredients/Descriptions:</label>
+                    <textarea id="product_des"></textarea>
                 </section>
 
                 <section class="container-6">
