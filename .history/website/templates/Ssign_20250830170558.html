@@ -69,11 +69,11 @@
                 <i class="fa-solid fa-image"></i>
                 <input type="file" name="prof_pic" id="prof_pic" accept="image/*">
             </label>
-            <p class="file-name" id="prof_pic_name"></p>
+            <p class="file-name" id="prof_pic_name">No file chosen</p>
+            <!-- Preview image -->
             <img id="stall-preview" src="#" alt="Stall Preview" 
                 style="max-width:200px; display:none;">
         </div>
-
 
         <div class="image-box">
             <p class="upload-title">Background Image:</p>
@@ -81,13 +81,12 @@
                 <i class="fa-solid fa-image"></i>
                 <input type="file" name="bg_pic" id="bg_pic" accept="image/*"> 
             </label>
-            <p class="file-name" id="bg_pic_name"></p>
+            <p class="file-name" id="bg_pic_name">No file chosen</p>
             <!-- Preview image -->
             <img id="bg-preview" src="#" alt="Background Preview" 
                 style="max-width:400px; display:none;">
         </div>
     </div>
-
             <div class="map-section">
                 <p class="map-title">📍 Pin Your Location Here:</p>
             </div>
@@ -126,7 +125,6 @@
             document.getElementById("bg_pic").addEventListener("change", function() {
                 previewImage(this, "bg-preview");
             });
-  
     </script>
 
     <!--Map JavaScript-->

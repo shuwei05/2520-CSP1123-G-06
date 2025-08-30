@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map Page</title>
+
+    <!--Link to LeaftLet-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!--Map CSS-->
+    <style>
+        body,html {
+            margin: 0;
+            padding: 0;
+        }
+        
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar{
+            position: fixed;
+            top:0 ;
+            left: 0;
+            height: 80px;
+            width: 100%;
+            background: rgb(164, 231, 250);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 999;
+        }
+
+        .logo{
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo img{
+            height: 85px;
+            transform: translateX(-50px);
+        }
+        /*Map*/
+        #map {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            margin-top: 80px;
+        }
+        /*Map Zoom In and Zoom*/
+        .map-zoom {
+            width: 60%;
+            left: 40%;
+        }
+        /*Seller Info*/
+        .seller-info-sidebar {
+            position: fixed;
+            top: 80px;
+            width: 40%;
+            height: 100%;
+            background-color: white;
+            z-index: 500;
+            display: none;
+        }
+
+        .seller-info-sidebar.active {
+            display: block;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        /*Stall Info*/
+        .stall-photo {
+            background-color: rgb(224, 224, 224);
+            width: 100%;
+            height: 30%;
+        }
+
+        .stallname-and-rating {
+            display: flex;
+            background-color: rgb(200, 200, 200);
+            padding: 10px;
+        }
+        
+        .about-and-reviews-tab {
+            display: flex;
+            position: relative;
+            width: 100%;
+        }
+
+        .about-and-reviews-tab input {
+            display: none;
+        }
+
+        .about-and-reviews-tab label {
+            display: flex;
+            flex: 1 1;
+            padding: 10px;
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .sidebar-content {
+            display: block;
+            position: absolute;
+            margin-top: 38.5px;
+            padding: 10px;
+            background-color: lightblue;
+        }
+
+        .sidebar-content div {
+            display: none;
+        }
+
+        .about-and-reviews-tab input:checked + label{
+            background-color: grey;
+        }
+
+        #about:checked ~ .sidebar-content .stall-details {
+            display: block;
+        }
+
+        #reviews:checked ~ .sidebar-content .comment {
+            display: block;
+        }
+        /*+ close; ~ far*/
+        
+        /*Return Button*/
+        .return-button {
+            position: absolute;
+            width: 30px;
+            height: 60px;
+            top: 40%;
+            right: -30px;
+            border-style: none;
+            border-top-right-radius: 15px;
+            border-bottom-right-radius: 15px;
+            background-color: white;
+            z-index: 600;
+            cursor: pointer;
+            display: none;
+        }
+
+        .return-button.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="navbar">
+            <div class="logo">
+                <img src="{{ url_for('static',filename='photos/logo.png') }}" alt="mmu logo">
+            </div> 
+        </div>
+    </nav>
+
+    <div id="map"></div> 
+    
+    <aside id="seller-sidebar" class="seller-info-sidebar">
+        <div class="stall-photo">
+            Stall Image
+        </div>
+
+        <div class="stallname-and-rating">
+            <p>Stall Name</p>
+            <p>rating</p>
+        </div>
+
+        <div class="about-and-reviews-tab">
+            <input type="radio" id="about" name="tab" checked>
+            <label for="about">About</label>
+            <input type="radio" id="reviews" name="tab">
+            <label for="reviews">Reviews</label>
+
+            <div class="sidebar-content">
+                <div class="stall-details">
+                    <p class="stall-status">Open</p>    
+                </div>
+
+                <div class="comment">
+                    <p class="comment">Comments</p>    
+                </div>
+            </div>
+        </div>
+        <button id="return" class="return-button">&#10094;</button>
+    </aside>
+
+</body>
+
+<!--Map JavaScript-->
+<script>
+    const map = L.map("map");
+    map.setView([2.92790,101.64188],17);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 20, //Setting Max Zoom to 20(Enough)
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map)
+
+    const coordinates = {{ coordinates | tojson }};
+    
+
+    for (const[latitude,longitude] of coordinates){
+        const marker = L.marker([latitude,longitude]).addTo(map);
+        
+        //Zoom Map When Click
+        marker.on("click",function() {
+            map.setView([latitude,longitude],19);
+
+            document.getElementById("map").classList.add("map-zoom");
+            document.getElementById("seller-sidebar").classList.add("active");
+            document.getElementById("return").classList.add("active");
+
+            exitZoomMap() 
+        })
+    }
+
+    function exitZoomMap() {
+        map.once("click", function() {
+            document.getElementById("map").classList.remove("map-zoom");
+            document.getElementById("seller-sidebar").classList.remove("active");
+            document.getElementById("return").classList.remove("active")
+            map.setView([2.92790,101.64188],17);
+        })
+    }
+
+    document.getElementById("return").addEventListener("click",function() {
+        document.getElementById("map").classList.remove("map-zoom");
+        document.getElementById("seller-sidebar").classList.remove("active");
+        document.getElementById("return").classList.remove("active")
+        map.setView([2.92790,101.64188],17); 
+    });
+
+</script>
+</html>
