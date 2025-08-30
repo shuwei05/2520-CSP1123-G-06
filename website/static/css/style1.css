@@ -180,13 +180,9 @@ label {
   transition: 0.2s;
 }
 
-input-box2 label{
-    position: absolute;
-    top: -18px;
-    right: 0;
-    font-size: 14px;
-    font-weight: 600;
-    color: #333;
+.input-box2 label{
+    transform:translateX(-30px);
+   
 }
 
 .btn2 {
