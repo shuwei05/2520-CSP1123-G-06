@@ -68,7 +68,10 @@
                     <label class="upload-area">
                         <i class="fa-solid fa-image"></i>
                         <input type="file" id="prof_pic" accept="image/*">
+                       
                     </label>
+                     <p class="file-name" id="prof_pic_name">No file chosen</p>
+                    
                 </div>
 
                 <div class="image-box">
@@ -77,6 +80,7 @@
                         <i class="fa-solid fa-image"></i>
                         <input type="file" id="bg_pic" accept="image/*"> 
                     </label>
+                    <p class="file-name" id="bg_pic_name">No file chosen</p>
                 </div>
             </div>
 
@@ -100,22 +104,63 @@
     </section>
 
     <script>
-        // 预览上传的图片
-        function previewImage(input, previewId) {
-            const file = input.files[0];// 获取用户选择的第一个文件
-            if (file) {
-                // 把这个文件转换成一个临时的 URL，然后设置到 img 的 src 上
-                document.getElementById(previewId).src = URL.createObjectURL(file);
+       function replaceIconWithImage(input) {
+            const file = input.files[0];
+            const label = input.parentElement;// 找到 label
+
+        // 先找现有的 img 和 icon
+    let img = label.querySelector("img");
+    let icon = label.querySelector("i");
+
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const label = input.parentElement;  // 找到 label
+            const icon = label.querySelector("i"); // 找到里面的 icon
+
+            // 检查是否已经有 <img>
+            let img = label.querySelector("img");
+            if (!img) {
+                img = document.createElement("img");
+                img.style.width = "120px";     // 预览图大小
+                img.style.height = "100px";
+                img.style.objectFit = "cover";
+                img.style.borderRadius = "12px";
+
+                label.insertBefore(img, input); // 放在 input 前面
+                if (icon) icon.remove(); // 移除原来的 icon
             }
+            img.src = e.target.result; // 设置预览图
+        };
+        reader.readAsDataURL(file);
+    } else {
+        // 如果没文件，就恢复原来的 icon
+        if (img) img.remove();
+        if (!icon) {
+            const newIcon = document.createElement("i");
+            newIcon.className = "fa-solid fa-image";
+            label.insertBefore(newIcon, input);
         }
-        // 当用户上传 stall image 时，触发预览
-        document.getElementById("prof_pic").addEventListener("change", function() {
-            previewImage(this, "stall-preview");
+    }
+}
+    
+
+       
+        // Stall Image
+        document.getElementById("prof_pic").addEventListener("change", function(){
+          const fileName = this.files.length > 0 ? this.files[0].name : "No file chosen";
+          document.getElementById("prof_pic_name").textContent = fileName;
+          replaceIconWithImage(this); // ✅ 调用函数显示预览图
         });
-        // 当用户上传 background image 时，触发预览
-        document.getElementById("bg_pic").addEventListener("change", function() {
-            previewImage(this, "bg-preview");
+
+        // Background Image
+        document.getElementById("bg_pic").addEventListener("change", function(){
+          const fileName = this.files.length > 0 ? this.files[0].name : "No file chosen";
+          document.getElementById("bg_pic_name").textContent = fileName;
+          replaceIconWithImage(this); // ✅ 调用函数显示预览图
         });
+
     </script>
 </body>
 </html>
