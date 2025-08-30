@@ -208,7 +208,14 @@
         }
 
         .send-btn {
+            background-color: #6fb6da;
+            color: white;
             vertical-align: top;
+            border-style: none;
+            height: 30px;
+            width: 30px;
+            border-radius: 25px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
         }
     </style>
 </head>
@@ -266,6 +273,10 @@
 </body>
 
 <!--Map JavaScript-->
+<script id="coordinates-data" type="application/json">
+    {{ (coordinates | tojson | safe) }}
+</script>
+
 <script>
     const map = L.map("map");
     map.setView([2.92790,101.64188],17);
@@ -275,7 +286,9 @@
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map)
 
-        const coordinates = {{ (coordinates | tojson | safe) }};
+    const coordinates = JSON.parse(
+        document.getElementById("coordinates-data").textContent
+    );
 
     for (const[latitude,longitude] of coordinates){
         const marker = L.marker([latitude,longitude]).addTo(map);
