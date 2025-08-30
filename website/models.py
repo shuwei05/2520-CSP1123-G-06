@@ -27,3 +27,13 @@ class Stall(db.Model, UserMixin):
     background_picture = db.Column(db.String(200), nullable=True)
     latitude = db.Column(db.Float,nullable=False)
     longitude = db.Column(db.Float,nullable=False)
+
+class Product(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    product_name = db.Column(db.String(150), nullable=False)
+    product_des = db.Column(db.String(500), nullable=True)
+    product_cuisine= db.Column(db.String(100), nullable=False)
+    product_type= db.Column(db.String(100), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    stall_id = db.Column(db.Integer, db.ForeignKey('stall.id'), nullable=False)
+    stall = db.relationship('Stall', backref=db.backref('products', lazy=True))
