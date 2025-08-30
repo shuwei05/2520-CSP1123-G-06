@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seller Add Product Page</title>
+   <link rel="stylesheet" href="style3.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+</head>
+
+<body>
+
+    <nav>
+        <div class="navbar">
+            <div class="logo">
+                <img src="logo.png" alt="mmu logo">
+            </div>   
+        </div>
+    </nav>
+    
+    <div class="cont">
+        <div class="navbar3">
+            <a href="#" class="home-btn">
+            <i class="fa-solid fa-house"></i>
+            </a>
+            <h1>ADD PRODUCT</h1>       
+        </div>
+
+        <form class="product-form">
+
+            <div class="form-row top-row ">
+                <div class="left-side">
+                    <label>Product Name:</label>
+                    <input type="text" placeholder="Enter product name">
+                    <label>Product Price:</label>
+                    <input type="text" placeholder="Enter price">
+                </div>
+
+        
+                <div class="right-side">
+                    <span>Product Type:</span>
+                    <div class="product-type">
+                    <label><input type="checkbox"> Food</label>
+                    <label><input type="checkbox"> Beverages</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row-center">
+                <label>Product Cuisine:</label>
+                <div class="cuisine-list">
+                <label><input type="checkbox"> Malay Cuisine</label>
+                <label><input type="checkbox"> Chinese Cuisine</label>
+                <label><input type="checkbox"> Western Cuisine</label>
+                <label><input type="checkbox"> Drinks</label>
+                <label><input type="checkbox"> Dessert</label>
+                </div>
+            </div>
+
+            <div class="form-row-middle">
+                <label>Product Ingredients/Descriptions:</label>
+                <textarea placeholder="Enter details"></textarea>
+            </div>
+
+            <div class="form-row-b">
+                <label>Photos: (0/1)</label>
+                <div class="photo-upload">
+                    <i class="fa-regular fa-image"></i>
+                    <input type="file" id="add-pro" accept="image/*"> 
+                </div>
+            </div>
+
+            <div class="form-row-last">
+                <button type="submit" class="add-btn">ADD</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intro Page</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">"
 </head>
 <body>
     <nav>
         <div class="navbar">
             <div class="logo">
-                <img src="{{ url_for('static', filename='photos/logo.png') }}" alt="mmu logo">
+                <img src="{{ url_for('static', filename='photos/mmulogo.png') }}" alt="mmu logo">
             </div>   
             <ul class="nav-link">
                 <li><a href="/role">Sign up</a></li>
@@ -57,34 +57,10 @@
 
     <section>
         <div class="last-section">
-            <a href="aboutus.html">About Us</a>
+            <a href="/aboutus">About Us</a>
         </div>
         <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
     </section>
-
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        let observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                // 图片摇动
-                    const img = entry.target.querySelector("img");
-                    img.style.animation = "floatLeftRight 2s ease-in-out infinite";
-                    img.style.opacity = 1;
-
-                // 文字依次滑入
-                    const textLines = entry.target.querySelectorAll(".menu-text h2");
-                    textLines.forEach((line, i) => {
-                        line.style.animation = `slideInRight 0.8s ease-out forwards`;
-                        line.style.animationDelay = `${i * 0.3}s`;
-                    });
-                }
-            });
-        }, { threshold: 0.3 });
-
-        observer.observe(document.querySelector(".menu-section"));
-    });
-    </script>
         
 </body>
 </html>

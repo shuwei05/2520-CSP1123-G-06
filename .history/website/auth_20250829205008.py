@@ -1,5 +1,5 @@
 from flask import Blueprint ,  render_template ,request , flash ,redirect, url_for , current_app
-from .models import User , Stall , Product
+from .models import User , Stall
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from . import db   
@@ -88,7 +88,7 @@ def Ssignup():
             flash('Email already registered. Please use another one.', category='error')
             return render_template('Ssign.html', text='Signup Page')
 
-        existing_location = Stall.query.filter_by(latitude=latitude,longitude=longitude).first()
+        existing_location = Stall.query.filter_by(latitude=Stall.latitude,longitude=Stall.longitude).first()
         if existing_location:
             flash("Same location",category="error")
             return render_template("Ssign.html",text="Signup Page")
@@ -113,8 +113,8 @@ def Ssignup():
             password1=generate_password_hash(password1, method='pbkdf2:sha256'),
             openhour = datetime.strptime(openhour_str, "%H:%M").time(),
             closehour = datetime.strptime(closehour_str, "%H:%M").time(),
-            latitude=float(latitude),
-            longitude=float(longitude)
+            latitude=float(Stall.latitude),
+            longitude=float(Stall.longitude)
             )
             db.session.add(new_stall)
             db.session.commit()
@@ -181,6 +181,10 @@ def admin():
 def aboutus():
     return render_template('aboutus.html', text='About Us')
 
+@auth.route('/forgot-password')
+def forgot_password():
+    return render_template('reset-password.html', text='Forgot Password')
+
 @auth.route('/logout') 
 @login_required
 def logout():
@@ -188,47 +192,29 @@ def logout():
     flash('You have been logged out.', category='success')
     return redirect(url_for('auth.login'))
 
-@auth.route('/add_product', methods=['GET', 'POST'])
+@auth.route('/add-product', methods=['GET', 'POST'])
 def add_product():
     if request.method == 'POST':
         product_name = request.form.get('product_name')
-        product_des = request.form.get('description')
-        product_type = request.form.getlist('product_type')
-        product_cuisine = request.form.getlist('product_cuisine')
+        description = request.form.get('description')
         price = request.form.get('price')
-        product_pic = request.files.get('product_pic')
 
-        product_pic = None
-
-        if product_pic and product_pic.filename != "":
-            product_filename = secure_filename(product_pic.filename)
-            product_pic.save(os.path.join(current_app.config["UPLOAD_FOLDER"], product_filename))
-
-        if len(product_name) < 5:
-            flash('Product name must be at least 5 characters long.', category='error')
-        elif len(product_des) < 10:
-            flash('Product description must be at least 10 characters long.', category='error')
-        elif len(product_type) == 0:
-            flash('Please select at least one product type.', category='error')
-        elif len(product_cuisine) == 0:
-            flash('Please select at least one product cuisine.', category='error')
-        elif not price or float(price) <= 0:
-            flash('Please enter a valid positive price.', category='error')
+        if not product_name or not price:
+            flash('Product name and price are required.', category='error')
         else:
-            new_product = Product(
-                product_name=product_name,
-                product_des=product_des,
-                product_type=', '.join(product_type),
-                product_cuisine=', '.join(product_cuisine),
-                price=float(price),
-                stall_id=current_user.id ,
-                stallname=current_user.stallname,
-                product_pic=product_filename if product_pic else None
-            )
-            return render_template('add_product.html', text='Add Product Page')  
-        
-        # Here you would typically save the product to the database
-        flash('Product added successfully!', category='success')
-        return redirect(url_for('views.home'))
+            try:
+                price = float(price)
+                new_product = Product(
+                    product_name=product_name,
+                    description=description,
+                    price=price,
+                    stall_id=current_user.id
+                )
+                db.session.add(new_product)
+                db.session.commit()
+                flash('Product added successfully!', category='success')
+                return redirect(url_for('views.home'))
+            except ValueError:
+                flash('Invalid price format. Please enter a number.', category='error')
 
-    return render_template('add_product.html', text='Add Product Page')
+    return render_template('add_product.html', text='Add Product')
