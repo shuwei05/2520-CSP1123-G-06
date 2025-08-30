@@ -152,7 +152,7 @@
             display: block;
         }
 
-        #reviews:checked ~ .sidebar-content .comment {
+        #reviews:checked ~ .sidebar-content .reviews {
             display: block;
         }
 
@@ -184,32 +184,41 @@
         }
 
         /*Comment*/
-        .comment-list {
+        .reviews-list {
             width: 36vw;
-            height: 250px;
+            height: 300px;
         }
 
-        .comment-send-area {
+        .comment input {
+            display: none;
+        }
+        
+        .comment label {
             display: flex;
+            position: absolute;
+            bottom: 100px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            box-shadow: 0 0 3px rgba(0,0,0,0.3);
             justify-content: center;
             align-items: center;
+            border-radius: 10px;
+            cursor: pointer;
         }
 
-        .comment-box {
-            resize: none;
-            width: 29vw;
-            height: 25px;
-            border-style: none;
-            border-radius: 25px;
-            padding-left: 10px;
-            margin-right: 10px;
-            line-height: 25px; 
-            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        .comment-area {
+            display: none;
         }
 
-        .send-btn {
-            vertical-align: top;
+        .comment input:checked + label {
+            background-color: rgb(247, 247, 247);
         }
+
+        .comment input:checked ~ .comment-area {
+            display: block;
+        }
+
     </style>
 </head>
 <body>
@@ -241,7 +250,7 @@
             <label for="about">About</label>
             <input type="radio" id="reviews" name="tab">
             <label for="reviews">Reviews</label>
-
+    
             <div class="sidebar-content">
                 <div class="stall-details">
                     <p class="stall-status">Open</p>
@@ -249,23 +258,32 @@
                     <p class="price-category">RM 10 - RM 20</p>   
                 </div>
 
-                <div class="comment">
-                    <div class="comment-list">
+                <div class="reviews">
+                    <div class="reviews-list">
                         <p>comment</p>
-                    </div>
-                    <div class="comment-send-area">
-                        <textarea class="comment-box" placeholder="comment here"></textarea>
-                        <button class="send-btn">&#10148;</button>
                     </div>
                 </div>
             </div>
-        </div>    
+        </div>  
+        
+        <div class="comment">
+            <input type="radio" id="comment" name="tab">
+            <label for="comment">&#10010;</label>
+
+            <div class="comment-area">
+                <textarea placeholder="comment here"></textarea>
+            </div>
+        </div>
     </aside>
     <button id="return" class="return-button">&#10094;</button>
 
 </body>
 
 <!--Map JavaScript-->
+<script id="coordinates-data" type="application/json">
+    {{ (coordinates | tojson | safe) }}
+</script>
+
 <script>
     const map = L.map("map");
     map.setView([2.92790,101.64188],17);
@@ -275,7 +293,9 @@
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map)
 
-        const coordinates = {{ (coordinates | tojson | safe) }};
+    const coordinates = JSON.parse(
+        document.getElementById("coordinates-data").textContent
+    );
 
     for (const[latitude,longitude] of coordinates){
         const marker = L.marker([latitude,longitude]).addTo(map);
