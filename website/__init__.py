@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from os import path 
 from flask_login import LoginManager
+import os
 
 db = SQLAlchemy()
 DB_Name = "database.db"
@@ -22,7 +23,8 @@ def create_database(app):
 def create_app():
     app  = Flask(__name__)
     app.config['SECRET_KEY'] = 'MINI IT'
-    app.config["UPLOAD_FOLDER"] = "website/static/uploads"
+    app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static/uploads')
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_Name}'
     db.init_app(app)
 
