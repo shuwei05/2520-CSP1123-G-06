@@ -193,69 +193,60 @@
             width: 36vw;
         }
 
-        .comment input {
-            display: none;
-        }
-        
-        .comment label {
-            display: flex;
-            position: absolute;
-            bottom: 100px;
+        .comment {
+            position: fixed;     /* ✅ 永远浮在右下角 */
+            bottom: 30px;
             right: 20px;
-            width: 50px;
-            height: 50px;
-            box-shadow: 0 0 3px rgba(0,0,0,0.3);
-            justify-content: center;
-            align-items: center;
-            border-radius: 10px;
+            z-index: 1000;
+            }
+
+            .comment input {
+                display: none;
+            }
+
+            .comment label {
+                display: flex;
+                width: 50px;
+                height: 50px;
+                box-shadow: 0 0 3px rgba(0,0,0,0.3);
+                justify-content: center;
+                align-items: center;
+                border-radius: 10px;
+                cursor: pointer;
+                background: white;
+                font-size: 24px;
+            }
+
+            .comment-area {
+                display: none;
+                margin-top: 10px;
+                background: white;
+                padding: 10px;
+                border-radius: 8px;
+                box-shadow: 0 0 5px rgba(0,0,0,0.2);
+                position: absolute;
+                bottom: 70px;
+                right: 0;
+                width: 250px;
+            }
+
+            .comment input:checked ~ .comment-area {
+                display: block;
+            }
+
+
+        .submit-btn {
+            margin-top: 8px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            background-color: #007bff;
+            color: white;
             cursor: pointer;
         }
 
-        .comment-area {
-            display: flex;
-            flex: 1;
-            display: none;
-            margin-top: 30px;
-            margin-left: 20px;
-            width: 36vw;
-            height: 200px;
-            text-align: center;
-        }
-
-        #comment-textarea {
-            resize: none;
-            width: 35vw;
-            min-height: 20px;
-            max-height: 130px;
-            border-style: none;
-            border-radius: 10px; 
-            box-shadow: 0 0 3px rgba(0,0,0,0.3);
-        }
-
-        .comment-area textarea:placeholder-shown {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            padding-left: 10px;
-        }
-
-        .comment-area button {
-            margin-top: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            color: white;
-            padding: 6px 20px;
-            border-radius: 20px;
-            border-style: none;
-            background-color: #0081cc;
-            box-shadow: 0 0 2px rgba(0,0,0,0.3);
-        }
-
-        .comment-area button:hover {
-            background-color: #0066b5;
-        }
-
-        .comment-area input {
-            display: flex;
-            display: block;
+        .submit-btn:hover {
+            background-color: #0056b3;
         }
 
         .comment input:checked + label {
@@ -271,39 +262,62 @@
             display: block;
         }
 
-        /*Star Reviews*/
-        .star-review {
-            background-color: lightblue;
-            display: flex; 
-        }
-        /*
-        .star-review input {
-            display: none;
+
+
+        /* Reviews List */
+        .reviews-list {
+            width: 36vw;
+            height: 300px;
+            overflow-y: auto;   /* ✅ 滚动条 */
+            padding: 10px;
         }
 
-        .star-review label {
-            font-size: 40px;
-            cursor: pointer;
+        /* Each Review */
+        .review-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        .star-review label::before {
-            content: "\2606";
+        /* Avatar */
+        .review-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #007bff;
+            color: white;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 16px;
         }
 
-        .star-review label:hover::before, .star-review label:hover ~ label::before {
-            content: "\2605";
-            color: orange
+/* User + Text */
+        .review-content {
+            flex: 1;
         }
 
-        .star-review input:active ~ label::before {
-            color: rgb(255, 136, 0);
+        .review-user {
+            font-weight: bold;
+            margin-bottom: 3px;
+            font-size: 14px;
         }
 
-        .star-review input:checked ~ label::before {
-            content: "\2605";
-            color: orange;
+        .review-text {
+            font-size: 13px;
+            color: #333;
+            line-height: 1.4;
         }
-        */
+
+
+
+
     </style>
 </head>
 <body>
@@ -338,42 +352,38 @@
     
             <div class="sidebar-content">
                 <div class="stall-details">
-                    <p class="stall-status">Open</p>
+                    <p class="stall-status" id="stall-status">Status</p>
                     <p class="stall-opening-time">Opening Hours : 12:00 to 18:00</p>
                     <p class="price-category">RM 10 - RM 20</p>   
                 </div>
 
+                                <!-- Reviews + Comment Button -->
                 <div class="reviews">
-                    <div class="reviews-list">
-                        <p>comment</p>
+                    <div class="reviews-list" id="reviews-list">
+                        <!-- Example review -->
+                        <div class="review-item">
+                            <div class="review-avatar">A</div>
+                            <div class="review-content">
+                                <p class="review-user">Alice</p>
+                                <p class="review-text">Nasi lemak very delicious 😋</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Comment button -->
+                    <div class="comment">
+                        <input type="checkbox" id="comment">
+                        <label for="comment">&#10010;</label>
+
+                        <div class="comment-area">
+                            <form id="comment-form">
+                                <textarea name="review_text" placeholder="Write your comment here..." required></textarea>
+                                <button type="submit" class="submit-btn">Post</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>  
-        
-        <div class="comment">
-            <input type="radio" id="comment" name="tab">
-            <label for="comment">&#10010;</label>
 
-            <div class="comment-area">
-                <textarea placeholder="comment here" id="comment-textarea"></textarea>
-                <div class="star-review">
-                    <input type="radio" name="rating" id="5-star"> <!--radio = only 1 can selected-->
-                    <label for="5-star"></label>
-                    <input type="radio" name="rating" id="4-star"> <!--name put the same so that only can choose 1 option-->
-                    <label for="4-star"></label>
-                    <input type="radio" name="rating" id="3-star"> <!--id must equal to for, which mean the label is for that input-->
-                    <label for="3-star"></label>
-                    <input type="radio" name="rating" id="2-star">
-                    <label for="2-star"></label>
-                    <input type="radio" name="rating" id="1-star">
-                    <label for="1-star"></label>
-                </div>
-                <input type="file" id="comment-photo-upload" accept="image/*">
-                <button type="submit" class="submit-btn">SUBMIT</button>
-            </div>
-        </div>
-        
     </aside>
     <button id="return" class="return-button">&#10094;</button>
 
@@ -428,11 +438,61 @@
         map.setView([2.92790,101.64188],17); 
     });
 
-    //Comment
-    const textarea = document.getElementById("comment-textarea");
-    textarea.addEventListener("input",function() {
-        this.style.height = "auto";
-        this.style.height = Math.min(this.scrollHeight,130) + "px";
-    })
+
+
+    document.getElementById("comment-form").addEventListener("submit", function(e){
+        e.preventDefault(); // 阻止刷新
+        const textarea = this.querySelector("textarea");
+        const text = textarea.value.trim();
+        if(text === "") return;
+
+        // 模拟用户名（可以随机或固定）
+        const username = "User";
+        const avatar = username.charAt(0).toUpperCase();
+
+        // 创建新的评论
+        const newReview = document.createElement("div");
+        newReview.classList.add("review-item");
+        newReview.innerHTML = `
+            <div class="review-avatar">${avatar}</div>
+            <div class="review-content">
+                <p class="review-user">${username}</p>
+                <p class="review-text">${text}</p>
+            </div>
+        `;
+
+        // 插入到列表
+        document.getElementById("reviews-list").appendChild(newReview);
+
+        // 清空输入框 & 关闭输入框
+        textarea.value = "";
+        document.getElementById("comment").checked = false;
+    });
+
+        function updateStallStatus(openHour, closeHour) {
+    const now = new Date();
+    const currentTime = now.getHours() * 60 + now.getMinutes(); // 转分钟方便比较
+
+    const [openH, openM] = openHour.split(":").map(Number);
+    const [closeH, closeM] = closeHour.split(":").map(Number);
+
+    const openTime = openH * 60 + openM;
+    const closeTime = closeH * 60 + closeM;
+
+    const statusElement = document.getElementById("stall-status");
+
+    if (currentTime >= openTime && currentTime <= closeTime) {
+        statusElement.textContent = "Open";
+        statusElement.style.color = "green";
+    } else {
+        statusElement.textContent = "Closed";
+        statusElement.style.color = "red";
+    }
+    }
+
+    // 假设你 stall 营业时间是 12:00 - 18:00
+    updateStallStatus("12:00", "18:00");
+
+
 </script>
 </html>
