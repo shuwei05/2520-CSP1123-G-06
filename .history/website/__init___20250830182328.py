@@ -23,18 +23,11 @@ def create_database(app):
 def create_app():
     app  = Flask(__name__)
     app.config['SECRET_KEY'] = 'MINI IT'
-
-    # Upload Photos
     app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static/uploads')
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-    
-    # Database
-    os.makedirs(app.instance_path, exist_ok=True)
-    db_path = os.path.join(app.instance_path, DB_Name)
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_Name}'
     db.init_app(app)
 
-    # Login Manager
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)

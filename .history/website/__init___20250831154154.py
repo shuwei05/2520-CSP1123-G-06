@@ -25,7 +25,7 @@ def create_app():
     app.config['SECRET_KEY'] = 'MINI IT'
 
     # Upload Photos
-    app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static/uploads')
+    app.config['UPLOAD_FOLDER'] = os.path.join(app.instance_path, 'static/uploads')
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     
     # Database

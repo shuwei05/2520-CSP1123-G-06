@@ -23,7 +23,7 @@ class Stall(db.Model, UserMixin):
     password1 = db.Column(db.String(150), nullable=False)
     openhour = db.Column(db.Time, nullable=False)
     closehour = db.Column(db.Time, nullable=False)
-    prof_pic = db.Column(db.String(200), nullable=True)
+    profile_pic = db.Column(db.String(200), nullable=True)
     bg_pic = db.Column(db.String(200), nullable=True)
     latitude = db.Column(db.Float,nullable=False)
     longitude = db.Column(db.Float,nullable=False)
@@ -37,4 +37,3 @@ class Product(db.Model):
     price = db.Column(db.Float, nullable=False)
     stall_id = db.Column(db.Integer, db.ForeignKey('stall.id'), nullable=False)
     stall = db.relationship('Stall', backref=db.backref('products', lazy=True))
-    product_pic = db.Column(db.String(200), nullable=True)

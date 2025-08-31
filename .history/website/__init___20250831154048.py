@@ -25,12 +25,12 @@ def create_app():
     app.config['SECRET_KEY'] = 'MINI IT'
 
     # Upload Photos
-    app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static/uploads')
+    app.config['UPLOAD_FOLDER'] = os.path.join(app.instance_path, 'static/uploads')
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     
     # Database
     os.makedirs(app.instance_path, exist_ok=True)
-    db_path = os.path.join(app.instance_path, DB_Name)
+    db_path = os.path.join(app.root_path, DB_Name)
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
     db.init_app(app)
 

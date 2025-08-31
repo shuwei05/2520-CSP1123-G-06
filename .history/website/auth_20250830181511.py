@@ -113,7 +113,7 @@ def Ssignup():
             password1=generate_password_hash(password1, method='pbkdf2:sha256'),
             openhour = datetime.strptime(openhour_str, "%H:%M").time(),
             closehour = datetime.strptime(closehour_str, "%H:%M").time(),
-            prof_pic=prof_filename if prof_file else None,
+            prof_pic=profile_filename if prof_file else None,
             bg_pic=bg_filename if bg_file else None,
             latitude=float(latitude),
             longitude=float(longitude)
@@ -198,13 +198,13 @@ def add_product():
         product_type = request.form.getlist('product_type')
         product_cuisine = request.form.getlist('product_cuisine')
         price = request.form.get('price')
-        product_file = request.files.get('product_pic')
+        product_pic = request.files.get('product_pic')
 
-        product_filename = None
+        product_pic = None
 
-        if product_file and product_file.filename != "":
-            product_filename = secure_filename(product_file.filename)
-            product_file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], product_filename))
+        if product_pic and product_pic.filename != "":
+            product_filename = secure_filename(product_pic.filename)
+            product_pic.save(os.path.join(current_app.config["UPLOAD_FOLDER"], product_filename))
 
         if len(product_name) < 5:
             flash('Product name must be at least 5 characters long.', category='error')
@@ -225,7 +225,7 @@ def add_product():
                 price=float(price),
                 stall_id=current_user.id ,
                 stallname=current_user.stallname,
-                product_pic=product_filename if product_file else None
+                product_pic=product_filename if product_pic else None
             )
             return render_template('add_product.html', text='Add Product Page')  
         
@@ -234,19 +234,3 @@ def add_product():
         return redirect(url_for('views.home'))
 
     return render_template('add_product.html', text='Add Product Page')
-
-@auth.route('/email', methods=['GET', 'POST'])
-def email():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        check_email = User.query.filter_by(email=email).first()
-        if check_email:
-            return redirect(url_for('/reset_password'))
-        else:
-            flash('This email has not registered any account. Please register an account', category='info')
-            return redirect(url_for('auth.email'))
-    return render_template('email.html', text='Email Page')
-
-@auth.route('seller-profile')
-def seller_profile():
-    return render_template('seller-profile.html', user=current_user)

@@ -30,7 +30,7 @@ def create_app():
     
     # Database
     os.makedirs(app.instance_path, exist_ok=True)
-    db_path = os.path.join(app.instance_path, DB_Name)
+    db_path = os.path.join(app.root_path, DB_Name)
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
     db.init_app(app)
 

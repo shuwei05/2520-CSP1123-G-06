@@ -247,6 +247,6 @@ def email():
             return redirect(url_for('auth.email'))
     return render_template('email.html', text='Email Page')
 
-@auth.route('seller-profile')
+@auth.route('seller_profile')
 def seller_profile():
-    return render_template('seller-profile.html', user=current_user)
+    return render_template('seller_profile.html', user=current_user)
