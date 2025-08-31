@@ -59,10 +59,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px;
+      padding: 30px 40px;
+      min-height: 180px;
       position: absolute;
       margin: -50px auto 10px 190px;
-      bottom: -130px; /* 卡片下沉到banner底部 */
+      bottom: -150px; /* 卡片下沉到banner底部 */
       z-index: 10;
       backdrop-filter: blur(1px); /* 背景虚化 */
       border-radius: 15px;
@@ -71,7 +72,7 @@
 
     .seller-info h2 {
       font-size: 30px;
-      margin-bottom: 30px;
+      margin-bottom: 50px;
     }
 
     .seller-info p {
@@ -103,8 +104,8 @@
       
       padding: 20px;
       margin-top: 60px; /* 让出 seller-card 的位置 */
+       min-height: 200px; /* ✅ 可以设个最小高度，避免太扁 */
       
-      height: 600px;
     }
 
     .content-box h3 {
@@ -118,19 +119,28 @@
     }
 
     /* Product */
-    .product {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 20px;
-    }
+    .products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
 
-    .product img {
-      width: 90px;
-      height: 90px;
-      border-radius: 10px;
-      object-fit: cover;
-    }
+.product {
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.product img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
 
     .product-name {
       font-size: 15px;
@@ -157,6 +167,22 @@
       color: #000;
       text-decoration: none;
     }
+
+     .logout-btn {
+      background-color: #007bff;
+      border: none;
+      color: white;
+      padding: 10px 30px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      display: block;        /* 转成块级 */
+      margin: 20px auto;     /* 左右自动，居中 */
+    }
+
+    .logout-btn:hover {
+      background-color: #0056b3;
+    }
   </style>
 </head>
 <body>
@@ -172,7 +198,6 @@
 
   <!-- Background Banner -->
   <div class="banner">
-    
     <img src="banner-placeholder.jpg" alt="Banner">
 
     <!-- Seller Info Card (浮在banner底部) -->
@@ -195,16 +220,41 @@
     <img src="map-placeholder.jpg" alt="Map" class="map">
 
     <h3>Your Product :</h3>
-    <div class="product">
-      <img src="food-placeholder.jpg" alt="Product">
-      <p class="product-name">Black pepper Chicken chop</p>
-    </div>
+    <div class="products">
+      <div class="product">
+        <img src="food1.jpg" alt="Product">
+        <p class="product-name">Chicken Chop</p>
+      </div>
+      <div class="product">
+        <img src="food2.jpg" alt="Product">
+        <p class="product-name">Nasi Lemak</p>
+      </div>
+      <div class="product">
+        <img src="food3.jpg" alt="Product">
+        <p class="product-name">Burger</p>
+        </div>
+      </div>
+
 
     <!-- Add Product Button -->
     <div class="add-btn">
       <a href="add_product.html"><i class="fa-solid fa-plus"></i></a>
+      
     </div>
+
+    <button  class="logout-btn" onclick="logout()">Log out</button>
   </div>
+
+    <script>
+      function logout() {
+    // 清理登录状态 (比如清理 localStorage / sessionStorage)
+    // localStorage.removeItem("token");
+
+    // 然后跳转
+      window.location.href = "intro.html";
+     }
+    </script>
+
 
 </body>
 </html>
