@@ -38,8 +38,8 @@
                     <div class="product-type">
                         <label id="pt-text">Product Type:</label>
                         <div id="pt-selection">
-                            <label class="product_type_checkbox" name ="product_type">Food<input type="checkbox"></label>
-                            <label class="product_type_checkbox" name ="product_type">Beverages<input type="checkbox"></label>
+                            <label class="product_type_checkbox">Food<input type="checkbox" name ="product_type" value="Food"></label>
+                            <label class="product_type_checkbox">Beverages<input type="checkbox" name ="product_type" value="Beverages"></label>
                         </div>
                     </div>
                 </section>
@@ -53,11 +53,11 @@
                     <div id="text">
                         <label>Product Cuisine:</label>
                     </div>
-                    <label class="product_cuisine" name="product_cuisine">Malay Cuisine<input type="checkbox"></label>
-                    <label class="product_cuisine" name="product_cuisine">Chinese Cuisine<input type="checkbox"></label>
-                    <label class="product_cuisine" name="product_cuisine">Western Cuisine<input type="checkbox"></label>
-                    <label class="product_cuisine" name="product_cuisine">Drinks<input type="checkbox"></label>
-                    <label class="product_cuisine" name="product_cuisine">Dessert<input type="checkbox"></label>
+                    <label class="product_cuisine">Malay Cuisine<input type="checkbox" name="product_cuisine" value="Malay Cuisine"></label>
+                    <label class="product_cuisine">Chinese Cuisine<input type="checkbox" name="product_cuisine" value="Chinese Cuisine"></label>
+                    <label class="product_cuisine">Western Cuisine<input type="checkbox" name="product_cuisine" value="Western Cuisine"></label>
+                    <label class="product_cuisine">Drinks<input type="checkbox" name="product_cuisine" value="Drinks"></label>
+                    <label class="product_cuisine">Dessert<input type="checkbox" name="product_cuisine" value="Dessert"></label>
                 </section>
 
                 <section class="container-5">
@@ -68,7 +68,7 @@
                 <section class="container-6">
                     <label>Photos: (0/1)</label>
                     <div class="photo-upload">
-                        <label class="fa-regular fa-image upload-img-icon" name="product_pic"><input type="file" accept="image/*"></label>
+                        <label class="fa-regular fa-image upload-img-icon"><input type="file" accept="image/*" name="product_pic" id="product-pic"></label>
                     </div>
 
                     <img id="product-preview" src="#" alt="Product Preview" style="max-width:200px; display:none;">
