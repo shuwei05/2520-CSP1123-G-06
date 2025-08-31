@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .login-box {
+      background: #fff;
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      width: 350px;
+      text-align: center;
+    }
+
+    .login-box img {
+      
+      width: 160px;
+      margin-bottom: 15px;
+    }
+
+    .login-box h2 {
+      margin-bottom: 20px;
+      color: #1a73e8;
+      font-size: 30px;
+      transform: translateY(-15px);
+    }
+
+    .input-box {
+      margin: 15px 0;
+      text-align: left;
+    }
+
+    .input-box label {
+      font-size: 14px;
+      font-weight: bold;
+      color: #333;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .input-box input {
+      width: 92%;
+      padding: 10px;
+      border-radius: 15px;
+      border: 2px solid #ccc;
+      outline: none;
+    }
+
+    .input-box input:focus {
+      border-color: #1a73e8;
+    }
+
+    .btn {
+      margin-top: 20px;
+      padding: 12px;
+      width: 100%;
+      border: none;
+      border-radius: 25px;
+      background: #1a73e8;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #155fc0;
+    }
+
+    .note {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+   
+
+  <div class="login-box">
+    <img src="{{ url_for('static', filename='photos/mmulogo3.png') }}" alt="MMU Logo">
+    <h2>Admin Login</h2>
+    <form>
+      <div class="input-box">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter admin username" required>
+      </div>
+
+      <div class="input-box">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter password" required>
+      </div>
+
+      <button type="submit" class="btn">Login</button>
+    </form>
+    <p class="note">Only authorized administrators can log in.</p>
+  </div>
+
+</body>
+</html>

@@ -225,7 +225,7 @@ def add_product():
                 price=float(price),
                 stall_id=current_user.id ,
                 stallname=current_user.stallname,
-                product_pic=product_filename if product_file else None
+                product_pic=product_filename if product_pic else None
             )
             return render_template('add_product.html', text='Add Product Page')  
         
@@ -241,12 +241,8 @@ def email():
         email = request.form.get('email')
         check_email = User.query.filter_by(email=email).first()
         if check_email:
-            return redirect(url_for('/reset_password'))
+            return redirect(url_for('/reset-password'))
         else:
             flash('This email has not registered any account. Please register an account', category='info')
             return redirect(url_for('auth.email'))
     return render_template('email.html', text='Email Page')
-
-@auth.route('seller-profile')
-def seller_profile():
-    return render_template('seller-profile.html', user=current_user)
