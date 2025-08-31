@@ -106,7 +106,7 @@
 
         #star {
             margin-right: 20px;
-            color: yellow;
+            color: orange;
         }
 
         /*Tab*/
@@ -148,6 +148,11 @@
             box-shadow: inset 0 2px 3px rgba(0,0,0,0.1);
         }
 
+        .about-and-reviews-tab input:active + label{
+            background-color: rgb(240, 240, 240);
+            box-shadow: inset 0 2px 3px rgba(0,0,0,0.1);
+        }
+
         #about:checked ~ .sidebar-content .stall-details {
             display: block;
         }
@@ -186,7 +191,6 @@
         /*Comment*/
         .reviews-list {
             width: 36vw;
-            height: 300px;
         }
 
         .comment input {
@@ -208,17 +212,64 @@
         }
 
         .comment-area {
+            display: flex;
+            flex: 1;
             display: none;
+            margin-top: 30px;
+            margin-left: 20px;
+            width: 36vw;
+            height: 200px;
+            text-align: center;
+        }
+
+        #comment-textarea {
+            resize: none;
+            width: 35vw;
+            min-height: 20px;
+            max-height: 130px;
+            border-style: none;
+            border-radius: 10px; 
+            box-shadow: 0 0 3px rgba(0,0,0,0.3);
+        }
+
+        .comment-area textarea:placeholder-shown {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            padding-left: 10px;
+        }
+
+        .comment-area button {
+            margin-top: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            padding: 6px 20px;
+            border-radius: 20px;
+            border-style: none;
+            background-color: #0081cc;
+            box-shadow: 0 0 2px rgba(0,0,0,0.3);
+        }
+
+        .comment-area button:hover {
+            background-color: #0066b5;
+        }
+
+        .comment-area input {
+            display: flex;
+            display: block;
         }
 
         .comment input:checked + label {
             background-color: rgb(247, 247, 247);
         }
 
+        .comment-area:active + label {
+            background-color: rgb(240, 240, 240);
+            box-shadow: inset 0 2px 3px rgba(0,0,0,0.1);
+        }
+        
         .comment input:checked ~ .comment-area {
             display: block;
         }
-
     </style>
 </head>
 <body>
@@ -271,7 +322,9 @@
             <label for="comment">&#10010;</label>
 
             <div class="comment-area">
-                <textarea placeholder="comment here"></textarea>
+                <textarea placeholder="comment here" id="comment-textarea"></textarea>
+                <input type="file" id="comment-photo-upload" accept="image/*">
+                <button type="submit" class="submit-btn">SUBMIT</button>
             </div>
         </div>
     </aside>
@@ -328,5 +381,11 @@
         map.setView([2.92790,101.64188],17); 
     });
 
+    //Comment
+    const textarea = document.getElementById("comment-textarea");
+    textarea.addEventListener("input",function() {
+        this.style.height = "auto";
+        this.style.height = Math.min(this.scrollHeight,130) + "px";
+    })
 </script>
 </html>
