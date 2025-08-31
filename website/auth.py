@@ -194,7 +194,7 @@ def logout():
 def add_product():
     if request.method == 'POST':
         product_name = request.form.get('product_name')
-        product_des = request.form.get('description')
+        product_des = request.form.get('product_des')
         product_type = request.form.getlist('product_type')
         product_cuisine = request.form.getlist('product_cuisine')
         price = request.form.get('price')
@@ -223,10 +223,13 @@ def add_product():
                 product_type=', '.join(product_type),
                 product_cuisine=', '.join(product_cuisine),
                 price=float(price),
-                stall_id=current_user.id ,
-                stallname=current_user.stallname,
+                stall_id=1,
+                #stall_id=current_user.id ,
+                #stallname=current_user.stallname,
                 product_pic=product_filename if product_file else None
             )
+            db.session.add(new_product) #
+            db.session.commit()#
             return render_template('add_product.html', text='Add Product Page')  
         
         # Here you would typically save the product to the database
