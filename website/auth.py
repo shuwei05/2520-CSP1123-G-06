@@ -194,7 +194,7 @@ def logout():
 def add_product():
     if request.method == 'POST':
         product_name = request.form.get('product_name')
-        product_des = request.form.get('description')
+        product_des = request.form.get('product_des')
         product_type = request.form.getlist('product_type')
         product_cuisine = request.form.getlist('product_cuisine')
         price = request.form.get('price')
