@@ -209,8 +209,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
     <!--Map JavaScript-->
    <script>
-        const map = L.map("map");
+        const bounds = L.latLngBounds(
+            L.latLng(2.92416147468388,101.63546562194826), //SW
+            L.latLng(2.931511848931281,101.64844751358034), //NE
+        )
+        const map = L.map("map", {
+            maxBounds:bounds,
+            maxBoundsViscosity:0.5
+        });
         map.setView([2.92836,101.64188],16);
+
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 20, //Setting Max Zoom to 20(Enough)
@@ -220,25 +228,37 @@ document.addEventListener("DOMContentLoaded", function() {
         //https://youtu.be/NyjMmNCtKf4?si=SwNnJNahhkbyNH-h
         //marker
         let marker;
+        const initialPosition = [2.9275634396053176,101.64166688919067];
         
         navigator.geolocation.watchPosition(success, error);
 
         function success(pos) {
             const lat = pos.coords.latitude;
             const lng = pos.coords.longitude;
+            const userPosition = L.latLng(lat,lng);
 
             if (!marker) {
-                marker = L.marker([lat,lng],{
-                draggable: true
-                }).addTo(map);
-
-                marker.on("dragend",position);
+                if(bounds.contains(userPosition)) {
+                    
+                    marker = L.marker([lat,lng],{
+                    draggable: true
+                    }).addTo(map);
+                    MarkerRestrict();
+                    position();
+                } else {
+                    marker = L.marker(initialPosition,{
+                    draggable: true
+                    }).addTo(map);
+                    MarkerRestrict();
+                    position();
+                }
             }
 
             else {
-                marker.setLatLng([lat,lng]);
+                if(bounds.contains(userPosition)) {
+                    marker.setLatLng([lat,lng]);
                 position();
-            }
+            }}
         }
 
         function error(err) {
@@ -247,6 +267,13 @@ document.addEventListener("DOMContentLoaded", function() {
             } else {
                 alert("Cannot get current location")
             }
+            
+            //error also can have an initial point
+            marker = L.marker(initialPosition,{
+                    draggable: true
+                    }).addTo(map);
+            MarkerRestrict();
+            position();
         }
 
         function position() {
@@ -255,6 +282,17 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("longitude").value = GetPosition.lng
             console.log(GetPosition.lat,GetPosition.lng)
             }
+
+        function MarkerRestrict() {
+            marker.on("dragend", function() {
+                const CurrentPosition = marker.getLatLng();
+                if (!bounds.contains(CurrentPosition)) {
+                    alert("Only can move in the area!");
+                    marker.setLatLng(initialPosition);
+                }
+                position();
+            });
+        }
 
     </script>
 </body>
