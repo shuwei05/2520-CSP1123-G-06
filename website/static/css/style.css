@@ -5,12 +5,12 @@
     font-family: "poppins",sans-serif;
 }
 .body{
-    min-width: 1200px;
+    min-width: 1200px; /* Prevent layout shrinking too much */
 }
 
 .navbar{
     position: fixed;
-    top:0 ;
+    top:0 ; /* Aligns the navbar to the top edge of the page */
     left: 0;
     height: 80px;
     width: 100%;
@@ -19,7 +19,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 20px;
-    z-index: 10;
+    z-index: 10;  /* Ensures navbar stays above other content (higher stack order) */
 }
 
 .logo{
@@ -33,7 +33,7 @@
 }
 
 .nav-link{
-    list-style: none;
+    list-style: none; /* Removes default bullet points from <ul>/<li> */
     display: flex;  
     gap: 20px;
 }
@@ -45,7 +45,7 @@
 }
 
 .nav-link li{
-     list-style: none;
+     list-style: none; /* Removes default bullet points from list items */
 }    
    
 .nav-link li+li{
@@ -176,7 +176,7 @@
     background-image: url(/static/photos/moun.jpg);
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat; /* Show the image once, don’t tile it */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -226,7 +226,7 @@
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: background 0.3s ease; /* Smooth background color change on hover (0.3s) */
 }
 
 .blue-box button:hover{
@@ -248,7 +248,7 @@
     margin: 0;
     color: #333;
   
-    padding-left: 3px;
+    padding-left: 3px; /* tiny space between the text and the left edge */
     
 }
 
@@ -257,7 +257,7 @@
     font-size: 18px;
     font-weight: bold;
     color: #413a3a;
-    text-decoration: none;
+    text-decoration: none; /* removes the default underline from links */
     transition: color 0.3s ease;
 }
 
@@ -278,7 +278,7 @@
     font-size: 50px;
     font-weight: 300;
     color: rgb(0, 0, 0);
-    flex: 1;
+    flex: 1;  /* takes equal space */
     text-align: center;
     transform: translateY(40px);
     font-family: 'Montserrat',sans-serif;
@@ -325,7 +325,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; 
+    justify-content: flex-start; /* aligns items to the left (default) */
     width: 70%;
     border-radius: 30px;
 }
@@ -342,7 +342,7 @@
 
 .white-box p{
     font-size: 30px;
-    line-height: 1.6;
+    line-height: 1.6; /*  line spacing */
     margin: 20px auto;
     max-width:800px ;
     color: rgba(122, 119, 116, 0.823);

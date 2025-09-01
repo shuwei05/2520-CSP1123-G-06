@@ -172,7 +172,8 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("prof_pic").addEventListener("change", function() {
         previewImage(this, "stall-preview", "stall-icon", "prof_pic_name");
     });
-
+    // 1. When user selects a file for profile picture input
+    // Call previewImage() to show a preview of the selected picture
     document.getElementById("bg_pic").addEventListener("change", function() {
         previewImage(this, "bg-preview", "bg-icon", "bg_pic_name");
     });

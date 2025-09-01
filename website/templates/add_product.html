@@ -111,6 +111,12 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("product_pic").addEventListener("change", function() {
+            // Call the previewImage function when a file is chosen
+            // Arguments:
+            //  this                → the file input element itself
+            //  "product-preview"   → target element to display the image preview
+            //  "product-icon"      → an icon that may be hidden/changed after upload
+            //  "product_pic_name"  → element where the file name will be shown
                 previewImage(this,  "product-preview", "product-icon", "product_pic_name");
             });
 
@@ -118,10 +124,10 @@
 
 
             document.getElementById("product-clear").addEventListener("click", function() {
-            const input = document.getElementById("product_pic");
-            const preview = document.getElementById("product-preview");
-            const icon = document.getElementById("product-icon");
-            const fileName = document.getElementById("product_pic_name");
+            const input = document.getElementById("product_pic");       // File input field
+            const preview = document.getElementById("product-preview"); // Image preview element
+            const icon = document.getElementById("product-icon");       // Placeholder icon
+            const fileName = document.getElementById("product_pic_name"); // Text showing chosen file name
 
             input.value = "";           // 清空 input
             preview.style.display = "none"; // 隐藏图片
