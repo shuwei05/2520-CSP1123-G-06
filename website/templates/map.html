@@ -395,9 +395,16 @@
 </script>
 
 <script>
-    const map = L.map("map");
-    map.setView([2.92790,101.64188],17);
-
+    const bounds = L.latLngBounds(
+        L.latLng(2.92416147468388,101.63546562194826), //SW
+        L.latLng(2.931511848931281,101.64844751358034), //NE
+        )
+    const map = L.map("map", {
+        maxBounds:bounds,
+        maxBoundsViscosity:0.5
+    });
+    map.setView([2.92836,101.64188],17);
+   
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 20, //Setting Max Zoom to 20(Enough)
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
