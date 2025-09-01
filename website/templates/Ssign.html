@@ -10,6 +10,7 @@
      <!--Leaflet-->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js"></script>
     <meta name="viewport" content="width=1200, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <style>
@@ -210,8 +211,35 @@ document.addEventListener("DOMContentLoaded", function() {
 
     <!--Map JavaScript-->
    <script>
-        const map = L.map("map");
+        const bounds = L.latLngBounds(
+            L.latLng(2.92416147468388,101.63546562194826), //SW
+            L.latLng(2.931511848931281,101.64844751358034), //NE
+        )
+
+        const map = L.map("map", {
+            maxBounds:bounds,
+            maxBoundsViscosity:0.5
+        });
         map.setView([2.92836,101.64188],16);
+
+        const CampusPolygon = L.polygon([
+            [2.9308261017708594,101.64134502410889],
+            [2.9307403833462593,101.64306163787842],
+            [2.9294760358209055,101.64351224899293],
+            [2.928876005987246,101.64334058761598],
+            [2.9286188502458277,101.64542198181154],
+            [2.926797328720634,101.64615154266359],
+            [2.924482920629856,101.64608716964723],
+            [2.9245257800823707,101.64278268814088],
+            [2.924932944799449,101.64254665374757],
+            [2.9249543745173034,101.64108753204347],
+            [2.9265830318759347,101.64031505584718],
+            [2.927525937686099,101.63904905319215],
+            [2.928918865271738,101.63909196853639],
+            [2.9290260134757933,101.64012193679811],
+        ]);
+
+        const CampusGeoJSON = L.geoJSON(CampusPolygon.toGeoJSON());
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 20, //Setting Max Zoom to 20(Enough)
@@ -221,25 +249,37 @@ document.addEventListener("DOMContentLoaded", function() {
         //https://youtu.be/NyjMmNCtKf4?si=SwNnJNahhkbyNH-h
         //marker
         let marker;
+        const initialPosition = [2.9275634396053176,101.64166688919067];
         
         navigator.geolocation.watchPosition(success, error);
 
         function success(pos) {
             const lat = pos.coords.latitude;
             const lng = pos.coords.longitude;
+            const userPosition = L.latLng(lat,lng);
 
             if (!marker) {
-                marker = L.marker([lat,lng],{
-                draggable: true
-                }).addTo(map);
-
-                marker.on("dragend",position);
+                if(bounds.contains(userPosition)) {
+                    
+                    marker = L.marker([lat,lng],{
+                    draggable: true
+                    }).addTo(map);
+                    MarkerRestrict();
+                    position();
+                } else {
+                    marker = L.marker(initialPosition,{
+                    draggable: true
+                    }).addTo(map);
+                    MarkerRestrict();
+                    position();
+                }
             }
 
             else {
-                marker.setLatLng([lat,lng]);
+                if(bounds.contains(userPosition)) {
+                    marker.setLatLng([lat,lng]);
                 position();
-            }
+            }}
         }
 
         function error(err) {
@@ -248,6 +288,13 @@ document.addEventListener("DOMContentLoaded", function() {
             } else {
                 alert("Cannot get current location")
             }
+            
+            //error also can have an initial point
+            marker = L.marker(initialPosition,{
+                    draggable: true
+                    }).addTo(map);
+            MarkerRestrict();
+            position();
         }
 
         function position() {
@@ -257,6 +304,18 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log(GetPosition.lat,GetPosition.lng)
             }
 
+        function MarkerRestrict() {
+            marker.on("dragend", function() {
+                const CurrentPosition = marker.getLatLng();
+                const InsideCampus = leafletPip.pointInLayer([CurrentPosition.lng, CurrentPosition.lat],CampusGeoJSON); //leaflet format is lng lat
+
+                if (InsideCampus.length === 0) {
+                    alert("Please select location inside campus!");
+                    marker.setLatLng(initialPosition);
+                }
+                position();
+            });
+        }
     </script>
 </body>
 </html>
