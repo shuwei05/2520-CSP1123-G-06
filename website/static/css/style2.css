@@ -7,7 +7,7 @@
 .body{
     margin: 0;
     padding:0;
-    overflow-x: hidden;
+    overflow-x: hidden;  /* hide horizontal overflow */
     width: 100%;
 }
 
@@ -102,7 +102,7 @@
 
 .middle h1{
     margin:40px;
-    font-size: 3.0rem;
+    font-size: 3.0rem;  /*root element’s font size*/
     line-height: 1.2;
     letter-spacing: 2px;
     margin-bottom: 1900px;
