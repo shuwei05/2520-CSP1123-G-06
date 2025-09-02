@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login page</title>
-    <style>
-        body {
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Login</title>
+  <style>
+    body {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -14,7 +14,6 @@
       margin: 0;
       font-family: Arial, sans-serif;
     }
-
     .wrapper {
       width: 350px;
       background: white;
@@ -26,22 +25,17 @@
       position: relative;
       padding-top: 10px;
     }
-
     .logo2 {
       position: absolute;
-      top: -10px;              /* 让 logo 浮在 wrapper 顶部 */
-      left: 50%;               /* 横向居中 */
-      transform: translateX(-50%); /* 居中对齐 */
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
     }
-
     .logo2 img {
-      width: 300px;   /* 你可以调整大小 */
+      width: 300px;
       height: auto;
       display: block;
-   
     }
-
-    /* 顶部切换按钮 */
     .tab-header {
       display: flex;
       margin: 15px;
@@ -63,7 +57,6 @@
       background: #007bff;
       color: white;
     }
-
     h1 {
       font-size: 40px;
       text-align: center;
@@ -72,7 +65,6 @@
       font-weight: 600;
       color: #333;
     }
-
     .input-box {
       text-align: center;
       margin-bottom: 20px;
@@ -86,11 +78,10 @@
       font-size: 13px;
       box-sizing: border-box;
     }
-
     .btn {
       width: 100px;
       height: 40px;
-      border: none; /* No border around button */
+      border: none;
       border-radius: 40px;
       background: #007bff;
       color: white;
@@ -103,17 +94,11 @@
     .btn:hover {
       background: #0056b3;
     }
-    .seller-btn {
-      background: #28a745;
-    }
-    .seller-btn:hover {
-      background: #1e7e34;
-    }
-
     .forgot {
-      text-align: right;
-      width: 80%;
-      margin: 0 auto 10px;
+      text-align: left;
+      width: 100%;
+      margin: -10px 0 15px 5px;
+      transform: translate(60px , -10px);
     }
     .forgot a {
       font-size: 12px;
@@ -123,7 +108,6 @@
     .forgot a:hover {
       text-decoration: underline;
     }
-
     .sign {
       text-align: center;
       margin-top: 10px;
@@ -136,70 +120,21 @@
     .sign a:hover {
       text-decoration: underline;
     }
-
-    /* tab 内容 */
-    .tab-content {
-      display: none;
-      padding: 10px 20px;
-    }
-    .tab-content.active {
-      display: block;
-    }
-
-    .forgot {
-      text-align: left;
-      width: 100%;
-      margin: -10px 0 15px 5px; /* adjust spacing */
-      transform: translate(60px , -10px);
-   
-    }
-
-    .forgot a {
-      font-size: 12px;
-      color: #373839;
-      text-decoration: none;
-      transition: 0.2s;
-      
-    }
-
-    .forgot a:hover {
-      text-decoration: underline;
-    }
-
-     .seller-link {
-      display: block;
-      margin-top: -15px;
-      font-size: 14px;
-      font-weight: bold;
-      color: #000;         /* 黑色 */
-      text-decoration: none;
-      text-align: center;  /* 居中 */
-    }
-
-.seller-link:hover {
-  text-decoration: underline;
-  color: #333;         /* 鼠标悬停稍微变灰 */
-}
-
-
-
-
-    </style>
+  </style>
 </head>
 <body>
-
-    <div class="logo2">
-      <img src="{{ url_for('static', filename='photos/mmulogo2.png') }}" alt="mmu logo">
-    </div>
+  <div class="logo2">
+    <img src="{{ url_for('static', filename='photos/mmulogo2.png') }}" alt="mmu logo">
+  </div>
   <div class="wrapper">
     <!-- 顶部切换按钮 -->
     <div class="tab-header">
-      <button class="tab-btn active" onclick="showTab('user')">User Login</button>
-      <button class="tab-btn" onclick="showTab('seller')">Seller Login</button>
+      <button class="tab-btn active" onclick="location.href='/login'">User Login</button>
+      <button class="tab-btn" onclick="location.href='/Slogin'">Seller Login</button>
     </div>
 
     <!-- User Login -->
-    <div id="user" class="tab-content active">
+    <div id="user">
       <form>
         <h1>User Login</h1>
         <div class="input-box">
@@ -217,41 +152,6 @@
         </div>
       </form>
     </div>
-
-    <!-- Seller Login -->
-    <div id="seller" class="tab-content">
-      <form>
-        <h1>Seller Login</h1>
-        <div class="input-box">
-          <input type="text" placeholder="Stall Name" required>
-        </div>
-        <div class="input-box">
-          <input type="password" placeholder="Password" required>
-        </div>
-        <div class="forgot">
-          <a href="email.html">Forgot Password?</a>
-        </div>
-        <button type="submit" class="btn seller-btn">Login</button>
-        <div class="sign">
-          <p>Don't have an account? <a href="role.html">Sign up</a></p>
-        </div>
-      </form>
-    </div>
   </div>
-
-  <script>   /*tab switching function.*/
-    function showTab(tabId) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-
-      document.querySelector(`[onclick="showTab('${tabId}')"]`).classList.add('active');
-      document.getElementById(tabId).classList.add('active');
-    }
-    // 1. Remove "active" class from all tab buttons
-    // 2. Hide all tab contents (remove "active")
-    // 3. Find the button that was clicked (using its onclick attribute)
-    // 4. Show the tab content with the matching id
-
-  </script>
 </body>
 </html>
