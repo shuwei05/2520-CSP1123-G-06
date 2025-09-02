@@ -162,6 +162,8 @@ def login():
     return render_template('login.html', text='Login Page')
 
 
+
+
 @auth.route('/role')
 def role():
     return render_template('role.html', text='Role')
@@ -191,10 +193,15 @@ def logout():
     return redirect(url_for('auth.login'))
 
 @auth.route('/add_product', methods=['GET', 'POST'])
+@login_required
 def add_product():
+    if not isinstance(current_user, Stall):
+        flash('Only stall users can add products.', category='error')
+        return redirect(url_for('views.home'))
+
     if request.method == 'POST':
         product_name = request.form.get('product_name')
-        product_des = request.form.get('description')
+        product_des = request.form.get('product_des')
         product_type = request.form.getlist('product_type')
         product_cuisine = request.form.getlist('product_cuisine')
         price = request.form.get('price')
@@ -206,13 +213,13 @@ def add_product():
             product_filename = secure_filename(product_file.filename)
             product_file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], product_filename))
 
-        if len(product_name) < 5:
+        if not product_name or len(product_name) < 5:
             flash('Product name must be at least 5 characters long.', category='error')
-        elif len(product_des) < 10:
+        elif not product_des or len(product_des) < 10:
             flash('Product description must be at least 10 characters long.', category='error')
-        elif len(product_type) == 0:
+        elif not product_type:   # request.form.getlist always returns a list
             flash('Please select at least one product type.', category='error')
-        elif len(product_cuisine) == 0:
+        elif not product_cuisine:
             flash('Please select at least one product cuisine.', category='error')
         elif not price or float(price) <= 0:
             flash('Please enter a valid positive price.', category='error')
@@ -224,14 +231,14 @@ def add_product():
                 product_cuisine=', '.join(product_cuisine),
                 price=float(price),
                 stall_id=current_user.id ,
-                stallname=current_user.stallname,
                 product_pic=product_filename if product_file else None
             )
-            return render_template('add_product.html', text='Add Product Page')  
+
+            db.session.add(new_product)
+            db.session.commit()
+            flash('Product added successfully!', category='success')
+            return redirect(url_for('views.home'))  
         
-        # Here you would typically save the product to the database
-        flash('Product added successfully!', category='success')
-        return redirect(url_for('views.home'))
 
     return render_template('add_product.html', text='Add Product Page')
 

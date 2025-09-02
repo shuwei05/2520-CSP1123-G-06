@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from os import path 
-from flask_login import LoginManager
+from flask_login import LoginManager 
 import os
 
 db = SQLAlchemy()
@@ -34,6 +34,8 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
     db.init_app(app)
 
+    from .models import User, Stall
+    
     # Login Manager
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -42,6 +44,8 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(id):
+        if stall := Stall.query.get(int(id)):
+            return stall
         return User.query.get(int(id))
 
     from .views import views

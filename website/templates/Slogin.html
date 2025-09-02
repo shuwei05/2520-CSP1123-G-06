@@ -117,13 +117,13 @@
                 <img src="{{ url_for('static', filename='photos/mmulogo2.png') }}" alt="mmu logo">
         </div>
 
-        <form action=" ">
+        <form class="form-box" method="POST" action="{{ url_for('auth.Slogin') }}">
             <h1>Seller Login</h1>
             <div class="input-box">
-                <input type="text" placeholder="Stall name" required>
+                <input type="text" placeholder="Stall name" name="stallname" required>
             </div>
             <div class="input-box">
-                <input type="text" placeholder="Password" required>
+                <input type="text" placeholder="Password" name="password1" required>
             </div>
 
             <div class="forgot">
