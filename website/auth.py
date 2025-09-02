@@ -254,6 +254,7 @@ def email():
 def seller_profile():
     return render_template('seller-profile.html', user=current_user)
 
-@auth.route("/spin")
+@auth.route("/spin",methods=["GET","POST"])
 def food_spin():
-    return render_template("spin.html")
+    items = [item.product_name for item in Product.query.all()] 
+    return render_template("spin.html",items=items)

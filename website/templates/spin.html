@@ -36,12 +36,12 @@
         }
 
         .spin-container {
-            display: flex;
             position: relative;
+            display: flex;
             justify-content: center;
             text-align: center;
             align-items: center;
-            height: 100vh;
+            margin-top: 400px;
             z-index: 100;
         }
 
@@ -78,19 +78,29 @@
 
         .spin-wheel {
             position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             width: 500px;
             height: 500px;
             border-radius: 50%;
             border-style: solid;
             border-color: grey;
             border-width: 5px;
-            background-color: rgb(224, 224, 224);
             z-index: -2;
         }
 
-        .spin-wheel .item {
+        .spin-wheel .item p {
             position: absolute;
-        
+            top: 47%;
+            left: 50%;
+            transform-origin: center;
+            transform:
+            translate(-50%,-50%) /*set to middle*/
+            rotate(calc(360deg / var(--total) * var(--index)))
+            translateY(-160px)
+            rotate(calc(360deg / var(--total) * var(--index)));
+            
         }
 
     </style>
@@ -108,9 +118,12 @@
         <button type="submit" class="spin-button">SPIN</button>
 
         <div class="spin-wheel">
-            <div class="item">Nasi Ayam Goreng</div>
-            <div class="item">Nasi Lemak</div>
-            <div class="item">Cocacola</div>
+            <div class="item" style="--total: {{ items|length }}"> <!-- --total = custom property, use var() to read it; | = filter in jinja-->
+                {% for item in items %} 
+                    {% set index = loop.index0 %} <!--index0 = start from 0, else index start from 1-->
+                    <p style="--index: {{index}}">{{ item }}</p>
+                {% endfor %}
+            </div>
         </div>
     </div>
 
