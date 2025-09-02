@@ -94,8 +94,9 @@
                     });
                 }
             });
-        }, { threshold: 0.3 });
-
+        }, { threshold: 0.3 }); // Trigger when 30% of the section is visible
+        
+        // Start observing the element with class "menu-section"
         observer.observe(document.querySelector(".menu-section"));
     });
     </script>

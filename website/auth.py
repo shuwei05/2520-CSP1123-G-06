@@ -230,6 +230,7 @@ def add_product():
                 product_type=', '.join(product_type),
                 product_cuisine=', '.join(product_cuisine),
                 price=float(price),
+
                 stall_id=current_user.id ,
                 product_pic=product_filename if product_file else None
             )
