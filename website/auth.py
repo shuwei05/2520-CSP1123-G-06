@@ -253,3 +253,7 @@ def email():
 @auth.route('seller-profile')
 def seller_profile():
     return render_template('seller-profile.html', user=current_user)
+
+@auth.route("/spin")
+def food_spin():
+    return render_template("spin.html")

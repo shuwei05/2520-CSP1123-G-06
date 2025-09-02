@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Spin Page</title>
+    <style>
+        .body{
+            margin: 0;
+            padding:0;
+            overflow-x: hidden;  /* hide horizontal overflow */
+            width: 100%;
+        }
+
+        .navbar{
+            position: fixed;
+            top:0 ;
+            left: 0;
+            height: 80px;
+            width: 100%;
+            background: rgb(164, 231, 250);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 999;
+        }
+
+        .logo{
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo img{
+            height: 60px;
+            transform: translateX(30px);
+        }
+
+        .spin-container {
+            display: flex;
+            position: relative;
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .spin-container .spin-button {
+            position: absolute;
+            height: 60px;
+            width: 60px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            background-color: white;
+            border-radius: 30px;
+            border-style: solid;
+            border-width: 5px;
+            border-color: grey;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+
+        .spin-container .spin-button:active {
+            background-color: rgb(245, 245, 245);
+        }
+
+        .spin-container .spin-button::before {
+            content: " ";
+            position: absolute;
+            background-color: orange;
+            top: -55px;
+            left: 11px;
+            width: 30px;
+            height: 60px;
+            clip-path: polygon(50% 0%,0% 100%,100% 100%);
+            z-index: -1;
+        }
+
+        .spin-wheel {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            border-style: solid;
+            border-color: grey;
+            border-width: 5px;
+            background-color: rgb(224, 224, 224);
+            z-index: -2;
+        }
+
+        .spin-wheel .item {
+            position: absolute;
+        
+        }
+
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="navbar">
+            <div class="logo">
+                <img src="{{ url_for('static',filename='photos/logo.png') }}" alt="mmu logo">
+            </div> 
+        </div>
+    </nav>
+
+    <div class="spin-container">
+        <button type="submit" class="spin-button">SPIN</button>
+
+        <div class="spin-wheel">
+            <div class="item">Nasi Ayam Goreng</div>
+            <div class="item">Nasi Lemak</div>
+            <div class="item">Cocacola</div>
+        </div>
+    </div>
+
+    
+</body>
+</html>
