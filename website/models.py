@@ -36,5 +36,4 @@ class Product(db.Model):
     product_type= db.Column(db.String(100), nullable=False)
     price = db.Column(db.Float, nullable=False)
     stall_id = db.Column(db.Integer, db.ForeignKey('stall.id'), nullable=False)
-    stall = db.relationship('Stall', backref=db.backref('products', lazy=True))
     product_pic = db.Column(db.String(200), nullable=True)
