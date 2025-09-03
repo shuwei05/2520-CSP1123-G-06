@@ -6,16 +6,10 @@ from . import db
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
+from website import role_required
 
 auth = Blueprint('auth',__name__)
 
-@auth.route("/map", methods=["GET"])
-def map_page():
-    seller_coordinates = db.session.query(Stall.latitude,Stall.longitude).all()
-    coordinates = []
-    for coordinate in seller_coordinates:
-        coordinates.append(list(coordinate))
-    return render_template("map.html",coordinates=coordinates)
 
 
 @auth.route('/Usign', methods=['GET', 'POST'])
@@ -120,7 +114,7 @@ def Ssignup():
             )
             db.session.add(new_stall)
             db.session.commit()
-            flash('Stall Account Created!', category='success')
+            flash('Stall account submission created! Please wait for approval.', category='success')
             return redirect(url_for('views.home'))
         
     return render_template('Ssign.html', text='Signup Page')
@@ -133,6 +127,10 @@ def Slogin():
 
         stall = Stall.query.filter_by(stallname=stallname).first()
         if stall:
+            if not stall.approval_status:
+                flash('Your stall is pending approval. Please wait for admin approval.', category='info')
+                return render_template('Slogin.html', text='Login Page')
+            
             if check_password_hash(stall.password1, password1):
                 flash('Stall Logged in successfully!', category='success')
                 login_user(stall, remember=True)
@@ -168,18 +166,51 @@ def login():
 def role():
     return render_template('role.html', text='Role')
 
-@auth.route('/admin' , methods=['GET', 'POST'])
+@auth.route('/admin-login' , methods=['GET', 'POST'])
 def admin():
     if request.method == 'POST':
         admin_name = request.form.get('admin_name')
         admin_password = request.form.get('admin_password')
 
-        if admin_name == 'admin' and admin_password == 'admin123':
-            flash('Admin logged in successfully!', category='success')
-            return redirect(url_for('auth.admin'))
+        admin = User.query.filter_by(user_name=admin_name, role='admin').first()
+
+        if admin:
+            if check_password_hash(admin.password1, admin_password):
+                flash('Admin Logged in successfully!', category='success')
+                login_user(admin, remember=True)
+                return redirect(url_for('auth.admin_dashboard'))
+            else:
+                flash('Incorrect password, try again.', category='error')
         else:
-            flash('Invalid admin credentials, try again.', category='error')
-    return render_template('admin.html', text='Admin Page')
+            flash('Admin username does not exist.', category='error')
+
+    return render_template('admin-login.html', text='Admin Page')
+
+
+@auth.route('/admin_dashboard')
+@role_required('admin')
+def admin_dashboard():
+    pending_stalls = Stall.query.filter_by(approval_status=False).all()
+    return render_template('admin_dashboard.html', pending_stalls=pending_stalls)
+
+@auth.route('/approve_stall/<int:stall_id>', methods=['POST'])
+@role_required('admin')
+def approve_stall(stall_id):
+    stall = Stall.query.get_or_404(stall_id)
+    stall.approval_status = True
+    db.session.commit()
+    flash(f'Stall "{stall.stallname}" has been approved.', category='success')
+    return redirect(url_for('auth.admin_dashboard'))
+
+@auth.route('/deny_stall/<int:stall_id>', methods=['POST'])
+@role_required('admin')
+def deny_stall(stall_id):
+    stall = Stall.query.get_or_404(stall_id)
+    db.session.delete(stall)
+    db.session.commit()
+    flash(f'Stall "{stall.stallname}" has been denied and removed.', category='info')
+    return redirect(url_for('auth.admin_dashboard'))
+
 
 @auth.route('/aboutus')
 def aboutus():
@@ -193,7 +224,7 @@ def logout():
     return redirect(url_for('auth.login'))
 
 @auth.route('/add_product', methods=['GET', 'POST'])
-@login_required
+@role_required('stall')
 def add_product():
     if not isinstance(current_user, Stall):
         flash('Only stall users can add products.', category='error')
@@ -255,6 +286,68 @@ def email():
             return redirect(url_for('auth.email'))
     return render_template('email.html', text='Email Page')
 
-@auth.route('seller-profile')
+
+@auth.route("/map", methods=["GET"])
+def map_page():
+    seller_coordinates = db.session.query(Stall.latitude,Stall.longitude).all()
+    coordinates = []
+    for coordinate in seller_coordinates:
+        coordinates.append(list(coordinate))
+    return render_template("map.html",coordinates=coordinates)
+
+@auth.route('/view-map')
+@role_required('user')
+def view_map():
+    return render_template('view-map.html')
+
+@auth.route('/menu')
+@role_required('user')
+def menu():
+    products = Product.query.all()
+    return render_template('menu.html', products=products)
+
+@auth.route('/view-details')
+@role_required('user')
+def view_menu():
+    products = Product.query.all()
+    return render_template('view-details.html', products=products)
+
+@auth.route('/profile')
+@role_required('user')
+def profile():
+    return render_template('profile.html', user=current_user)
+
+@auth.route('/seller-profile')
+@role_required('stall')
 def seller_profile():
     return render_template('seller-profile.html', user=current_user)
+
+@auth.route('/stall-menu' , methods=['GET', 'POST'])
+@role_required('stall')
+def stall_menu():
+    products = Product.query.filter_by(stall_id=current_user.id).all()
+    return render_template('stall-menu.html', products=products)
+
+@auth.route('/filter', methods=['GET', 'POST'])
+@role_required('user')
+def filter():
+    if request.method == 'POST':
+        selected_cuisines = request.form.getlist('cuisine')
+        selected_types = request.form.getlist('type')
+
+        query = Product.query
+
+        if selected_cuisines:
+            query = query.filter(
+                db.or_(*[Product.product_cuisine.ilike(f'%{cuisine}%') for cuisine in selected_cuisines])
+            )
+
+        if selected_types:
+            query = query.filter(
+                db.or_(*[Product.product_type.ilike(f'%{ptype}%') for ptype in selected_types])
+            )
+
+        filtered_products = query.all()
+        return render_template('filter.html', products=filtered_products, selected_cuisines=selected_cuisines, selected_types=selected_types)
+
+    return render_template('filter.html', products=[], selected_cuisines=[], selected_types=[])

@@ -14,6 +14,7 @@ class User(db.Model, UserMixin):
     password1 = db.Column(db.String(150))
     user_name = db.Column(db.String(150))
     notes = db.relationship('Note')
+    role = db.Column(db.String(50), nullable=False,default='user')
 
 class Stall(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -27,6 +28,9 @@ class Stall(db.Model, UserMixin):
     bg_pic = db.Column(db.String(200), nullable=True)
     latitude = db.Column(db.Float,nullable=False)
     longitude = db.Column(db.Float,nullable=False)
+    role = db.Column(db.String(50), nullable=False,default='stall')
+
+    approval_status = db.Column(db.Boolean, default=False)
 
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -37,3 +41,4 @@ class Product(db.Model):
     price = db.Column(db.Float, nullable=False)
     stall_id = db.Column(db.Integer, db.ForeignKey('stall.id'), nullable=False)
     product_pic = db.Column(db.String(200), nullable=True)
+
