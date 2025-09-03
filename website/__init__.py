@@ -15,9 +15,22 @@ def create_database(app):
         with app.app_context():
             db.create_all()
             print('Created Database!')
+
+            from .models import User, Stall
+            from werkzeug.security import generate_password_hash
+
+           
+            if not User.query.filter_by(role='admin').first():
+                new_admin = User(
+                    user_name='admin',
+                    password1=generate_password_hash('admin123', method='pbkdf2:sha256'),
+                    role='admin'
+                    )
+                db.session.add(new_admin)
+                db.session.commit()
+
     else:
         print('Database already exists.')
-
 
 
 def create_app():
@@ -43,10 +56,15 @@ def create_app():
     
 
     @login_manager.user_loader
-    def load_user(id):
-        if stall := Stall.query.get(int(id)):
+    def load_user(user_id):
+        user = User.query.get(int(user_id))
+        if user:
+            return user
+    
+        stall= Stall.query.get(int(user_id))
+        if stall:
             return stall
-        return User.query.get(int(id))
+        return None
 
     from .views import views
     from .auth import auth
@@ -61,3 +79,22 @@ def create_app():
     create_database(app)
 
     return app
+
+def role_required(role):
+    def decorator(f):
+        from flask_login import current_user
+        from functools import wraps
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+
+            if not current_user.is_authenticated:
+                flash("Please log in to access this page.", category="error")
+                return redirect(url_for("auth.admin"))
+    
+            if current_user.role != role:
+                flash('Access denied. Insufficient permissions.', category='error')
+                return redirect(url_for('views.home'))
+                
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
