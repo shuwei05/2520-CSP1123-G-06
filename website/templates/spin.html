@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Food Spin Page</title>
     <style>
-        .body{
+        body{
             margin: 0;
-            padding:0;
+            padding: 0;
             overflow-x: hidden;  /* hide horizontal overflow */
             width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .navbar{
@@ -37,11 +41,11 @@
 
         .spin-container {
             position: relative;
+            width: 500px;
+            height: 500px;
             display: flex;
             justify-content: center;
-            text-align: center;
             align-items: center;
-            margin-top: 400px;
             z-index: 100;
         }
 
@@ -77,32 +81,45 @@
         }
 
         .spin-wheel {
-            position: absolute;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 500px;
-            height: 500px;
-            border-radius: 50%;
+            position: relative;
+            width: 100%;
+            height: 100%;
             border-style: solid;
             border-color: grey;
             border-width: 5px;
+            border-radius: 50%;
+            overflow: hidden;
             z-index: -2;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
         }
+
+        .spin-wheel .item {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: -2%;
+            transform-origin: center center;
+            transform: rotate(calc(360deg / var(--total) * var(--index)));
+                
+            clip-path: polygon(50% 50%, 100% 0%, 100% 100%);
+            background-color: var(--backgroundColor);
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding-right: 20px;
+            }
 
         .spin-wheel .item p {
             position: absolute;
-            top: 47%;
-            left: 50%;
-            transform-origin: center;
-            transform:
-            translate(-50%,-50%) /*set to middle*/
-            rotate(calc(360deg / var(--total) * var(--index)))
-            translateY(-160px)
-            rotate(calc(360deg / var(--total) * var(--index)));
-            
+            transform: rotate(180deg)
+                       translate(50px);
+            font-size: 16px;
+            font-family: Arial;
+            font-weight: bold;
+            z-index: 300;
         }
-
+            
     </style>
 </head>
 <body>
@@ -118,12 +135,12 @@
         <button type="submit" class="spin-button">SPIN</button>
 
         <div class="spin-wheel">
-            <div class="item" style="--total: {{ items|length }}"> <!-- --total = custom property, use var() to read it; | = filter in jinja-->
-                {% for item in items %} 
-                    {% set index = loop.index0 %} <!--index0 = start from 0, else index start from 1-->
-                    <p style="--index: {{index}}">{{ item }}</p>
-                {% endfor %}
-            </div>
+            {% for item,color in zipFile %} 
+                {% set index = loop.index0 %} <!--index0 = start from 0, else index start from 1-->
+                <div class="item" style="--total: {{ items|length }}; --index: {{index}}; --backgroundColor: {{color}}"> <!-- --total = custom property, use var() to read it; | = filter in jinja-->
+                    <p>{{ item }}</p>
+                </div>    
+            {% endfor %}
         </div>
     </div>
 

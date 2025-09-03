@@ -6,6 +6,7 @@ from . import db
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
+import random
 
 auth = Blueprint('auth',__name__)
 
@@ -254,7 +255,12 @@ def email():
 def seller_profile():
     return render_template('seller-profile.html', user=current_user)
 
+def random_hex():
+    return "#{:06x}".format(random.randint(0, 0xFFFFFF))
+
 @auth.route("/spin",methods=["GET","POST"])
 def food_spin():
     items = [item.product_name for item in Product.query.all()] 
-    return render_template("spin.html",items=items)
+    colors = [random_hex() for _ in items]
+    zipFile = list(zip(items,colors))
+    return render_template("spin.html",items=items,zipFile=zipFile)
