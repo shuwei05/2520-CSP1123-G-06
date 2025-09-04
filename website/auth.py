@@ -227,10 +227,6 @@ def logout():
     flash('You have been logged out.', category='success')
     return redirect(url_for('auth.login'))
 
-<<<<<<< HEAD
-@auth.route('/add-product', methods=['GET', 'POST'])
-def add_product():
-=======
 @auth.route('/add_product', methods=['GET', 'POST'])
 @role_required('stall')
 def add_product():
@@ -238,37 +234,12 @@ def add_product():
         flash('Only stall users can add products.', category='error')
         return redirect(url_for('views.home'))
 
->>>>>>> 294a072cadc494438e8014945f3508b48a4b4d3d
     if request.method == 'POST':
         product_name = request.form.get('product_name')
         product_des = request.form.get('product_des')
         product_type = request.form.getlist('product_type')
         product_cuisine = request.form.getlist('product_cuisine')
         price = request.form.get('price')
-<<<<<<< HEAD
-
-        if not product_name or not price:
-            flash('Product name and price are required.', category='error')
-        else:
-            try:
-                price = float(price)
-                new_product = Product(
-                    product_name=product_name,
-                    product_des=product_des,
-                    product_cuisine=product_cuisine,
-                    product_type=product_type,
-                    price=price,
-                    stall_id=current_user.id
-                )
-                db.session.add(new_product)
-                db.session.commit()
-                flash('Product added successfully!', category='success')
-                return redirect(url_for('views.home'))
-            except ValueError:
-                flash('Invalid price format. Please enter a number.', category='error')
-
-    return render_template('add_product.html', text='Add Product')
-=======
         product_file = request.files.get('product_pic')
 
         product_filename = None
@@ -403,4 +374,3 @@ def food_spin():
     
     seperator = "conic-gradient("+",".join(gradientColor) + ")"
     return render_template("spin.html",items=items,seperator=seperator,selected_food=selected_food)
->>>>>>> 294a072cadc494438e8014945f3508b48a4b4d3d
