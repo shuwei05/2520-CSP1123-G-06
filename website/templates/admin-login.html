@@ -14,6 +14,7 @@
       align-items: center;
       height: 100vh;
       margin: 0;
+      flex-direction: column;
     }
 
     .login-box {
@@ -23,6 +24,7 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.15);
       width: 350px;
       text-align: center;
+      margin: auto; /* 居中 */
     }
 
     .login-box img {
@@ -86,11 +88,25 @@
       font-size: 13px;
       color: #666;
     }
+
+    /* Flash 提示放最底部 */
+    .container.mt-3 {
+      position: absolute;
+      top: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .container.mt-3 .alert {
+      width: 350px;
+    }
   </style>
 </head>
 <body>
-
-      <div class="container mt-3">
+  
+    <div class="container mt-3">
         {% with messages = get_flashed_messages(with_categories=true) %}
          {% if messages %}
             {% for category, message in messages %}
@@ -102,7 +118,7 @@
         {% endif %}
     {% endwith %}
     </div>
-   
+    
 
   <div class="login-box">
     <img src="{{ url_for('static', filename='photos/mmulogo3.png') }}" alt="MMU Logo">
@@ -122,6 +138,10 @@
     </form>
     <p class="note">Only authorized administrators can log in.</p>
   </div>
+
+  
+      
+   
 
 </body>
 </html>
