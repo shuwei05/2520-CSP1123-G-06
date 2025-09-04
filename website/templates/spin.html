@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Spin Page</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .navbar{
+            position: fixed;
+            top:0 ;
+            left: 0;
+            height: 80px;
+            width: 100%;
+            background: rgb(164, 231, 250);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 999;
+        }
+
+        .logo{
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo img{
+            height: 60px;
+            transform: translateX(30px);
+        }
+
+        .spin-container {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            margin-top: 80px;
+        }
+
+        .spin-container .spin-button {
+            position: absolute;
+            height: 60px;
+            width: 60px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            background-color: white;
+            border-radius: 30px;
+            border-style: solid;
+            border-width: 5px;
+            border-color: rgb(97, 97, 97);
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+
+        .spin-container .spin-button:active {
+            background-color: rgb(245, 245, 245);
+        }
+
+        .spin-container .spin-button::before {
+            content: " ";
+            position: absolute;
+            background-color: orange;
+            top: -55px;
+            left: 11px;
+            width: 30px;
+            height: 60px;
+            clip-path: polygon(50% 0%,0% 100%,100% 100%);
+            z-index: -1;
+        }
+
+        
+         @keyframes spin {
+            from {transform: rotate(0deg);}
+            to {transform: rotate(360deg);}
+        }
+        
+
+        .spin-wheel {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            z-index: -2;
+            background: var(--bgColor);
+            border-style: solid;
+            border-width: 10px;
+            border-color: rgb(60, 60, 60);
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            animation: spin 20s linear infinite;
+        }
+
+        .spin-items {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: center;
+            transform: 
+                translate(-50%, -50%) /*middle*/
+                rotate(calc(360deg / var(--total) * var(--index) + 180deg / var(--total))) /*reduce 90deg*/
+                translateY(-160px)
+                rotate(90deg);
+            }  
+
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="navbar">
+            <div class="logo">
+                <img src="{{ url_for('static',filename='photos/logo.png') }}" alt="mmu logo">
+            </div> 
+        </div>
+    </nav>
+
+    <div class="spin-container">
+        <button type="submit" class="spin-button" id="spin-button">SPIN</button>
+        <div class="spin-wheel" id="spin-wheel" style="--bgColor: {{seperator}}">
+            {% for item in items %}
+                {% set index = loop.index0 %} <!--index0 = start from 0, else index start from 1-->
+                <div class="spin-items" style="--total: {{items|length}}; --index: {{index}};">
+                    {{ item }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        const spinWheel = document.getElementById("spin-wheel");
+        const spinButton = document.getElementById("spin-button");
+        const total = Number("{{items|length}}"); //let the data become num
+        const selectedFood = Number("{{ selected_food }}");
+        let currentAngle = 0;
+
+        spinButton.onclick = function(){
+            const angle = 360 / total;
+            const randomSpins = 3;
+            const finalAngle = 360 * randomSpins + (selectedFood * angle + angle/6.5);
+
+            currentAngle = currentAngle + finalAngle;
+            
+            spinWheel.style.animation = "none";
+
+            spinWheel.style.transition = "transform 3s ease-out"; //animation else direct degree v
+            spinWheel.style.transform = "rotate(" + currentAngle +"deg)";
+        }   
+    </script>
+</body>
+</html>

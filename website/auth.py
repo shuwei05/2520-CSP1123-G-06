@@ -6,11 +6,10 @@ from . import db
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
+import random
 from website import role_required
 
 auth = Blueprint('auth',__name__)
-
-
 
 @auth.route('/Usign', methods=['GET', 'POST'])
 def signup():
@@ -352,3 +351,22 @@ def filter():
         return render_template('filter.html', products=filtered_products, selected_cuisines=selected_cuisines, selected_types=selected_types)
 
     return render_template('filter.html', products=[], selected_cuisines=[], selected_types=[])
+
+def random_hex():
+    return "#{:06x}".format(random.randint(0, 0xFFFFFF))
+
+@auth.route("/spin",methods=["GET","POST"])
+def food_spin():
+    items = [item.product_name for item in Product.query.all()] 
+    colors = [random_hex() for _ in items]
+    selected_food = random.randrange(0, len(items))
+
+    gradientColor = []
+    degree = 360/ len(items)
+    for i,color in enumerate(colors):
+        start = i * degree
+        end = (i + 1) * degree
+        gradientColor.append(f"{color} {start}deg {end}deg")
+    
+    seperator = "conic-gradient("+",".join(gradientColor) + ")"
+    return render_template("spin.html",items=items,seperator=seperator,selected_food=selected_food)
