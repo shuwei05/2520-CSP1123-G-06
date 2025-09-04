@@ -122,11 +122,8 @@ form {
     font-weight: normal;
     font-size: 22px;
     line-height: 40px;
-}
-
-.product-cuisine {
     display: flex;
-    justify-content: space-between;   
+    justify-content: space-between;
 }
 
 .container-4 {

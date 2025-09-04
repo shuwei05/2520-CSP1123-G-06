@@ -136,7 +136,7 @@ def Slogin():
                 login_user(stall, remember=True)
                 print(f"Seller logged in: {stall.stallname}, role={stall.role}")
 
-                return redirect(url_for('/seller-profile'))
+                return redirect(url_for('auth.seller_profile'))
             else:
                 flash('Incorrect password, try again.', category='error')
         else:
