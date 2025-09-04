@@ -6,17 +6,10 @@ from . import db
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
+import random
+from website import role_required
 
 auth = Blueprint('auth',__name__)
-
-@auth.route("/map", methods=["GET"])
-def map_page():
-    seller_coordinates = db.session.query(Stall.latitude,Stall.longitude).all()
-    coordinates = []
-    for coordinate in seller_coordinates:
-        coordinates.append(list(coordinate))
-    return render_template("map.html",coordinates=coordinates)
-
 
 @auth.route('/Usign', methods=['GET', 'POST'])
 def signup():
@@ -72,12 +65,12 @@ def Ssignup():
         prof_file = request.files.get("prof_pic")
         bg_file = request.files.get("bg_pic")
 
-        prof_file = None
-        bg_file = None
+        prof_filename = None
+        bg_filename = None
 
         if prof_file and prof_file.filename != "":
-            profile_filename = secure_filename(prof_file.filename)
-            prof_file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], profile_filename))
+            prof_filename = secure_filename(prof_file.filename)
+            prof_file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], prof_filename))
 
         if bg_file and bg_file.filename != "":
             bg_filename = secure_filename(bg_file.filename)
@@ -88,7 +81,7 @@ def Ssignup():
             flash('Email already registered. Please use another one.', category='error')
             return render_template('Ssign.html', text='Signup Page')
 
-        existing_location = Stall.query.filter_by(latitude=Stall.latitude,longitude=Stall.longitude).first()
+        existing_location = Stall.query.filter_by(latitude=latitude,longitude=longitude).first()
         if existing_location:
             flash("Same location",category="error")
             return render_template("Ssign.html",text="Signup Page")
@@ -113,12 +106,14 @@ def Ssignup():
             password1=generate_password_hash(password1, method='pbkdf2:sha256'),
             openhour = datetime.strptime(openhour_str, "%H:%M").time(),
             closehour = datetime.strptime(closehour_str, "%H:%M").time(),
-            latitude=float(Stall.latitude),
-            longitude=float(Stall.longitude)
+            prof_pic=prof_filename if prof_file else None,
+            bg_pic=bg_filename if bg_file else None,
+            latitude=float(latitude),
+            longitude=float(longitude)
             )
             db.session.add(new_stall)
             db.session.commit()
-            flash('Stall Account Created!', category='success')
+            flash('Stall account submission created! Please wait for approval.', category='success')
             return redirect(url_for('views.home'))
         
     return render_template('Ssign.html', text='Signup Page')
@@ -131,6 +126,10 @@ def Slogin():
 
         stall = Stall.query.filter_by(stallname=stallname).first()
         if stall:
+            if not stall.approval_status:
+                flash('Your stall is pending approval. Please wait for admin approval.', category='info')
+                return render_template('Slogin.html', text='Login Page')
+            
             if check_password_hash(stall.password1, password1):
                 flash('Stall Logged in successfully!', category='success')
                 login_user(stall, remember=True)
@@ -160,22 +159,58 @@ def login():
     return render_template('login.html', text='Login Page')
 
 
+
+
 @auth.route('/role')
 def role():
     return render_template('role.html', text='Role')
 
-@auth.route('/admin' , methods=['GET', 'POST'])
+@auth.route('/admin-login' , methods=['GET', 'POST'])
 def admin():
     if request.method == 'POST':
         admin_name = request.form.get('admin_name')
         admin_password = request.form.get('admin_password')
 
-        if admin_name == 'admin' and admin_password == 'admin123':
-            flash('Admin logged in successfully!', category='success')
-            return redirect(url_for('auth.admin'))
+        admin = User.query.filter_by(user_name=admin_name, role='admin').first()
+
+        if admin:
+            if check_password_hash(admin.password1, admin_password):
+                flash('Admin Logged in successfully!', category='success')
+                login_user(admin, remember=True)
+                return redirect(url_for('auth.admin_dashboard'))
+            else:
+                flash('Incorrect password, try again.', category='error')
         else:
-            flash('Invalid admin credentials, try again.', category='error')
-    return render_template('admin.html', text='Admin Page')
+            flash('Admin username does not exist.', category='error')
+    
+
+    return render_template('admin-login.html', text='Admin Page')
+
+
+@auth.route('/admin_dashboard')
+@role_required('admin')
+def admin_dashboard():
+    pending_stalls = Stall.query.filter_by(approval_status=False).all()
+    return render_template('admin_dashboard.html', pending_stalls=pending_stalls)
+
+@auth.route('/approve_stall/<int:stall_id>', methods=['POST'])
+@role_required('admin')
+def approve_stall(stall_id):
+    stall = Stall.query.get_or_404(stall_id)
+    stall.approval_status = True
+    db.session.commit()
+    flash(f'Stall "{stall.stallname}" has been approved.', category='success')
+    return redirect(url_for('auth.admin_dashboard'))
+
+@auth.route('/deny_stall/<int:stall_id>', methods=['POST'])
+@role_required('admin')
+def deny_stall(stall_id):
+    stall = Stall.query.get_or_404(stall_id)
+    db.session.delete(stall)
+    db.session.commit()
+    flash(f'Stall "{stall.stallname}" has been denied and removed.', category='info')
+    return redirect(url_for('auth.admin_dashboard'))
+
 
 @auth.route('/aboutus')
 def aboutus():
@@ -192,14 +227,25 @@ def logout():
     flash('You have been logged out.', category='success')
     return redirect(url_for('auth.login'))
 
+<<<<<<< HEAD
 @auth.route('/add-product', methods=['GET', 'POST'])
 def add_product():
+=======
+@auth.route('/add_product', methods=['GET', 'POST'])
+@role_required('stall')
+def add_product():
+    if not isinstance(current_user, Stall):
+        flash('Only stall users can add products.', category='error')
+        return redirect(url_for('views.home'))
+
+>>>>>>> 294a072cadc494438e8014945f3508b48a4b4d3d
     if request.method == 'POST':
         product_name = request.form.get('product_name')
         product_des = request.form.get('product_des')
         product_type = request.form.getlist('product_type')
         product_cuisine = request.form.getlist('product_cuisine')
         price = request.form.get('price')
+<<<<<<< HEAD
 
         if not product_name or not price:
             flash('Product name and price are required.', category='error')
@@ -222,3 +268,139 @@ def add_product():
                 flash('Invalid price format. Please enter a number.', category='error')
 
     return render_template('add_product.html', text='Add Product')
+=======
+        product_file = request.files.get('product_pic')
+
+        product_filename = None
+
+        if product_file and product_file.filename != "":
+            product_filename = secure_filename(product_file.filename)
+            product_file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], product_filename))
+
+        if not product_name or len(product_name) < 5:
+            flash('Product name must be at least 5 characters long.', category='error')
+        elif not product_des or len(product_des) < 10:
+            flash('Product description must be at least 10 characters long.', category='error')
+        elif not product_type:   # request.form.getlist always returns a list
+            flash('Please select at least one product type.', category='error')
+        elif not product_cuisine:
+            flash('Please select at least one product cuisine.', category='error')
+        elif not price or float(price) <= 0:
+            flash('Please enter a valid positive price.', category='error')
+        else:
+            new_product = Product(
+                product_name=product_name,
+                product_des=product_des,
+                product_type=', '.join(product_type),
+                product_cuisine=', '.join(product_cuisine),
+                price=float(price),
+
+                stall_id=current_user.id ,
+                product_pic=product_filename if product_file else None
+            )
+
+            db.session.add(new_product)
+            db.session.commit()
+            flash('Product added successfully!', category='success')
+            return redirect(url_for('views.home'))  
+        
+
+    return render_template('add_product.html', text='Add Product Page')
+
+@auth.route('/email', methods=['GET', 'POST'])
+def email():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        check_email = User.query.filter_by(email=email).first()
+        if check_email:
+            return redirect(url_for('/reset_password'))
+        else:
+            flash('This email has not registered any account. Please register an account', category='info')
+            return redirect(url_for('auth.email'))
+    return render_template('email.html', text='Email Page')
+
+
+@auth.route("/map", methods=["GET"])
+def map_page():
+    seller_coordinates = db.session.query(Stall.latitude,Stall.longitude).all()
+    coordinates = []
+    for coordinate in seller_coordinates:
+        coordinates.append(list(coordinate))
+    return render_template("map.html",coordinates=coordinates)
+
+@auth.route('/view-map')
+@role_required('user')
+def view_map():
+    return render_template('view-map.html')
+
+@auth.route('/menu')
+@role_required('user')
+def menu():
+    products = Product.query.all()
+    return render_template('menu.html', products=products)
+
+@auth.route('/view-details')
+@role_required('user')
+def view_menu():
+    products = Product.query.all()
+    return render_template('view-details.html', products=products)
+
+@auth.route('/profile')
+@role_required('user')
+def profile():
+    return render_template('profile.html', user=current_user)
+
+@auth.route('/seller-profile')
+@role_required('stall')
+def seller_profile():
+    return render_template('seller-profile.html', user=current_user)
+
+@auth.route('/stall-menu' , methods=['GET', 'POST'])
+@role_required('stall')
+def stall_menu():
+    products = Product.query.filter_by(stall_id=current_user.id).all()
+    return render_template('stall-menu.html', products=products)
+
+@auth.route('/filter', methods=['GET', 'POST'])
+@role_required('user')
+def filter():
+    if request.method == 'POST':
+        selected_cuisines = request.form.getlist('cuisine')
+        selected_types = request.form.getlist('type')
+
+        query = Product.query
+
+        if selected_cuisines:
+            query = query.filter(
+                db.or_(*[Product.product_cuisine.ilike(f'%{cuisine}%') for cuisine in selected_cuisines])
+            )
+
+        if selected_types:
+            query = query.filter(
+                db.or_(*[Product.product_type.ilike(f'%{ptype}%') for ptype in selected_types])
+            )
+
+        filtered_products = query.all()
+        return render_template('filter.html', products=filtered_products, selected_cuisines=selected_cuisines, selected_types=selected_types)
+
+    return render_template('filter.html', products=[], selected_cuisines=[], selected_types=[])
+
+def random_hex():
+    return "#{:06x}".format(random.randint(0, 0xFFFFFF))
+
+@auth.route("/spin",methods=["GET","POST"])
+def food_spin():
+    items = [item.product_name for item in Product.query.all()] 
+    colors = [random_hex() for _ in items]
+    selected_food = random.randrange(0, len(items))
+
+    gradientColor = []
+    degree = 360/ len(items)
+    for i,color in enumerate(colors):
+        start = i * degree
+        end = (i + 1) * degree
+        gradientColor.append(f"{color} {start}deg {end}deg")
+    
+    seperator = "conic-gradient("+",".join(gradientColor) + ")"
+    return render_template("spin.html",items=items,seperator=seperator,selected_food=selected_food)
+>>>>>>> 294a072cadc494438e8014945f3508b48a4b4d3d

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stall Menu</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #fff; /* 白色背景，info-box 才会浮现 */
+    }
+
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 80px;
+      width: 100%;
+      background: rgb(164, 231, 250);
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      z-index: 1000;
+    }
+
+    .logo img {
+      height: 85px;
+      transform: translateX(-50px);
+    }
+
+    /* Banner */
+    .banner {
+      width: 100%;
+      height: 200px;
+      margin-top: 80px; /* 避开navbar */
+      position: relative;
+      background: #d6d4d4;
+      
+    }
+
+    .banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      
+    }
+
+    /* Back Button */
+    .back-btn {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: white;
+      border: none;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      display: flex;              /* ✅ 用flex来居中 */
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;      /* ✅ 避免a标签下划线 */
+      color: black;
+    }
+
+    /* Info Box */
+    .info-box {
+      width: 70%;
+      max-width: 1000px;
+      background: rgba(255, 255, 255, 0.9); /* 半透明白色 */
+      display: flex;
+      align-items: center;
+      padding: 30px 40px;
+      min-height: 180px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -100px; /* 下沉到banner底部 */
+      z-index: 10;
+      backdrop-filter: blur(3px); /* 背景虚化 */
+      border-radius: 15px;
+      border: 1px solid #ddd;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .avatar {
+        width: 60px;          /* 你想要的宽度 */
+        height: 60px;         /* 和宽度一样，就能看到正方形 */
+        border-radius: 10px;
+        margin-right: 20px;
+        object-fit: cover;
+   
+    }
+
+    .info-text h2 {
+      margin-bottom: 8px;
+      font-size: 22px;
+      white-space: nowrap;
+    }
+
+    .info-text p {
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 4px;
+    }
+
+    /* Menu Grid */
+    .menu {
+      margin-top: 300px; /* 给 info-box 腾出空间 */
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      width: 100%;
+    }
+
+    .menu-item {
+      background: #e8f5ff;   /* 浅蓝色，和白色背景区分 */
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .menu-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .menu-item img {
+      width: 100%;
+      height: 120px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .menu-item h3 {
+      margin: 10px 0 5px;
+      font-size: 16px;
+    }
+
+    .menu-item p {
+      font-size: 13px;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="navbar">
+      <div class="logo">
+        <img src="{{ url_for('static', filename='photos/logo.png') }}" alt="mmu logo">
+      </div>  
+    </div>
+  </nav>    
+
+  <!-- Background Banner -->
+  <div class="banner">
+    <img src="banner-placeholder.jpg" alt="Banner">
+    <a href="map.html" class="back-btn">
+      <i class="fa-solid fa-arrow-left"></i>
+    </a>
+
+
+    <!-- Info Box -->
+    <div class="info-box">
+      <img src="avatar.jpg" alt="Store Avatar" class="avatar">
+      <div class="info-text">
+        <h2>Rasa Shiokk</h2>
+        <p><em>MMU Starbees</em></p>
+        <p>⭐ 4.0</p>
+        <p>RM1 - RM20</p>
+    </div>
+  </div>
+
+  <!-- Food Menu -->
+  <div class="menu">
+    <div class="menu-item">
+      <img src="food1.jpg" alt="Food 1">
+      <h3>Black Pepper Chicken Chop</h3>
+      <p>Chicken chop fried with fries, vegetables, black pepper and chili sauce.</p>
+    </div>
+    <div class="menu-item">
+      <img src="food2.jpg" alt="Food 2">
+      <h3>Chicken Burger Set</h3>
+      <p>Crispy chicken burger with fries, vegetables, mayo and sauce.</p>
+    </div>
+    <div class="menu-item">
+      <img src="food3.jpg" alt="Food 3">
+      <h3>Hainanese Chicken Chop</h3>
+      <p>Chicken chop fried with fries, vegetables, Hainanese sauce.</p>
+    </div>
+    <div class="menu-item">
+      <img src="food4.jpg" alt="Food 4">
+      <h3>Grilled Fish Set</h3>
+      <p>Fresh grilled fish with salad and homemade sauce.</p>
+    </div>
+  </div>
+
+</body>
+</html>

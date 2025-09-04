@@ -10,6 +10,36 @@
      <!--Leaflet-->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js"></script>
+    <meta name="viewport" content="width=1200, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <style>
+    body {
+  min-width: 1200px; /* 页面至少 1200px 宽 */
+   
+}
+
+        .image-box {
+    display: flex;
+    flex-direction: column; /* 上下排列：icon/图片在上，文件名在下 */
+    align-items: center;
+    gap: 8px; /* 图片和文件名之间的间距 */
+}
+
+.image-box img {
+    max-width: 130px; /* 调整图片宽度 */
+    max-height: 150px; /* 调整图片高度 */
+    display: none; /* 默认隐藏，JS 控制显示 */
+    border-radius: 8px; /* 可选，圆角 */
+}
+
+.file-name {
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+}
+
+    </style>
 </head>
 <body>
     <nav>
@@ -54,35 +84,45 @@
                 <input type="text" name="password2" placeholder="Comfirm Password" required>
                 
                 <div class="operating-hours">
-                    <input type="text" name="openhour" placeholder="Open Hours" required>
-                    <input type="text" name="closehour" placeholder="Close Hours" required>
+                    <input type="text" name="openhour" placeholder="Open Hours       e.g: 10:00" required>
+                    <input type="text" name="closehour" placeholder="Close Hours        e.g: 14:00" required>
                 </div>
 
                 <textarea placeholder="Stall Description" required></textarea>
             </div>
+    
 
-            <div class="image-upload">
+    <div class="image-upload">
+        <div class="image-box">
+            <p class="upload-title">Stall Image:</p>
+            <label class="upload-area" for="prof_pic">
+                
+                <i id="stall-icon"  class="fa-solid fa-image"></i>
+                <input type="file" name="prof_pic" id="prof_pic" accept="image/*">
+            </label>
+            
+            <img id="stall-preview" src="#" alt="Stall Preview"
+            style="max-width:200px; display:none;">
+            <p class="file-name" id="prof_pic_name">No file chosen</p>
+             <button type="button" id="stall-clear" class="btn btn-sm btn-outline-secondary">Clear</button>   
+        </div>
 
-                <div class="image-box">
-                    <p class="upload-title">Stall Image:</p>
-                    <label class="upload-area">
-                        <i class="fa-solid fa-image"></i>
-                        <input type="file" id="prof_pic" accept="image/*">
-                       
-                    </label>
-                     <p class="file-name" id="prof_pic_name">No file chosen</p>
-                    
-                </div>
 
-                <div class="image-box">
-                    <p class="upload-title">Background Image:</p>
-                    <label class="upload-area">
-                        <i class="fa-solid fa-image"></i>
-                        <input type="file" id="bg_pic" accept="image/*"> 
-                    </label>
-                    <p class="file-name" id="bg_pic_name">No file chosen</p>
-                </div>
-            </div>
+        <div class="image-box">
+            <p class="upload-title">Background Image:</p>
+            <label class="upload-area" for="bg_pic">
+                <i  id="bg-icon" class="fa-solid fa-image"></i>
+                <input type="file" name="bg_pic" id="bg_pic" accept="image/*"> 
+            </label>
+            
+            <!-- Preview image -->
+            <img id="bg-preview" src="#" alt="Background Preview"
+             style="max-width:400px; display:none;">
+            <p class="file-name" id="bg_pic_name">No file chosen</p>
+            <button type="button" id="bg-clear" class="btn btn-sm btn-outline-secondary">Clear</button>
+                
+        </div>
+    </div>
 
             <div class="map-section">
                 <p class="map-title">📍 Pin Your Location Here:</p>
@@ -103,72 +143,103 @@
 
     </section>
 
-    <script>
-       function replaceIconWithImage(input) {
-            const file = input.files[0];
-            const label = input.parentElement;// 找到 label
+            <script>
+            // Function for preview
+            function previewImage(input, previewId, iconId, fileNameId) {
+    const file = input.files[0];
+    const preview = document.getElementById(previewId);
+    const icon = document.getElementById(iconId);
+    const fileName = document.getElementById(fileNameId);
 
-        // 先找现有的 img 和 icon
-    let img = label.querySelector("img");
-    let icon = label.querySelector("i");
+    if(file){
+        // 显示预览图
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
 
+        // 隐藏图标
+        icon.style.display = "none";
 
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const label = input.parentElement;  // 找到 label
-            const icon = label.querySelector("i"); // 找到里面的 icon
-
-            // 检查是否已经有 <img>
-            let img = label.querySelector("img");
-            if (!img) {
-                img = document.createElement("img");
-                img.style.width = "120px";     // 预览图大小
-                img.style.height = "100px";
-                img.style.objectFit = "cover";
-                img.style.borderRadius = "12px";
-
-                label.insertBefore(img, input); // 放在 input 前面
-                if (icon) icon.remove(); // 移除原来的 icon
-            }
-            img.src = e.target.result; // 设置预览图
-        };
-        reader.readAsDataURL(file);
+        // 显示文件名
+        fileName.innerText = file.name;
     } else {
-        // 如果没文件，就恢复原来的 icon
-        if (img) img.remove();
-        if (!icon) {
-            const newIcon = document.createElement("i");
-            newIcon.className = "fa-solid fa-image";
-            label.insertBefore(newIcon, input);
-        }
+        // 恢复默认
+        preview.style.display = "none";
+        icon.style.display = "inline";
+        fileName.innerText = "No file chosen";
     }
 }
-    
 
-       
-        // Stall Image
-        document.getElementById("prof_pic").addEventListener("change", function(){
-          const fileName = this.files.length > 0 ? this.files[0].name : "No file chosen";
-          document.getElementById("prof_pic_name").textContent = fileName;
-          replaceIconWithImage(this); // ✅ 调用函数显示预览图
-        });
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("prof_pic").addEventListener("change", function() {
+        previewImage(this, "stall-preview", "stall-icon", "prof_pic_name");
+    });
+    // 1. When user selects a file for profile picture input
+    // Call previewImage() to show a preview of the selected picture
+    document.getElementById("bg_pic").addEventListener("change", function() {
+        previewImage(this, "bg-preview", "bg-icon", "bg_pic_name");
+    });
+});
 
-        // Background Image
-        document.getElementById("bg_pic").addEventListener("change", function(){
-          const fileName = this.files.length > 0 ? this.files[0].name : "No file chosen";
-          document.getElementById("bg_pic_name").textContent = fileName;
-          replaceIconWithImage(this); // ✅ 调用函数显示预览图
-        });
+
+    document.getElementById("stall-clear").addEventListener("click", function() {
+    const input = document.getElementById("prof_pic");
+    const preview = document.getElementById("stall-preview");
+    const icon = document.getElementById("stall-icon");
+    const fileName = document.getElementById("prof_pic_name");
+
+    input.value = "";           // 清空 input
+    preview.style.display = "none"; // 隐藏图片
+    icon.style.display = "inline";  // 显示图标
+    fileName.innerText = "No file chosen"; // 恢复文字
+});
+
+
+    document.getElementById("bg-clear").addEventListener("click", function() {
+    const input = document.getElementById("bg_pic");
+    const preview = document.getElementById("bg-preview");
+    const icon = document.getElementById("bg-icon");
+    const fileName = document.getElementById("bg_pic_name");
+
+    input.value = "";           // 清空 input
+    preview.style.display = "none"; // 隐藏图片
+    icon.style.display = "inline";  // 显示图标
+    fileName.innerText = "No file chosen"; // 恢复文字
+});
+
 
     </script>
-</body>
-</html>
 
     <!--Map JavaScript-->
    <script>
-        const map = L.map("map");
+        const bounds = L.latLngBounds(
+            L.latLng(2.92416147468388,101.63546562194826), //SW
+            L.latLng(2.931511848931281,101.64844751358034), //NE
+        )
+
+        const map = L.map("map", {
+            maxBounds:bounds,
+            maxBoundsViscosity:0.5
+        });
         map.setView([2.92836,101.64188],16);
+
+        const CampusPolygon = L.polygon([
+            [2.9308261017708594,101.64134502410889],
+            [2.9307403833462593,101.64306163787842],
+            [2.9294760358209055,101.64351224899293],
+            [2.928876005987246,101.64334058761598],
+            [2.9286188502458277,101.64542198181154],
+            [2.926797328720634,101.64615154266359],
+            [2.924482920629856,101.64608716964723],
+            [2.9245257800823707,101.64278268814088],
+            [2.924932944799449,101.64254665374757],
+            [2.9249543745173034,101.64108753204347],
+            [2.9265830318759347,101.64031505584718],
+            [2.927525937686099,101.63904905319215],
+            [2.928918865271738,101.63909196853639],
+            [2.9290260134757933,101.64012193679811],
+        ]);
+
+        const CampusGeoJSON = L.geoJSON(CampusPolygon.toGeoJSON());
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 20, //Setting Max Zoom to 20(Enough)
@@ -178,25 +249,37 @@
         //https://youtu.be/NyjMmNCtKf4?si=SwNnJNahhkbyNH-h
         //marker
         let marker;
+        const initialPosition = [2.9275634396053176,101.64166688919067];
         
         navigator.geolocation.watchPosition(success, error);
 
         function success(pos) {
             const lat = pos.coords.latitude;
             const lng = pos.coords.longitude;
+            const userPosition = L.latLng(lat,lng);
 
             if (!marker) {
-                marker = L.marker([lat,lng],{
-                draggable: true
-                }).addTo(map);
-
-                marker.on("dragend",position);
+                if(bounds.contains(userPosition)) {
+                    
+                    marker = L.marker([lat,lng],{
+                    draggable: true
+                    }).addTo(map);
+                    MarkerRestrict();
+                    position();
+                } else {
+                    marker = L.marker(initialPosition,{
+                    draggable: true
+                    }).addTo(map);
+                    MarkerRestrict();
+                    position();
+                }
             }
 
             else {
-                marker.setLatLng([lat,lng]);
+                if(bounds.contains(userPosition)) {
+                    marker.setLatLng([lat,lng]);
                 position();
-            }
+            }}
         }
 
         function error(err) {
@@ -205,6 +288,13 @@
             } else {
                 alert("Cannot get current location")
             }
+            
+            //error also can have an initial point
+            marker = L.marker(initialPosition,{
+                    draggable: true
+                    }).addTo(map);
+            MarkerRestrict();
+            position();
         }
 
         function position() {
@@ -214,4 +304,18 @@
             console.log(GetPosition.lat,GetPosition.lng)
             }
 
+        function MarkerRestrict() {
+            marker.on("dragend", function() {
+                const CurrentPosition = marker.getLatLng();
+                const InsideCampus = leafletPip.pointInLayer([CurrentPosition.lng, CurrentPosition.lat],CampusGeoJSON); //leaflet format is lng lat
+
+                if (InsideCampus.length === 0) {
+                    alert("Please select location inside campus!");
+                    marker.setLatLng(initialPosition);
+                }
+                position();
+            });
+        }
     </script>
+</body>
+</html>

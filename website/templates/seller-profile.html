@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seller Profile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <link rel="stylesheet" href="seller-profile.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f5f5;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 80px;
+      width: 100%;
+      background: rgb(164, 231, 250);
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      z-index: 1000;
+    }
+
+    .logo img {
+      height: 85px;
+      transform: translateX(-50px);
+    }
+
+    /* Banner */
+    .banner {
+      width: 100%;
+      height: 150px;
+      margin-top: 80px; /* 避开navbar */
+      position: relative;
+    }
+
+    .banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Seller card - 半透明浮在banner底部和content上方 */
+    .seller-card {
+      width: 70%;
+      max-width: 100%;
+      background: rgba(255, 255, 255, 0.85); /* 半透明白色 */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 30px 40px;
+      min-height: 180px;
+      position: absolute;
+      margin: -50px auto 10px 190px;
+      bottom: -150px; /* 卡片下沉到banner底部 */
+      z-index: 10;
+      backdrop-filter: blur(1px); /* 背景虚化 */
+      border-radius: 15px;
+      border: 2px solid black;
+    }
+
+    .seller-info h2 {
+      font-size: 30px;
+      margin-bottom: 50px;
+    }
+
+    .seller-info p {
+      font-size: 14px;
+      color: #333;
+    }
+
+    .seller-shop {
+      text-align: center;
+    }
+
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .shop-name {
+      font-size: 14px;
+      margin-top: 5px;
+      font-weight: bold;
+    }
+
+    /* 白色内容区 (location + product + add btn) */
+    .content-box {
+      width: 100%;
+      background: #fff;
+      
+      padding: 20px;
+      margin-top: 60px; /* 让出 seller-card 的位置 */
+      min-height: 200px; /*  可以设个最小高度，避免太扁 */
+      
+    }
+
+    .content-box h3 {
+      font-size: 16px;
+      margin: 100px 0 10px;
+    }
+
+    .map {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    /* Product */
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .product {
+      background: #f9f9f9;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .product img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+
+    .product-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: #000;
+    }
+
+    /* Add Product Button */
+    .add-btn {
+      text-align: right;
+      margin-top: 150px;
+      left: 0;
+    }
+
+    .add-btn a {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 45px;
+      height: 45px;
+      border: 2px solid #000;
+      border-radius: 10px;
+      font-size: 22px;
+      color: #000;
+      text-decoration: none;
+    }
+
+     .logout-btn {
+      background-color: #007bff;
+      border: none;
+      color: white;
+      padding: 10px 30px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      display: block;        /* 转成块级 */
+      margin: 20px auto;     /* 左右自动，居中 */
+    }
+
+    .logout-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+   <!-- Navbar -->
+   <nav>
+        <div class="navbar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='photos/logo.png') }}" alt="mmu logo">
+            </div>  
+        </div>
+   </nav>    
+
+  <!-- Background Banner -->
+  <div class="banner">
+    <img src="banner-placeholder.jpg" alt="Banner">
+
+    <!-- Seller Info Card (浮在banner底部) -->
+    <div class="seller-card">
+      <div class="seller-info">
+        <h2>Seller’s Profile</h2>
+        <p class="name">Ali</p>
+        <p class="email">Ali@gmail.com</p>
+      </div>
+      <div class="seller-shop">
+        <img src="avatar-placeholder.jpg" alt="Avatar" class="avatar">
+        <p class="shop-name">Rasa shiokk</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content (Location + Product + Add button) -->
+  <div class="content-box">
+    <h3>Your Location :</h3>
+    <img src="map-placeholder.jpg" alt="Map" class="map">
+
+    <h3>Your Product :</h3>
+    <div class="products">
+      <div class="product">
+        <img src="food1.jpg" alt="Product">
+        <p class="product-name">Chicken Chop</p>
+      </div>
+      <div class="product">
+        <img src="food2.jpg" alt="Product">
+        <p class="product-name">Nasi Lemak</p>
+      </div>
+      <div class="product">
+        <img src="food3.jpg" alt="Product">
+        <p class="product-name">Burger</p>
+        </div>
+      </div>
+
+
+    <!-- Add Product Button -->
+    <div class="add-btn">
+      <a href="add_product.html"><i class="fa-solid fa-plus"></i></a>
+      
+    </div>
+
+    <button  class="logout-btn" onclick="logout()">Log out</button>
+  </div>
+
+    <script>
+      function logout() {
+    // 清理登录状态 (比如清理 localStorage / sessionStorage)
+    // localStorage.removeItem("token");
+
+    // 然后跳转
+      window.location.href = "intro.html";
+     }
+    </script>
+
+
+</body>
+</html>

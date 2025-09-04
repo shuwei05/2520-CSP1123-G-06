@@ -41,9 +41,9 @@
       margin: 10px 0;
       font-weight: bold;
       background: linear-gradient(90deg, #0077ff, #00c6ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-       transform: translateY(-30px);
+        -webkit-background-clip: text;   /* Clips background to the shape of text */
+        -webkit-text-fill-color: transparent; /* Makes the actual text color invisible */
+      transform: translateY(-30px);
     }
 
     .mini-w {
@@ -113,7 +113,7 @@
 <body>
   <div class="con">
     <form class="form">
-      <img src="email.png" alt="email">
+      <img src="{{ url_for('static', filename='photos/email.png') }}" alt="email">
       <h1>Forgot your password?</h1>
       <p class="mini-w">Enter your email so that we can send your password reset link</p>
 
@@ -121,7 +121,7 @@
       <input type="email" id="email" placeholder="e.g username@gmail.com" required>
 
       <button type="submit">Send Email</button>
-      <a href="login.html">&lt; Back to Login</a>
+      <a href="/login">&lt; Back to Login</a>
     </form>
   </div>
 </body>
