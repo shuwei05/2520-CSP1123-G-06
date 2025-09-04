@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <title>Admin Login</title>
   <style>
     body {
@@ -13,6 +14,7 @@
       align-items: center;
       height: 100vh;
       margin: 0;
+      flex-direction: column;
     }
 
     .login-box {
@@ -22,6 +24,7 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.15);
       width: 350px;
       text-align: center;
+      margin: auto; /* 居中 */
     }
 
     .login-box img {
@@ -85,29 +88,60 @@
       font-size: 13px;
       color: #666;
     }
+
+    /* Flash 提示放最底部 */
+    .container.mt-3 {
+      position: absolute;
+      top: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .container.mt-3 .alert {
+      width: 350px;
+    }
   </style>
 </head>
 <body>
-   
+  
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+         {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+         {% endfor %}
+        {% endif %}
+    {% endwith %}
+    </div>
+    
 
   <div class="login-box">
     <img src="{{ url_for('static', filename='photos/mmulogo3.png') }}" alt="MMU Logo">
     <h2>Admin Login</h2>
-    <form>
+    <form action="/admin-login" method="POST">
       <div class="input-box">
         <label for="username">Username</label>
-        <input type="text" id="username" placeholder="Enter admin username" required>
+        <input type="text" id="username" name="admin_name" placeholder="Enter admin username" required>
       </div>
 
       <div class="input-box">
         <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Enter password" required>
+        <input type="password" id="password" name="admin_password" placeholder="Enter password" required>
       </div>
 
       <button type="submit" class="btn">Login</button>
     </form>
     <p class="note">Only authorized administrators can log in.</p>
   </div>
+
+  
+      
+   
 
 </body>
 </html>

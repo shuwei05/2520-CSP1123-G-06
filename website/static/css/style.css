@@ -12,7 +12,7 @@
     position: fixed;
     top:0 ; /* Aligns the navbar to the top edge of the page */
     left: 0;
-    height: 80px;
+    height: 90px;
     width: 100%;
     background: rgb(164, 231, 250);
     display: flex;
@@ -36,6 +36,7 @@
     list-style: none; /* Removes default bullet points from <ul>/<li> */
     display: flex;  
     gap: 20px;
+    margin-top: 15px;
 }
 
 .nav-link a{
@@ -52,6 +53,7 @@
     border-left: 2px solid black;
     padding-left: 20px;
     margin-left: 1px;
+    
 }
 .text-content{
     flex: 1;
