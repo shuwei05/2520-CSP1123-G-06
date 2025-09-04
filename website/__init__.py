@@ -57,13 +57,15 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
-        user = User.query.get(int(user_id))
-        if user:
-            return user
-    
-        stall= Stall.query.get(int(user_id))
-        if stall:
-            return stall
+        try:
+            model, real_id = user_id.split("-", 1)
+        except ValueError:
+            return None
+
+        if model == "user":
+            return User.query.get(int(real_id))
+        elif model == "stall":
+            return Stall.query.get(int(real_id))
         return None
 
     from .views import views
@@ -80,7 +82,7 @@ def create_app():
 
     return app
 
-def role_required(role):
+def role_required(*role):
     def decorator(f):
         from flask_login import current_user
         from functools import wraps
@@ -89,9 +91,11 @@ def role_required(role):
 
             if not current_user.is_authenticated:
                 flash("Please log in to access this page.", category="error")
-                return redirect(url_for("auth.admin"))
+                return redirect(url_for("auth.login"))
+            
+            user_role = getattr(current_user, 'role', None)
     
-            if current_user.role != role:
+            if user_role not in role:
                 flash('Access denied. Insufficient permissions.', category='error')
                 return redirect(url_for('views.home'))
                 

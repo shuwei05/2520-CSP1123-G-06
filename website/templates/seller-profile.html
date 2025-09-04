@@ -198,7 +198,7 @@
 
   <!-- Background Banner -->
   <div class="banner">
-    <img src="banner-placeholder.jpg" alt="Banner">
+    <img src="{{ url_for('static', filename='photos/banner-placeholder.jpg') }}" alt="Banner">
 
     <!-- Seller Info Card (浮在banner底部) -->
     <div class="seller-card">
@@ -208,7 +208,7 @@
         <p class="email">Ali@gmail.com</p>
       </div>
       <div class="seller-shop">
-        <img src="avatar-placeholder.jpg" alt="Avatar" class="avatar">
+        <img src="{{ url_for('static', filename='photos/avatar-placeholder.jpg') }}" alt="Avatar" class="avatar">
         <p class="shop-name">Rasa shiokk</p>
       </div>
     </div>
@@ -238,7 +238,7 @@
 
     <!-- Add Product Button -->
     <div class="add-btn">
-      <a href="add_product.html"><i class="fa-solid fa-plus"></i></a>
+      <a href="/add_product"><i class="fa-solid fa-plus"></i></a>
       
     </div>
 
