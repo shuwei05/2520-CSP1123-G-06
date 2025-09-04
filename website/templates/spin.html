@@ -8,12 +8,12 @@
         body{
             margin: 0;
             padding: 0;
-            overflow-x: hidden;  /* hide horizontal overflow */
             width: 100%;
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
 
         .navbar{
@@ -81,6 +81,11 @@
             z-index: -1;
         }
 
+         @keyframes spin {
+            from {transform: rotate(0deg);}
+            to {transform: rotate(360deg);}
+        }
+
         .spin-wheel {
             position: absolute;
             width: 100%;
@@ -92,6 +97,7 @@
             border-width: 10px;
             border-color: rgb(60, 60, 60);
             box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            animation: spin 20s linear infinite;
         }
 
         .spin-items {
@@ -105,6 +111,7 @@
                 translateY(-160px)
                 rotate(90deg);
             }  
+
     </style>
 </head>
 <body>
