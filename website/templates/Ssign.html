@@ -239,7 +239,7 @@ document.addEventListener("DOMContentLoaded", function() {
             [2.9290260134757933,101.64012193679811],
         ]);
 
-        const CampusGeoJSON = L.geoJSON(CampusPolygon.toGeoJSON());
+        const CampusGeoJSON = L.geoJSON(CampusPolygon.toGeoJSON()); //addtomap put here to show polygon
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 20, //Setting Max Zoom to 20(Enough)
