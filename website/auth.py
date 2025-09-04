@@ -262,7 +262,7 @@ def random_hex():
 def food_spin():
     items = [item.product_name for item in Product.query.all()] 
     colors = [random_hex() for _ in items]
-    selected_food = random.randrange(0, len(items) - 1)
+    selected_food = random.randrange(0, len(items))
 
     gradientColor = []
     degree = 360/ len(items)

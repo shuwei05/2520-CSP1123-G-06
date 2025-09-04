@@ -81,10 +81,12 @@
             z-index: -1;
         }
 
+        
          @keyframes spin {
             from {transform: rotate(0deg);}
             to {transform: rotate(360deg);}
         }
+        
 
         .spin-wheel {
             position: absolute;
@@ -124,8 +126,8 @@
     </nav>
 
     <div class="spin-container">
-        <button type="submit" class="spin-button">SPIN</button>
-        <div class="spin-wheel" style="--bgColor: {{seperator}}">
+        <button type="submit" class="spin-button" id="spin-button">SPIN</button>
+        <div class="spin-wheel" id="spin-wheel" style="--bgColor: {{seperator}}">
             {% for item in items %}
                 {% set index = loop.index0 %} <!--index0 = start from 0, else index start from 1-->
                 <div class="spin-items" style="--total: {{items|length}}; --index: {{index}};">
@@ -135,6 +137,25 @@
         </div>
     </div>
 
-    
+    <script>
+        const spinWheel = document.getElementById("spin-wheel");
+        const spinButton = document.getElementById("spin-button");
+        const total = Number("{{items|length}}"); //let the data become num
+        const selectedFood = Number("{{ selected_food }}");
+        let currentAngle = 0;
+
+        spinButton.onclick = function(){
+            const angle = 360 / total;
+            const randomSpins = 3;
+            const finalAngle = 360 * randomSpins + (selectedFood * angle + angle/6.5);
+
+            currentAngle = currentAngle + finalAngle;
+            
+            spinWheel.style.animation = "none";
+
+            spinWheel.style.transition = "transform 3s ease-out"; //animation else direct degree v
+            spinWheel.style.transform = "rotate(" + currentAngle +"deg)";
+        }   
+    </script>
 </body>
 </html>
