@@ -4,7 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seller Add Product Page</title>
+<<<<<<< HEAD
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/add_product.css') }}">
+=======
    <link rel="stylesheet" href="{{ url_for('static', filename='css/add_product.css') }}">
+>>>>>>> 294a072cadc494438e8014945f3508b48a4b4d3d
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 </head>
 
@@ -12,7 +16,11 @@
     <nav>
         <div class="navbar">
             <div class="logo">
+<<<<<<< HEAD
+                <img src= "{{ url_for('static', filename='photos/logo.png') }}" alt="mmu logo">
+=======
                 <img src="{{ url_for('static', filename='photos/logo.png') }}" alt="mmu logo">
+>>>>>>> 294a072cadc494438e8014945f3508b48a4b4d3d
             </div>   
         </div>
     </nav>
@@ -30,41 +38,69 @@
         <form class="form-box" method="POST" action="{{ url_for('auth.add_product') }}" enctype="multipart/form-data">
             <div class="container">
                 <section class="container-2">
+<<<<<<< HEAD
+                    <div class="product_name">
+                        <label for="product_name">Product Name:</label>
+                        <input type="text" id="product_name">
+=======
                     <div class="product-name">
                         <label for="product-name">Product Name:</label>
                         <input type="text" id="product-name" name="product_name">
+>>>>>>> 294a072cadc494438e8014945f3508b48a4b4d3d
                     </div>
 
-                    <div class="product-type">
+                    <div class="product_type">
                         <label id="pt-text">Product Type:</label>
                         <div id="pt-selection">
+<<<<<<< HEAD
+                            <label class="product_type_checkbox" name="product_type">Food<input type="checkbox"></label>
+                            <label class="product_type_checkbox" name="product_type">Beverages<input type="checkbox"></label>
+=======
                             <label class="product_type_checkbox">Food<input type="checkbox" name ="product_type" value="Food"></label>
 
                             <label class="product_type_checkbox">Beverages<input type="checkbox"  name ="product_type" value="Beverages"></label>
 
+>>>>>>> 294a072cadc494438e8014945f3508b48a4b4d3d
                         </div>
                     </div>
                 </section>
 
                 <section class="container-3">
+<<<<<<< HEAD
+                    <label for="price">Product Price:</label>
+                    <input type="text" id="price">
+=======
                     <label for="product_price">Product Price:</label>
                     <input type="text" id="product_price" name="price">
+>>>>>>> 294a072cadc494438e8014945f3508b48a4b4d3d
                 </section>
 
                 <section class="container-4">
                     <div id="text">
                         <label>Product Cuisine:</label>
                     </div>
+<<<<<<< HEAD
+                    <label class="product_cuisine" name="product_cuisine">Malay Cuisine<input type="checkbox"></label>
+                    <label class="product_cuisine" name="product_cuisine">Chinese Cuisine<input type="checkbox"></label>
+                    <label class="product_cuisine" name="product_cuisine">Western Cuisine<input type="checkbox"></label>
+                    <label class="product_cuisine" name="product_cuisine">Drinks<input type="checkbox"></label>
+                    <label class="product_cuisine" name="product_cuisine">Dessert<input type="checkbox"></label>
+=======
                     <label class="product_cuisine">Malay Cuisine<input type="checkbox" name="product_cuisine" value="Malay Cuisine"></label>
                     <label class="product_cuisine">Chinese Cuisine<input type="checkbox" name="product_cuisine" value="Chinese Cuisine"></label>
                     <label class="product_cuisine">Western Cuisine<input type="checkbox" name="product_cuisine" value="Western Cuisine"></label>
                     <label class="product_cuisine">Drinks<input type="checkbox" name="product_cuisine" value="Drinks"></label>
                     <label class="product_cuisine">Dessert<input type="checkbox" name="product_cuisine" value="Dessert"></label>
+>>>>>>> 294a072cadc494438e8014945f3508b48a4b4d3d
                 </section>
 
                 <section class="container-5">
                     <label for="product_des">Product Ingredients/Descriptions:</label>
+<<<<<<< HEAD
+                    <textarea id="product_des"></textarea>
+=======
                     <textarea name="product_des"></textarea>
+>>>>>>> 294a072cadc494438e8014945f3508b48a4b4d3d
                 </section>
 
                 <section class="container-6">
