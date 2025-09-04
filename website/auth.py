@@ -8,6 +8,7 @@ from werkzeug.utils import secure_filename
 import os
 import random
 from website import role_required
+import uuid
 
 auth = Blueprint('auth',__name__)
 
@@ -133,7 +134,9 @@ def Slogin():
             if check_password_hash(stall.password1, password1):
                 flash('Stall Logged in successfully!', category='success')
                 login_user(stall, remember=True)
-                return redirect(url_for('views.home'))
+                print(f"Seller logged in: {stall.stallname}, role={stall.role}")
+
+                return redirect(url_for('/seller-profile'))
             else:
                 flash('Incorrect password, try again.', category='error')
         else:
@@ -223,6 +226,8 @@ def forgot_password():
 @auth.route('/logout') 
 @login_required
 def logout():
+    role = getattr(current_user, 'role', None)
+    print(f"Logging out user: {current_user}")
     logout_user()
     flash('You have been logged out.', category='success')
     return redirect(url_for('auth.login'))
@@ -230,9 +235,6 @@ def logout():
 @auth.route('/add_product', methods=['GET', 'POST'])
 @role_required('stall')
 def add_product():
-    if not isinstance(current_user, Stall):
-        flash('Only stall users can add products.', category='error')
-        return redirect(url_for('views.home'))
 
     if request.method == 'POST':
         product_name = request.form.get('product_name')
@@ -242,11 +244,6 @@ def add_product():
         price = request.form.get('price')
         product_file = request.files.get('product_pic')
 
-        product_filename = None
-
-        if product_file and product_file.filename != "":
-            product_filename = secure_filename(product_file.filename)
-            product_file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], product_filename))
 
         if not product_name or len(product_name) < 5:
             flash('Product name must be at least 5 characters long.', category='error')
@@ -265,14 +262,22 @@ def add_product():
                 product_type=', '.join(product_type),
                 product_cuisine=', '.join(product_cuisine),
                 price=float(price),
-
                 stall_id=current_user.id ,
-                product_pic=product_filename if product_file else None
             )
 
             db.session.add(new_product)
-            db.session.commit()
+            db.session.flush()
+
+            if product_file and product_file.filename != "":
+                ext = os.path.splitext(product_file.filename)[1]
+                product_filename =f"{new_product.id}{ext}"
+                product_file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], product_filename))
+                new_product.product_pic = product_filename
+                db.session.commit()
+
             flash('Product added successfully!', category='success')
+
+
             return redirect(url_for('views.home'))  
         
 
