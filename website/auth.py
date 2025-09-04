@@ -262,5 +262,14 @@ def random_hex():
 def food_spin():
     items = [item.product_name for item in Product.query.all()] 
     colors = [random_hex() for _ in items]
-    zipFile = list(zip(items,colors))
-    return render_template("spin.html",items=items,zipFile=zipFile)
+    selected_food = random.randrange(0, len(items) - 1)
+
+    gradientColor = []
+    degree = 360/ len(items)
+    for i,color in enumerate(colors):
+        start = i * degree
+        end = (i + 1) * degree
+        gradientColor.append(f"{color} {start}deg {end}deg")
+    
+    seperator = "conic-gradient("+",".join(gradientColor) + ")"
+    return render_template("spin.html",items=items,seperator=seperator,selected_food=selected_food)

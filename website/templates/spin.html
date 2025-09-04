@@ -47,6 +47,7 @@
             justify-content: center;
             align-items: center;
             z-index: 100;
+            margin-top: 80px;
         }
 
         .spin-container .spin-button {
@@ -59,7 +60,7 @@
             border-radius: 30px;
             border-style: solid;
             border-width: 5px;
-            border-color: grey;
+            border-color: rgb(97, 97, 97);
             box-shadow: 0 0 15px rgba(0,0,0,0.3);
             cursor: pointer;
         }
@@ -81,47 +82,29 @@
         }
 
         .spin-wheel {
-            position: relative;
+            position: absolute;
             width: 100%;
             height: 100%;
-            border-style: solid;
-            border-color: grey;
-            border-width: 5px;
             border-radius: 50%;
-            overflow: hidden;
             z-index: -2;
-            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            background: var(--bgColor);
+            border-style: solid;
+            border-width: 10px;
+            border-color: rgb(60, 60, 60);
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
         }
 
-        .spin-wheel .item {
+        .spin-items {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: -2%;
-            transform-origin: center center;
-            transform: rotate(calc(360deg / var(--total) * var(--index)));
-                
-            clip-path: polygon(50% 50%, 100% 0%, 100% 100%);
-            background-color: var(--backgroundColor);
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding-right: 20px;
-            }
-
-        .spin-wheel .item p {
-            position: absolute;
-            transform: rotate(180deg)
-                       translate(50px);
-            font-size: 16px;
-            font-family: Arial;
-            font-weight: bold;
-            display: flex;
-            justify-content: flex-start;
-            z-index: 300;
-        }
-            
+            top: 50%;
+            left: 50%;
+            transform-origin: center;
+            transform: 
+                translate(-50%, -50%) /*middle*/
+                rotate(calc(360deg / var(--total) * var(--index) + 180deg / var(--total))) /*reduce 90deg*/
+                translateY(-160px)
+                rotate(90deg);
+            }  
     </style>
 </head>
 <body>
@@ -135,13 +118,12 @@
 
     <div class="spin-container">
         <button type="submit" class="spin-button">SPIN</button>
-
-        <div class="spin-wheel">
-            {% for item,color in zipFile %} 
+        <div class="spin-wheel" style="--bgColor: {{seperator}}">
+            {% for item in items %}
                 {% set index = loop.index0 %} <!--index0 = start from 0, else index start from 1-->
-                <div class="item" style="--total: {{ items|length }}; --index: {{index}}; --backgroundColor: {{color}}"> <!-- --total = custom property, use var() to read it; | = filter in jinja-->
-                    <p>{{ item }}</p>
-                </div>    
+                <div class="spin-items" style="--total: {{items|length}}; --index: {{index}};">
+                    {{ item }}
+                </div>
             {% endfor %}
         </div>
     </div>
