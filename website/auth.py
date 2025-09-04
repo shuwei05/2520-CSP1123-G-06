@@ -361,13 +361,19 @@ def filter():
 
     return render_template('filter.html', products=[], selected_cuisines=[], selected_types=[])
 
-def random_hex():
-    return "#{:06x}".format(random.randint(0, 0xFFFFFF))
+#def random_hex():
+#    return "#{:06x}".format(random.randint(0, 0xFFFFFF))
 
 @auth.route("/spin",methods=["GET","POST"])
 def food_spin():
     items = [item.product_name for item in Product.query.all()] 
-    colors = [random_hex() for _ in items]
+    color_Library = ["#FF8383", "#FFBFAF", "#FFD6A5", "#FFF574", "#FFF9A0",
+                     "#A1D6CB", "#78C8B5", "#57BCA0", "#3FA78C", "#2E8F78",
+                     "#A19AD3", "#9C8ED9", "#9383E0", "#8A78E5", "#8070EB",
+                     "#FF9999", "#FFB3AA", "#FFCCBB", "#FFE6CC", "#FFF0D1",
+                     "#B0E0E6", "#9FD6E5", "#8FCDE4", "#7EC4E3", "#6DBBE2",
+                     "#FFD1DC", "#FFB3C0", "#FF95A4", "#FF7788", "#FF5A6C"]
+    colors = [random.choice(color_Library) for _ in items]
     selected_food = random.randrange(0, len(items))
 
     gradientColor = []
