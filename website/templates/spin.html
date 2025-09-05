@@ -115,6 +115,79 @@
                 rotate(90deg);
             }  
 
+        /*after result*/
+        .result-interface {
+            position: fixed;
+            z-index: 1000;
+            animation: 3s ease-out;
+            display: none;
+        }
+
+        .background-shade {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .pop-up {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            width: 600px;
+            height: 250px;
+            border-radius: 25px;
+            background-color: #F0F0F0;
+        }
+
+        .pop-up #result-food,#result-stall-name,#stall-hour {
+            font-family: Arial;
+            padding: 0;
+            margin: 0;
+        }
+        .pop-up button {
+            width: 100px;
+            background-color: black;
+            color: white;
+            border-style: none;
+            border-radius: 25px;
+            padding: 15px 25px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        #result-food {
+            font-size: 40px;
+        }
+
+        #result-stall-name, #stall-hour {
+            font-size: 14px;
+            color: rgb(95, 95, 95);
+            font-weight: bold;
+            line-height: 16px;
+        }
+
+        #result-stall-name {
+            text-decoration: none;
+            margin-top: 10px;
+        }
+
+        #result-stall-name:hover {
+            color: rgb(81, 81, 81);
+        }
+
+        #stall-hour {
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
@@ -126,39 +199,76 @@
         </div>
     </nav>
 
-    <div class="spin-container">
+    <section class="spin-container">
         <button type="submit" class="spin-button" id="spin-button">SPIN</button>
         <div class="spin-wheel" id="spin-wheel" style="--bgColor: {{seperator}}">
             {% for item in items %}
                 {% set index = loop.index0 %} <!--index0 = start from 0, else index start from 1-->
-                <div class="spin-items" style="--total: {{items|length}}; --index: {{index}};">
-                    {{ item }}
+                <div class="spin-items"
+                     data-name="{{ item.product_name}}"
+                     data-stall="{{ item.stall_name }}"
+                     data-hour="{{ item.stall_hour }}"
+                     style="--total: {{items|length}}; --index: {{index}};">
+                    {{ item.product_name }}
                 </div>
             {% endfor %}
         </div>
+    </section>
 
-        <div></div>
-    </div>
+    <section class="result-interface" id="resultInterface">
+        <div class="background-shade">
+            <div class="pop-up">
+                <h1 id="result-food"></h1>
+                <a id="result-stall-name" href=#></a>
+                <p id="stall-hour"></p>
+                <button id="closeButton">CLOSE</button>
+            </div>
+        </div>
+    </section>
 
     <script>
         const spinWheel = document.getElementById("spin-wheel");
         const spinButton = document.getElementById("spin-button");
-        const total = Number("{{items|length}}"); //let the data become num
-        const selectedFood = Number("{{ selected_food }}");
-        let currentAngle = 0;
+        const spinItems = document.querySelectorAll(".spin-items");
 
+        const resultInterface = document.getElementById("resultInterface");
+        const resultFood = document.getElementById("result-food");
+        const resultStall = document.getElementById("result-stall-name");
+        const resultHour = document.getElementById("stall-hour");
+        const closeButton = document.getElementById("closeButton");
+       
+        const total = Number("{{items|length}}"); //let the data become num
+        let currentAngle = 0;
+        
         spinButton.onclick = function(){
+            const selectedIndex = Math.floor(Math.random() * total)
+            const selectedFood = spinItems[selectedIndex];
             const angle = 360 / total;
             const randomSpins = 3;
-            const finalAngle = 360 * randomSpins + (selectedFood * angle + angle/6.5);
+            const finalAngle = 360 * randomSpins - (selectedIndex * angle + angle/6.5);
 
             currentAngle = currentAngle + finalAngle;
             
             spinWheel.style.animation = "none";
-
             spinWheel.style.transition = "transform 3s ease-out"; //animation else direct degree v
             spinWheel.style.transform = "rotate(" + currentAngle +"deg)";
-        }   
+            
+            currentAngle = currentAngle + (selectedIndex * angle + angle/6.5);
+
+            spinWheel.addEventListener("transitionend",FoodInfo);
+            
+            function FoodInfo() {
+                    resultFood.textContent = selectedFood.dataset.name;
+                    resultStall.textContent = selectedFood.dataset.stall;
+                    resultHour.textContent = selectedFood.dataset.hour;
+                
+                    resultInterface.style.display = "block";
+                    spinWheel.removeEventListener("transitionend",FoodInfo);
+                }
+        }  
+        closeButton.onclick = function(){
+            resultInterface.style.display = "none";
+        } 
     </script>
 </body>
 </html>
