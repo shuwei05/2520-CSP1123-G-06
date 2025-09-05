@@ -366,22 +366,34 @@ def filter():
 
 @auth.route("/spin",methods=["GET","POST"])
 def food_spin():
-    items = [item.product_name for item in Product.query.all()] 
+    '''
+    items = [{"product_name": product.product_name,"stall_name":stall.stallname,"stall_hour":f"{stall.openhour} - {stall.closehour}"}
+             for product,stall in db.session.query(Product,Stall) #check for 2 database
+             .join(Stall, Product.stall_id == Stall.id)
+             .all()] #join the relationship
+    '''
+    #fake data
+    items = [
+    {"product_name": "Chicken Rice", "stall_name": "Uncle Tan", "stall_hour": "8:00 - 20:00"},
+    {"product_name": "Laksa", "stall_name": "Auntie Lim", "stall_hour": "9:00 - 18:00"},
+    {"product_name": "Nasi Lemak", "stall_name": "Mak Cik", "stall_hour": "6:00 - 14:00"},
+    ]
     color_Library = ["#FF8383", "#FFBFAF", "#FFD6A5", "#FFF574", "#FFF9A0",
                      "#A1D6CB", "#78C8B5", "#57BCA0", "#3FA78C", "#2E8F78",
                      "#A19AD3", "#9C8ED9", "#9383E0", "#8A78E5", "#8070EB",
                      "#FF9999", "#FFB3AA", "#FFCCBB", "#FFE6CC", "#FFF0D1",
                      "#B0E0E6", "#9FD6E5", "#8FCDE4", "#7EC4E3", "#6DBBE2",
                      "#FFD1DC", "#FFB3C0", "#FF95A4", "#FF7788", "#FF5A6C"]
-    colors = [random.choice(color_Library) for _ in items]
-    selected_food = random.randrange(0, len(items))
+    
+    random.shuffle(color_Library)
+    colors = color_Library[:len(items)] #shuffle or else 12345 12345
 
     gradientColor = []
-    degree = 360/ len(items)
+    degree = 360 / len(items)
     for i,color in enumerate(colors):
         start = i * degree
         end = (i + 1) * degree
         gradientColor.append(f"{color} {start}deg {end}deg")
     
     seperator = "conic-gradient("+",".join(gradientColor) + ")"
-    return render_template("spin.html",items=items,seperator=seperator,selected_food=selected_food)
+    return render_template("spin.html",items=items,seperator=seperator)
