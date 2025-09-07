@@ -204,12 +204,12 @@
     <div class="seller-card">
       <div class="seller-info">
         <h2>Seller’s Profile</h2>
-        <p class="name">Ali</p>
-        <p class="email">Ali@gmail.com</p>
+        <p class="name">{{ current_user.stall_owner }}</p>
+        <p class="email">{{ current_user.email }}</p>
       </div>
       <div class="seller-shop">
-        <img src="{{ url_for('static', filename='photos/avatar-placeholder.jpg') }}" alt="Avatar" class="avatar">
-        <p class="shop-name">Rasa shiokk</p>
+        <img src="{{ url_for('static', filename='uploads/' ~ stall.prof_pic) }}" alt="Avatar" class="avatar">
+        <p class="shop-name">{{ current_user.stall_name }}</p>
       </div>
     </div>
   </div>
@@ -221,19 +221,23 @@
 
     <h3>Your Product :</h3>
     <div class="products">
-      <div class="product">
-        <img src="food1.jpg" alt="Product">
-        <p class="product-name">Chicken Chop</p>
-      </div>
-      <div class="product">
-        <img src="food2.jpg" alt="Product">
-        <p class="product-name">Nasi Lemak</p>
-      </div>
-      <div class="product">
-        <img src="food3.jpg" alt="Product">
-        <p class="product-name">Burger</p>
-        </div>
-      </div>
+  {% if products %} 
+    <ul> 
+      {% for product in products %} 
+      <li> 
+      <h3>{{ product.product_name }}</h3> 
+      <p>{{ product.product_des }}</p> 
+      <p><b>Price:</b> RM {{ product.price }}</p> 
+
+        {% if product.product_pic %} 
+          <img src="{{ url_for('static', filename='uploads/' ~ product.product_pic) }}" alt="{{ product.product_name }}" width="150">
+        {% else %} 
+          <img src="{{ url_for('static', filename='uploads/default.png') }}" alt="No picture" width="150">
+        {% endif %} 
+          </li> {% endfor %} </ul> 
+      {% else %} 
+        <p>You have not added any products yet.</p>
+    {% endif %}
 
 
     <!-- Add Product Button -->
