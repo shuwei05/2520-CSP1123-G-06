@@ -33,8 +33,8 @@
     }
 
     .logo img {
-      height: 85px;
-      transform: translateX(-50px);
+      height: 65px;
+      transform: translateX(-10px);
     }
 
     /* Banner */
@@ -242,18 +242,13 @@
       
     </div>
 
-    <button  class="logout-btn" onclick="logout()">Log out</button>
+    <form action="{{ url_for('auth.logout') }}" method="POST">
+      <button type="submit" class="logout-btn">Log out</button>
+    </form>
+
   </div>
 
-    <script>
-      function logout() {
-    // 清理登录状态 (比如清理 localStorage / sessionStorage)
-    // localStorage.removeItem("token");
-
-    // 然后跳转
-      window.location.href = "intro.html";
-     }
-    </script>
+    
 
 
 </body>

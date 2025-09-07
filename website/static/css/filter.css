@@ -23,8 +23,8 @@ body{
 }
 
 .logo img{
-    height: 85px;
-    transform: translateX(-50px);
+    height: 65px;
+    transform: translateX(-10px);
 }
 
 /*Header*/
@@ -46,6 +46,10 @@ body{
 .filter {
     display: flex;
     justify-content: center;
+}
+
+.return-icon a:visited {
+    color: black;
 }
 
 /*General*/

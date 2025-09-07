@@ -136,7 +136,7 @@ def Slogin():
                 login_user(stall, remember=True)
                 print(f"Seller logged in: {stall.stallname}, role={stall.role}")
 
-                return redirect(url_for('/seller-profile'))
+                return redirect(url_for('auth.seller_profile'))
             else:
                 flash('Incorrect password, try again.', category='error')
         else:
@@ -361,21 +361,28 @@ def filter():
 
     return render_template('filter.html', products=[], selected_cuisines=[], selected_types=[])
 
-def random_hex():
-    return "#{:06x}".format(random.randint(0, 0xFFFFFF))
-
 @auth.route("/spin",methods=["GET","POST"])
+@role_required('user')
 def food_spin():
-    items = [item.product_name for item in Product.query.all()] 
-    colors = [random_hex() for _ in items]
-    selected_food = random.randrange(0, len(items))
+    items = [{"product_name": product.product_name,"stall_name":stall.stallname,"stall_hour":f"{stall.openhour} - {stall.closehour}"}
+             for product,stall in db.session.query(Product,Stall) #check for 2 database
+             .join(Stall, Product.stall_id == Stall.id)
+             .all()] #join the relationship
+    
+    color_Library = ["#FF9AA2", "#FFB7B2", "#FFDAC1","#E2F0CB", "#B5EAD7", "#C7CEEA",
+                     "#F6C1C0", "#F7DAD9", "#F9E2AE","#A5DEE5", "#B4E7CE", "#D6E2F0",
+                     "#FFD1DC", "#FFB3C0", "#FF95A4","#FDD7AA", "#FCE1C6", "#FAF1D9",
+                     "#C9E4C5", "#A7D7C5", "#82CBB2","#A5BFF0", "#9AA7E0", "#8F90D9",
+                     "#CDB4DB", "#FFC8DD", "#FFAFCC","#BDE0FE", "#A2D2FF"]
+    
+    colors = [color_Library[item % len(color_Library)]for item in range(len(items))]
 
     gradientColor = []
-    degree = 360/ len(items)
+    degree = 360 / len(items)
     for i,color in enumerate(colors):
         start = i * degree
         end = (i + 1) * degree
         gradientColor.append(f"{color} {start}deg {end}deg")
     
     seperator = "conic-gradient("+",".join(gradientColor) + ")"
-    return render_template("spin.html",items=items,seperator=seperator,selected_food=selected_food)
+    return render_template("spin.html",items=items,seperator=seperator)

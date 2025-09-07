@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/989b6a6559.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="filter.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/filter.css') }}">
     <title>Filter Page</title>
 </head>
 <body>
     <header>
         <nav class="navbar">
             <div class="logo">
-                <img src="logo.png" alt="mmu logo">
+                <img src="{{ url_for('static', filename='photos/logo.png') }}" alt="mmu logo">
             </div>   
         </nav>
     </header>
@@ -19,9 +19,7 @@
     <main>
         <section class="title">
             <div class="return-icon">
-                <i class="fa-solid fa-circle-arrow-left">
-                    <a href="#"></a>
-                </i>
+                <a href="/menu"><i class="fa-solid fa-circle-arrow-left"></i></a>
             </div>
             <div class="filter">
                 <h1>Filter</h1>
