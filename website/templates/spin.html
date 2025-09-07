@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/989b6a6559.js" crossorigin="anonymous"></script>
     <title>Food Spin Page</title>
     <style>
         body{
@@ -14,7 +15,7 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            background-color: #F7F4EA;
+            /*background-color: #F7F4EA;*/
         }
 
         .navbar{
@@ -30,6 +31,10 @@
             z-index: 999;
         }
 
+        .return-icon a:visited {
+            color: black;
+        }
+
         .logo{
             font-size: 24px;
             font-weight: bold;
@@ -40,6 +45,16 @@
             transform: translateX(30px);
         }
 
+        /*Return-Button*/
+        .return-back {
+            position: fixed;
+            top: 110px;
+            left: 35px;
+        }
+        .return-icon i {
+            font-size: 2.5rem;
+        }
+        
         .spin-container {
             position: relative;
             width: 500px;
@@ -198,6 +213,12 @@
             </div> 
         </div>
     </nav>
+
+    <section class="return-back">
+        <div class="return-icon">
+            <a href="/menu"><i class="fa-solid fa-circle-arrow-left"></i></a>
+        </div>
+    </section>
 
     <section class="spin-container">
         <button type="submit" class="spin-button" id="spin-button">SPIN</button>
