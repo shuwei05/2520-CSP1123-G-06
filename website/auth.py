@@ -386,3 +386,4 @@ def food_spin():
     
     seperator = "conic-gradient("+",".join(gradientColor) + ")"
     return render_template("spin.html",items=items,seperator=seperator)
+
