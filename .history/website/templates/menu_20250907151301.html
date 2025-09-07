@@ -162,14 +162,14 @@
 
     <!-- Menu 列表 -->
     <div class="menu-list">
-      {% for product in product %}
+      {% for food in foods %}
       <div class="menu-item">
-        <img src="{{ url_for('static', filename='uploads/' ~ food.image) }}" alt="{{ product.product.name }}">
+        <img src="{{ url_for('static', filename='uploads/' ~ food.image) }}" alt="{{ food.name }}">
         <div class="menu-details">
           <h4>{{ food.name }}</h4>
-          <p class="stall">{{ stall.stall_name }}</p>
-          <p class="location">📍 {{ stall.location }}</p>
-          <p class="time">🕒 {{ stall.open_hour }} - {{ food.close_hour }}</p>
+          <p class="stall">{{ food.stall }}</p>
+          <p class="location">📍 {{ food.location }}</p>
+          <p class="time">🕒 {{ food.openhour }} - {{ food.closehour }}</p>
 
           <div class="actions">
             <a href="////" class="btn btn-primary btn-sm">View Details</a>

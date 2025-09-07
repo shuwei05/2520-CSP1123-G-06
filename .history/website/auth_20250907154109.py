@@ -223,13 +223,13 @@ def aboutus():
 def forgot_password():
     return render_template('reset-password.html', text='Forgot Password')
 
-@auth.route('/logout', methods=['POST']) 
+@auth.route('/logout') 
 @login_required
 def logout():
     print(f"Logging out user: {current_user}")
     logout_user()
     flash('You have been logged out.', category='success')
-    return redirect(url_for('views.home'))
+    return redirect(url_for('auth.login'))
 
 @auth.route('/add_product', methods=['GET', 'POST'])
 @role_required('stall')
