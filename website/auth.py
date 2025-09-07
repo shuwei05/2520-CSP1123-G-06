@@ -283,17 +283,26 @@ def add_product():
 
     return render_template('add_product.html', text='Add Product Page')
 
-@auth.route('/email', methods=['GET', 'POST'])
-def email():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        check_email = User.query.filter_by(email=email).first()
-        if check_email:
-            return redirect(url_for('/reset_password'))
-        else:
-            flash('This email has not registered any account. Please register an account', category='info')
-            return redirect(url_for('auth.email'))
-    return render_template('email.html', text='Email Page')
+
+@auth.route('/reset_password', methods=["GET" , "POST"])
+def reset_password():
+        if request.method == 'POST':
+            email = request.form.get('email')
+            check_email = User.query.filter_by(email=email).first()
+            new_password = request.form.get('password1')
+
+            if check_email:
+                check_email.password1 = generate_password_hash(new_password, method='sha256')
+                db.session.commit()
+                flash ("Password has changed successfully." , category='success')
+                return redirect(url_for('auth.login'))
+            else:
+                flash('This email has not registered any account. Please register an account', category='info')
+                return redirect(url_for('auth.reset_password'))
+        
+        return render_template('reset-password.html', text='Reset Password')
+    
+
 
 
 @auth.route("/map", methods=["GET"])
@@ -328,8 +337,10 @@ def profile():
 
 @auth.route('/seller-profile')
 @role_required('stall')
-def seller_profile():
-    return render_template('seller-profile.html', user=current_user)
+def seller_profile(stall_id):
+    stall = Stall.query.get_or_404(current_user.id)
+    products = Product.query.filter_by(stall_id=current_user.id).all()
+    return render_template('seller-profile.html', stall=stall ,products=products)
 
 @auth.route('/stall-menu' , methods=['GET', 'POST'])
 @role_required('stall')
@@ -386,3 +397,4 @@ def food_spin():
     
     seperator = "conic-gradient("+",".join(gradientColor) + ")"
     return render_template("spin.html",items=items,seperator=seperator)
+
