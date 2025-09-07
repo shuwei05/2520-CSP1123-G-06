@@ -361,32 +361,21 @@ def filter():
 
     return render_template('filter.html', products=[], selected_cuisines=[], selected_types=[])
 
-#def random_hex():
-#    return "#{:06x}".format(random.randint(0, 0xFFFFFF))
-
 @auth.route("/spin",methods=["GET","POST"])
+@role_required('user')
 def food_spin():
-    '''
     items = [{"product_name": product.product_name,"stall_name":stall.stallname,"stall_hour":f"{stall.openhour} - {stall.closehour}"}
              for product,stall in db.session.query(Product,Stall) #check for 2 database
              .join(Stall, Product.stall_id == Stall.id)
              .all()] #join the relationship
-    '''
-    #fake data
-    items = [
-    {"product_name": "Chicken Rice", "stall_name": "Uncle Tan", "stall_hour": "8:00 - 20:00"},
-    {"product_name": "Laksa", "stall_name": "Auntie Lim", "stall_hour": "9:00 - 18:00"},
-    {"product_name": "Nasi Lemak", "stall_name": "Mak Cik", "stall_hour": "6:00 - 14:00"},
-    ]
-    color_Library = ["#FF8383", "#FFBFAF", "#FFD6A5", "#FFF574", "#FFF9A0",
-                     "#A1D6CB", "#78C8B5", "#57BCA0", "#3FA78C", "#2E8F78",
-                     "#A19AD3", "#9C8ED9", "#9383E0", "#8A78E5", "#8070EB",
-                     "#FF9999", "#FFB3AA", "#FFCCBB", "#FFE6CC", "#FFF0D1",
-                     "#B0E0E6", "#9FD6E5", "#8FCDE4", "#7EC4E3", "#6DBBE2",
-                     "#FFD1DC", "#FFB3C0", "#FF95A4", "#FF7788", "#FF5A6C"]
     
-    random.shuffle(color_Library)
-    colors = color_Library[:len(items)] #shuffle or else 12345 12345
+    color_Library = ["#FF9AA2", "#FFB7B2", "#FFDAC1","#E2F0CB", "#B5EAD7", "#C7CEEA",
+                     "#F6C1C0", "#F7DAD9", "#F9E2AE","#A5DEE5", "#B4E7CE", "#D6E2F0",
+                     "#FFD1DC", "#FFB3C0", "#FF95A4","#FDD7AA", "#FCE1C6", "#FAF1D9",
+                     "#C9E4C5", "#A7D7C5", "#82CBB2","#A5BFF0", "#9AA7E0", "#8F90D9",
+                     "#CDB4DB", "#FFC8DD", "#FFAFCC","#BDE0FE", "#A2D2FF"]
+    
+    colors = [color_Library[item % len(color_Library)]for item in range(len(items))]
 
     gradientColor = []
     degree = 360 / len(items)
