@@ -124,8 +124,8 @@
   <!-- Profile 区块 -->
   <div class="profile-container">
     <img src="https://www.svgrepo.com/show/452030/avatar-default.svg" alt="User Avatar">
-    <h2 id="username">Pikachu</h2>
-    <p id="email">pikachu@gmail.com</p>
+    <h2 id="username">{{ current_user.user_name }}</h2>
+    <p id="email">{{ current_user.email }}</p>
     <form action="{{ url_for('auth.logout') }}" method="POST">
       <button type="submit" class="logout-btn">Log out</button>
     </form>
