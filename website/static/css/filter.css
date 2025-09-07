@@ -48,6 +48,10 @@ body{
     justify-content: center;
 }
 
+.return-icon a:visited {
+    color: black;
+}
+
 /*General*/
 form {
     display: flex;
