@@ -152,6 +152,13 @@
       font-size: 13px;
       color: #444;
     }
+
+    .menu-item .btn {
+      margin-right: 40px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      padding: 5px 12px;
+    }
   </style>
 </head>
 <body>
@@ -186,27 +193,20 @@
 
   <!-- Food Menu -->
   <div class="menu">
+    {% if products %}  
+    {% for product in products %}
     <div class="menu-item">
+      {% if product.product_pic %} 
       <img src="food1.jpg" alt="Food 1">
-      <h3>Black Pepper Chicken Chop</h3>
-      <p>Chicken chop fried with fries, vegetables, black pepper and chili sauce.</p>
-    </div>
-    <div class="menu-item">
-      <img src="food2.jpg" alt="Food 2">
-      <h3>Chicken Burger Set</h3>
-      <p>Crispy chicken burger with fries, vegetables, mayo and sauce.</p>
-    </div>
-    <div class="menu-item">
-      <img src="food3.jpg" alt="Food 3">
-      <h3>Hainanese Chicken Chop</h3>
-      <p>Chicken chop fried with fries, vegetables, Hainanese sauce.</p>
-    </div>
-    <div class="menu-item">
-      <img src="food4.jpg" alt="Food 4">
-      <h3>Grilled Fish Set</h3>
-      <p>Fresh grilled fish with salad and homemade sauce.</p>
-    </div>
-  </div>
+      {% endif %}
 
+      <h3>{{ product["product_name"] }}</h3>
+      <p>{{ product["product_des"] }}</p>
+
+      <a href="/view-details" class="btn btn-primary btn-sm">View Details</a>
+      {% endif %}
+    </div>
+
+   
 </body>
 </html>
