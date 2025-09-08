@@ -162,18 +162,18 @@
 
     <!-- Menu 列表 -->
     <div class="menu-list">
-      {% for food in foods %}
+      {% for product in products %}
       <div class="menu-item">
-        <img src="{{ url_for('static', filename='uploads/' ~ food.image) }}" alt="{{ food.name }}">
+       <img src="{{ url_for('static', filename='uploads/' ~ (product.product_pic or 'default.png')) }}" alt="{{ product.product_name }}">
         <div class="menu-details">
-          <h4>{{ food.name }}</h4>
-          <p class="stall">{{ food.stall }}</p>
-          <p class="location">📍 {{ food.location }}</p>
-          <p class="time">🕒 {{ food.openhour }} - {{ food.closehour }}</p>
+          <h4>{{ product.product_name }}</h4>
+          <p class="stall">{{ product.stall.stall_name }}</p>
+          <p class="location">📍 {{ product.location }}</p>
+          <p class="time">🕒 {{ product.open_hour }} - {{ product.close_hour }}</p>
 
           <div class="actions">
-            <a href="/view-details" class="btn btn-primary btn-sm">View Details</a>
-            <a href="/view-map" class="btn btn-primary btn-sm">View Map</a>
+            <a href="{{ url_for('auth.view_details', product_id=product.id) }}" class="btn btn-primary btn-sm">View Details</a>
+            <a href="{{ url_for('auth.view_map', product_id=product.id) }}" class="btn btn-primary btn-sm">View Map</a>
           </div>
 
         </div>

@@ -32,6 +32,12 @@ class Stall(db.Model, UserMixin):
     latitude = db.Column(db.Float,nullable=False)
     longitude = db.Column(db.Float,nullable=False)
     role = db.Column(db.String(50), nullable=False,default='stall')
+    location = db.Column(db.String(50),nullable=False)
+    openday =  db.Column(db.String(50),nullable=False)
+    contact = db.Column(db.String(50),nullable=False)
+    instagram = db.Column(db.String(50),nullable=False)
+    products = db.relationship('Product', backref='stall' , lazy=True)
+    
 
     approval_status = db.Column(db.Boolean, default=False)
 
