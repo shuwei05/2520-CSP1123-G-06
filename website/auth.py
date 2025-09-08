@@ -51,10 +51,14 @@ def Ssignup():
         stallname = request.form.get('stallname','')
         stallowner = request.form.get('stallowner','')
         email = request.form.get('email','')
+        location = request.form.get('location','')
         password1 = request.form.get('password1','') 
         password2 = request.form.get('password2','')
         openhour_str = request.form.get('openhour', '00:00')
         closehour_str = request.form.get('closehour', '00:00')
+        openday = request.form.get('openday','')
+        contact = request.form.get('contact','')
+        instagram = request.form.get('instagram','')
 
         latitude = request.form.get("latitude")
         longitude = request.form.get("longitude")
@@ -104,9 +108,13 @@ def Ssignup():
             stallname=stallname,
             stallowner=stallowner,
             email=email,
+            location=location,
             password1=generate_password_hash(password1, method='pbkdf2:sha256'),
             openhour = datetime.strptime(openhour_str, "%H:%M").time(),
             closehour = datetime.strptime(closehour_str, "%H:%M").time(),
+            openday = openday,
+            contact = contact,
+            instagram = instagram,
             prof_pic=prof_filename if prof_file else None,
             bg_pic=bg_filename if bg_file else None,
             latitude=float(latitude),
@@ -284,7 +292,7 @@ def add_product():
     return render_template('add_product.html', text='Add Product Page')
 
 
-@auth.route('/reset_password', methods=["GET" , "POST"])
+@auth.route('/reset-password', methods=["GET" , "POST"])
 def reset_password():
         if request.method == 'POST':
             email = request.form.get('email')
@@ -313,10 +321,6 @@ def map_page():
         coordinates.append(list(coordinate))
     return render_template("map.html",coordinates=coordinates)
 
-@auth.route('/view-map')
-@role_required('user')
-def view_map():
-    return render_template('view-map.html')
 
 @auth.route('/menu')
 @role_required('user')
@@ -324,11 +328,18 @@ def menu():
     products = Product.query.all()
     return render_template('menu.html', products=products)
 
-@auth.route('/view-details')
-@role_required('user')
-def view_menu():
-    products = Product.query.all()
-    return render_template('view-details.html', products=products)
+@auth.route('/view-details/<int:product_id>')
+def view_details(product_id):
+    product = Product.query.get_or_404(product_id)
+    stall = Stall.query.get(product.stall_id)  # get stall info
+    return render_template('view-details.html', product=product, stall=stall)
+
+@auth.route('/view-map/<int:product_id>')
+def view_map(product_id):
+    product = Product.query.get_or_404(product_id)
+    stall = Stall.query.get(product.stall_id)
+    return render_template('view-map.html', product=product, stall=stall)
+
 
 @auth.route('/profile')
 @role_required('user')

@@ -138,26 +138,33 @@
   </a>
 
   <!-- Content Box -->
-  <div class="content-box">
-    <h2>MMU Starbees - Nasi Lemak Ayam Goreng</h2>
-
-    <div class="image-gallery">
-      <img src="food1.jpg" alt="Food Image">
-      <img src="stall.jpg" alt="Stall Image">
-      <img src="food2.jpg" alt="Food Image">
-    </div>
-
-    <div class="details">
+  {% if products %}
+  <div class="stall">
+    {% for product in products %}
+      <h3><a href="{{ url_for('views.product_detail', product_id=product.id) }}"></a>
+          <p>{{ product.stall.stall_name }} - {{product.product_name}}</p>
       <div class="price-rating">
-        <p><strong>Price:</strong> RM 8.00</p>
+        <p><strong>Price:</strong>{{ product.price }}</p>
         <div class="rating">★★★★★</div>
       </div>
-      <p><strong>Location:</strong> MMU Starbees stall no.3</p>
-      <p><strong>Opening Hours:</strong> 11:00 – 20:00 (Mon–Sun)</p>
-      <p><strong>Contact:</strong> 012-345-5555</p>
-      <p><strong>IG:</strong> Rasa-shiokk</p>
+      <p><strong>Product Description:</strong>{{ product.product_des }}</p>
+      <p><strong>Product Cuisine:</strong>{{product_cuisine}}</p>
+      <p><strong>Location:</strong>{{ product.stall.location }}</p>
+      <p><strong>Opening Hours:</strong> {{product.stall.open_hour}} – {{product.stall.close_hour}} {{product.stall.openday}}</p>
+      <p><strong>Contact:</strong> {{product.stall.contact}}</p>
+      <p><strong>IG:</strong> {{product.stall.instagram}}</p>
+
+      
+    <div class="image-gallery">
+      {% if product.product_pic %} 
+          <img src="{{ url_for('static', filename='uploads/' ~ product.product_pic) }}" alt="{{ product.product_name }}" width="150">
+          <img src="{{ url_for('static', filename='uploads/' ~ product.stall.prof_pic) }}" alt="{{ product.stall.stall_name }}" width="150">
+        {% else %} 
+          <img src="{{ url_for('static', filename='uploads/default.png') }}" alt="No picture" width="150">
+        {% endif %} 
+  {% endif %}
+
     </div>
-  </div>
 
 </body>
 </html>
