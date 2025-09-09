@@ -102,7 +102,8 @@
     .content-box {
       width: 100%;
       background: #fff;
-      
+      padding-bottom: 120px;
+      position: relative;
       padding: 20px;
       margin-top: 60px; /* 让出 seller-card 的位置 */
       min-height: 200px; /*  可以设个最小高度，避免太扁 */
@@ -151,12 +152,13 @@
 
     /* Add Product Button */
     .add-btn {
-      text-align: right;
-      margin-top: 150px;
-      left: 0;
+       position: absolute;
+       bottom: 80px;
+       right: 30px;
     }
 
     .add-btn a {
+      left: 0;
       display: inline-flex;
       justify-content: center;
       align-items: center;
@@ -167,9 +169,13 @@
       font-size: 22px;
       color: #000;
       text-decoration: none;
+      background: #fff;
     }
 
      .logout-btn {
+      display: block;
+      margin: 0 auto;       /* 水平居中 */
+      margin-top: 150px;
       background-color: #007bff;
       border: none;
       color: white;
@@ -177,9 +183,10 @@
       border-radius: 30px;
       cursor: pointer;
       font-size: 16px;
-      display: block;        /* 转成块级 */
-      margin: 20px auto;     /* 左右自动，居中 */
-    }
+      bottom: 20px;
+      transform: translateX(500px);
+      left: 50%;
+  }
 
     .logout-btn:hover {
       background-color: #0056b3;
@@ -239,8 +246,8 @@
       {% else %} 
         <p>You have not added any products yet.</p>
     {% endif %}
-
-
+    
+  
     <!-- Add Product Button -->
     <div class="add-btn">
       <a href="/add_product"><i class="fa-solid fa-plus"></i></a>
