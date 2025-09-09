@@ -347,7 +347,7 @@ def profile():
 
 @auth.route('/seller-profile')
 @role_required('stall')
-def seller_profile(stall_id):
+def seller_profile():
     stall = Stall.query.get_or_404(current_user.id)
     products = Product.query.filter_by(stall_id=current_user.id).all()
     return render_template('seller-profile.html', stall=stall ,products=products)
