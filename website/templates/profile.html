@@ -114,8 +114,8 @@
 
   <!-- 下方 Sub-header: back button + Profile title -->
   <div class="sub-header">
-    <button class="back-btn" onclick="window.location.href='menu.html'">
-      <i  class="fa-regular fa-house"></i>
+    <button class="back-btn" onclick="window.location.href='/menu'">
+      <i  class="fa-solid fa-house"></i>
     </button>
  
     <h1>Profile</h1>
@@ -135,10 +135,6 @@
     document.getElementById("username").innerText = localStorage.getItem("username") || "Pikachu";
     document.getElementById("email").innerText = localStorage.getItem("email") || "pikachu@gmail.com";
 
-    function logout() {
-      localStorage.clear();
-      window.location.href = "intro.html"; // 登出后跳回 signup
-    }
   </script>
 
 </body>
