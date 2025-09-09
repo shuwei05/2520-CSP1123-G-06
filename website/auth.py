@@ -23,7 +23,7 @@ def signup():
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
             flash('Email already registered. Please use another one.', category='error')
-            return render_template('Ssign.html', text='Signup Page')
+            return render_template('Usign.html', text='Signup Page')
 
         if len(email) < 4:
             flash('Email must be greater than 3 characters', category='error')
@@ -37,8 +37,11 @@ def signup():
             new_user = User(email=email, user_name=user_name, password1=generate_password_hash(password1,method='pbkdf2:sha256')) 
             db.session.add(new_user)
             db.session.commit()
+
+            login_user(new_user)
+
             flash('Account created!', category='success')
-            return redirect(url_for('views.home'))
+            return redirect(url_for('auth.map'))
             # Ensure user is added to the database with format given
 
         
@@ -48,24 +51,35 @@ def signup():
 @auth.route('/Ssign', methods=['GET', 'POST'])
 def Ssignup():
     if request.method == 'POST':
-        stallname = request.form.get('stallname','')
-        stallowner = request.form.get('stallowner','')
-        email = request.form.get('email','')
-        location = request.form.get('location','')
-        password1 = request.form.get('password1','') 
-        password2 = request.form.get('password2','')
+        stallname = request.form.get('stallname','').strip
+        stallowner = request.form.get('stallowner','').strip
+        email = request.form.get('email','').strip
+        location = request.form.get('location','').strip
+        password1 = request.form.get('password1','').strip
+        password2 = request.form.get('password2','').strip
         openhour_str = request.form.get('openhour', '00:00')
         closehour_str = request.form.get('closehour', '00:00')
-        openday = request.form.get('openday','')
-        contact = request.form.get('contact','')
-        instagram = request.form.get('instagram','')
+        openday = request.form.get('openday','').strip
+        contact = request.form.get('contact','').strip
+        instagram = request.form.get('instagram','').strip
+        stall_des = request.form.get('stall_des').strip
 
         latitude = request.form.get("latitude")
         longitude = request.form.get("longitude")
 
+        try:
+            openhour = datetime.strptime(openhour_str, "%H:%M").time()
+            closehour = datetime.strptime(closehour_str, "%H:%M").time()
+        except ValueError:
+            flash("Invalid time format. Please use HH:MM.")
+            return render_template('Ssign.html', text='Signup Page')
+        
 
-        openhour = datetime.strptime(openhour_str, "%H:%M").time()
-        closehour = datetime.strptime(closehour_str, "%H:%M").time()
+        if not (10 <= len(contact) <= 12) or not contact.isdigit():
+            flash("Contact number must be 10–12 digits and contain only numbers.", category="error")
+            return render_template('Ssign.html', text='Signup Page')
+                
+
 
         prof_file = request.files.get("prof_pic")
         bg_file = request.files.get("bg_pic")
@@ -99,6 +113,8 @@ def Ssignup():
             flash('Stall owner name must be greater than 3 characters', category='error')
         elif len(password1) < 7:
             flash('Password must be at least 7 characters', category='error')
+        elif len(stall_des) < 20:
+            flash('Please type more than 20 words for description.')
         elif password1 != password2:
             flash('Passwords don\'t match', category='error') 
         elif openhour >= closehour:
@@ -110,11 +126,12 @@ def Ssignup():
             email=email,
             location=location,
             password1=generate_password_hash(password1, method='pbkdf2:sha256'),
-            openhour = datetime.strptime(openhour_str, "%H:%M").time(),
-            closehour = datetime.strptime(closehour_str, "%H:%M").time(),
+            openhour = openhour,
+            closehour = closehour,
             openday = openday,
             contact = contact,
             instagram = instagram,
+            stall_des = stall_des,
             prof_pic=prof_filename if prof_file else None,
             bg_pic=bg_filename if bg_file else None,
             latitude=float(latitude),

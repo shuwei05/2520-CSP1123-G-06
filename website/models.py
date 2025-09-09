@@ -31,11 +31,12 @@ class Stall(db.Model, UserMixin):
     bg_pic = db.Column(db.String(200), nullable=True)
     latitude = db.Column(db.Float,nullable=False)
     longitude = db.Column(db.Float,nullable=False)
+    stall_des = db.Column(db.String(200),nullable=False)
     role = db.Column(db.String(50), nullable=False,default='stall')
-    location = db.Column(db.String(50),nullable=False)
+    location = db.Column(db.String(50),nullable=False,unique=True)
     openday =  db.Column(db.String(50),nullable=False)
-    contact = db.Column(db.String(50),nullable=False)
-    instagram = db.Column(db.String(50),nullable=False)
+    contact = db.Column(db.String(50),nullable=False,unique=True)
+    instagram = db.Column(db.String(50),nullable=False,unique=True)
     products = db.relationship('Product', backref='stall' , lazy=True)
     
 
