@@ -131,6 +131,15 @@
     </form>
   </div>
 
+  <script>
+    document.getElementById("username").innerText = localStorage.getItem("username") || "Pikachu";
+    document.getElementById("email").innerText = localStorage.getItem("email") || "pikachu@gmail.com";
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "intro.html"; // 登出后跳回 signup
+    }
+  </script>
 
 </body>
 </html>
