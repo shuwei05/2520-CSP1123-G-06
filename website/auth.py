@@ -179,7 +179,7 @@ def login():
             if check_password_hash(user.password1, password1):
                 flash('Logged in successfully!', category='success')
                 login_user(user, remember=True)
-                return redirect(url_for('views.home'))
+                return redirect(url_for('auth.map'))
             else:
                 flash('Incorrect password, try again.', category='error')
         else:
@@ -248,7 +248,7 @@ def aboutus():
 def forgot_password():
     return render_template('reset-password.html', text='Forgot Password')
 
-@auth.route('/logout', methods=['POST']) 
+@auth.route('/logout', methods=['GET','POST']) 
 @login_required
 def logout():
     print(f"Logging out user: {current_user}")
@@ -302,7 +302,7 @@ def add_product():
             flash('Product added successfully!', category='success')
 
 
-            return redirect(url_for('views.home'))  
+            return redirect(url_for('auth.seller_profile'))  
         
 
     return render_template('add_product.html', text='Add Product Page')
@@ -330,7 +330,7 @@ def reset_password():
 
 
 @auth.route("/map", methods=["GET"])
-def map_page():
+def map():
     seller_coordinates = db.session.query(Stall.latitude,Stall.longitude).all()
     coordinates = []
     for coordinate in seller_coordinates:
