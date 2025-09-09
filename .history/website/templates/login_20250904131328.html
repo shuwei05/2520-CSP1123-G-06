@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Login</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: rgba(234, 231, 231, 0.9);
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    .wrapper {
+      width: 350px;
+      background: white;
+      color: black;
+      height: 500px;
+      border-radius: 20px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+      position: relative;
+      padding-top: 10px;
+    }
+    .logo2 {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .logo2 img {
+      width: 300px;
+      height: auto;
+      display: block;
+    }
+    .tab-header {
+      display: flex;
+      margin: 15px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid #ddd;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: #f1f1f1;
+      cursor: pointer;
+      font-size: 15px;
+      transition: 0.3s;
+      font-weight: bold;
+    }
+    .tab-btn.active {
+      background: #007bff;
+      color: white;
+    }
+    h1 {
+      font-size: 40px;
+      text-align: center;
+      margin-bottom: 18px;
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-weight: 600;
+      color: #333;
+    }
+    .input-box {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .input-box input {
+      width: 70%;
+      padding: 10px;
+      border-radius: 40px;
+      border: 1px solid #2b2b2b;
+      outline: none;
+      font-size: 13px;
+      box-sizing: border-box;
+    }
+    .btn {
+      width: 100px;
+      height: 40px;
+      border: none;
+      border-radius: 40px;
+      background: #007bff;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin: 20px auto;
+      display: block;
+    }
+    .btn:hover {
+      background: #0056b3;
+    }
+    .forgot {
+      text-align: left;
+      width: 100%;
+      margin: -10px 0 15px 5px;
+      transform: translate(60px , -10px);
+    }
+    .forgot a {
+      font-size: 12px;
+      color: #373839;
+      text-decoration: none;
+    }
+    .forgot a:hover {
+      text-decoration: underline;
+    }
+    .sign {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .sign a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    .sign a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="logo2">
+    <img src="{{ url_for('static', filename='photos/mmulogo2.png') }}" alt="mmu logo">
+  </div>
+  <div class="wrapper">
+    <!-- 顶部切换按钮 -->
+    <div class="tab-header">
+      <button class="tab-btn active" onclick="location.href='/login'">User Login</button>
+      <button class="tab-btn" onclick="location.href='/Slogin'">Seller Login</button>
+    </div>
+
+    <!-- User Login -->
+    <div id="user">
+      <form>
+        <h1>User Login</h1>
+        <div class="input-box">
+          <input type="text" placeholder="Username" name="user_name" required>
+        </div>
+        <div class="input-box">
+          <input type="password" placeholder="Password" name="password1" required>
+        </div>
+        <div class="forgot">
+
+          <a href="/email">Forgot Password?</a>
+        </div>
+        <button type="submit" class="btn">Login</button>
+        <div class="sign">
+          <p>Don't have an account? <a href="/role">Sign up</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

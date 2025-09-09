@@ -51,14 +51,10 @@ def Ssignup():
         stallname = request.form.get('stallname','')
         stallowner = request.form.get('stallowner','')
         email = request.form.get('email','')
-        location = request.form.get('location','')
         password1 = request.form.get('password1','') 
         password2 = request.form.get('password2','')
         openhour_str = request.form.get('openhour', '00:00')
         closehour_str = request.form.get('closehour', '00:00')
-        openday = request.form.get('openday','')
-        contact = request.form.get('contact','')
-        instagram = request.form.get('instagram','')
 
         latitude = request.form.get("latitude")
         longitude = request.form.get("longitude")
@@ -108,13 +104,9 @@ def Ssignup():
             stallname=stallname,
             stallowner=stallowner,
             email=email,
-            location=location,
             password1=generate_password_hash(password1, method='pbkdf2:sha256'),
             openhour = datetime.strptime(openhour_str, "%H:%M").time(),
             closehour = datetime.strptime(closehour_str, "%H:%M").time(),
-            openday = openday,
-            contact = contact,
-            instagram = instagram,
             prof_pic=prof_filename if prof_file else None,
             bg_pic=bg_filename if bg_file else None,
             latitude=float(latitude),
@@ -231,7 +223,7 @@ def aboutus():
 def forgot_password():
     return render_template('reset-password.html', text='Forgot Password')
 
-@auth.route('/logout', methods=['POST']) 
+@auth.route('/logout') 
 @login_required
 def logout():
     print(f"Logging out user: {current_user}")
@@ -290,26 +282,17 @@ def add_product():
 
     return render_template('add_product.html', text='Add Product Page')
 
-
-@auth.route('/reset-password', methods=["GET" , "POST"])
-def reset_password():
-        if request.method == 'POST':
-            email = request.form.get('email')
-            check_email = User.query.filter_by(email=email).first()
-            new_password = request.form.get('password1')
-
-            if check_email:
-                check_email.password1 = generate_password_hash(new_password, method='sha256')
-                db.session.commit()
-                flash ("Password has changed successfully." , category='success')
-                return redirect(url_for('auth.login'))
-            else:
-                flash('This email has not registered any account. Please register an account', category='info')
-                return redirect(url_for('auth.reset_password'))
-        
-        return render_template('reset-password.html', text='Reset Password')
-    
-
+@auth.route('/email', methods=['GET', 'POST'])
+def email():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        check_email = User.query.filter_by(email=email).first()
+        if check_email:
+            return redirect(url_for('/reset_password'))
+        else:
+            flash('This email has not registered any account. Please register an account', category='info')
+            return redirect(url_for('auth.email'))
+    return render_template('email.html', text='Email Page')
 
 
 @auth.route("/map", methods=["GET"])
@@ -320,6 +303,10 @@ def map_page():
         coordinates.append(list(coordinate))
     return render_template("map.html",coordinates=coordinates)
 
+@auth.route('/view-map')
+@role_required('user')
+def view_map():
+    return render_template('view-map.html')
 
 @auth.route('/menu')
 @role_required('user')
@@ -327,18 +314,11 @@ def menu():
     products = Product.query.all()
     return render_template('menu.html', products=products)
 
-@auth.route('/view-details/<int:product_id>')
-def view_details(product_id):
-    product = Product.query.get_or_404(product_id)
-    stall = Stall.query.get(product.stall_id)  # get stall info
-    return render_template('view-details.html', product=product, stall=stall)
-
-@auth.route('/view-map/<int:product_id>')
-def view_map(product_id):
-    product = Product.query.get_or_404(product_id)
-    stall = Stall.query.get(product.stall_id)
-    return render_template('view-map.html', product=product, stall=stall)
-
+@auth.route('/view-details')
+@role_required('user')
+def view_menu():
+    products = Product.query.all()
+    return render_template('view-details.html', products=products)
 
 @auth.route('/profile')
 @role_required('user')
@@ -348,9 +328,7 @@ def profile():
 @auth.route('/seller-profile')
 @role_required('stall')
 def seller_profile():
-    stall = Stall.query.get_or_404(current_user.id)
-    products = Product.query.filter_by(stall_id=current_user.id).all()
-    return render_template('seller-profile.html', stall=stall ,products=products)
+    return render_template('seller-profile.html', user=current_user)
 
 @auth.route('/stall-menu' , methods=['GET', 'POST'])
 @role_required('stall')
@@ -407,4 +385,3 @@ def food_spin():
     
     seperator = "conic-gradient("+",".join(gradientColor) + ")"
     return render_template("spin.html",items=items,seperator=seperator)
-

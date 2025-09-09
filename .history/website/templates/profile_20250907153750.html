@@ -126,20 +126,11 @@
     <img src="https://www.svgrepo.com/show/452030/avatar-default.svg" alt="User Avatar">
     <h2 id="username">Welcome, {{ current_user.user_name }}</h2>
     <p id="email">{{  current_user.email }}</p>
-    <form action="{{ url_for('auth.logout') }}" method="POST">
-      <button type="submit" class="btn btn-danger">Logout</button>
+    <form action='/logout' method="POST">
+      <button type="submit" class="btn">Logout</button>
     </form>
   </div>
 
-  <script>
-    document.getElementById("username").innerText = localStorage.getItem("username") || "Pikachu";
-    document.getElementById("email").innerText = localStorage.getItem("email") || "pikachu@gmail.com";
-
-    function logout() {
-      localStorage.clear();
-      window.location.href = "intro.html"; // 登出后跳回 signup
-    }
-  </script>
 
 </body>
 </html>
