@@ -51,18 +51,18 @@ def signup():
 @auth.route('/Ssign', methods=['GET', 'POST'])
 def Ssignup():
     if request.method == 'POST':
-        stallname = request.form.get('stallname','').strip
-        stallowner = request.form.get('stallowner','').strip
-        email = request.form.get('email','').strip
-        location = request.form.get('location','').strip
-        password1 = request.form.get('password1','').strip
-        password2 = request.form.get('password2','').strip
+        stallname = request.form.get('stallname','').strip()
+        stallowner = request.form.get('stallowner','').strip()
+        email = request.form.get('email','').strip()
+        location = request.form.get('location','').strip()
+        password1 = request.form.get('password1','').strip()
+        password2 = request.form.get('password2','').strip()
         openhour_str = request.form.get('openhour', '00:00')
         closehour_str = request.form.get('closehour', '00:00')
-        openday = request.form.get('openday','').strip
-        contact = request.form.get('contact','').strip
-        instagram = request.form.get('instagram','').strip
-        stall_des = request.form.get('stall_des').strip
+        openday = request.form.get('openday','').strip()
+        contact = request.form.get('contact','').strip()
+        instagram = request.form.get('instagram','').strip()
+        stall_des = request.form.get('stall_des','').strip()
 
         latitude = request.form.get("latitude")
         longitude = request.form.get("longitude")
