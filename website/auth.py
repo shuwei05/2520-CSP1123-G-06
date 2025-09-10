@@ -339,7 +339,7 @@ def reset_password():
 
 @auth.route("/map", methods=["GET"])
 def map():
-    defaultBg = "/static/photos/smile.png"
+    defaultBg = "/static/photos/noBg.jpg"
     stall_info = Stall.query.all()
     stall_data = []
     for data in stall_info:
