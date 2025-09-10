@@ -123,7 +123,7 @@
 
     .flash-messages {
     position: absolute;     /* 浮动，不占空间 */
-    top: 0;                 /* 贴住 section 顶部 */
+    top: 100px;                 /* 贴住 section 顶部 */
     left: 50%;
     transform: translateX(-50%);
     width: 80%;             /* 和 section 宽度差不多 */
@@ -135,14 +135,33 @@
     margin-bottom: 10px;
     text-align: center;
     animation: fadeOut 4s forwards;
-    color: #939594;
-    
+    color: #2a2a2a;
+  
+}
+/* error -> 红色浅色背景 */
+.flash-messages .alert-danger {
+    background-color: #f8d7da; /* 浅红 */
+    border: 1px solid #f5c2c7;
+    color: #842029;
+}
+
+@keyframes fadeOut {
+    0%   { opacity: 1; }
+    70%  { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
 }
   </style>
 </head>
 <body>
 
-    <div class="flash-messages">
+
+  <div class="logo2">
+    <img src="{{ url_for('static', filename='photos/mmulogo2.png') }}" alt="mmu logo">
+
+     
+  </div>
+
+   <div class="flash-messages">
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
@@ -154,10 +173,13 @@
             {% endwith %}
         </div>
 
-  <div class="logo2">
-    <img src="{{ url_for('static', filename='photos/mmulogo2.png') }}" alt="mmu logo">
-  </div>
+  
+
   <div class="wrapper">
+
+     
+
+
     <!-- 顶部切换按钮 -->
     <div class="tab-header">
       <button class="tab-btn active" onclick="location.href='/login'">User Login</button>
