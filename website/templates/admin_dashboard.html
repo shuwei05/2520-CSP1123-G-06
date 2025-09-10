@@ -99,6 +99,29 @@ body {
       opacity: 0.85;
       transform: scale(1.05);
     }
+
+    .flash-messages {
+    position: absolute;     /* 浮动，不占空间 */
+    top: 0;                 /* 贴住 section 顶部 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;             /* 和 section 宽度差不多 */
+    max-width: 600px;       /* 不会太宽 */
+    z-index: 1000;
+}
+
+.flash-messages .alert {
+    margin-bottom: 100px;
+    text-align: center;
+    animation: fadeOut 4s forwards;
+    color: #222222;
+    
+}
+@keyframes fadeOut {
+    0%   { opacity: 1; }
+    70%  { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+}
     </style>
 
 </head>
@@ -110,6 +133,18 @@ body {
             </div>
         </div>
     </nav>
+
+    <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
 
      <h2 style="margin-top:100px; text-align:center;">Pending Seller Requests</h2>
 

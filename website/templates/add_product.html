@@ -6,6 +6,32 @@
   <title>Seller Add Product Page</title>
    <link rel="stylesheet" href="{{ url_for('static', filename='css/add_product.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <style>
+    .flash-messages {
+    
+    position: absolute;     /* 浮动，不占空间 */
+    top: 40px;                 /* 贴住 section 顶部 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;             /* 和 section 宽度差不多 */
+    max-width: 600px;       /* 不会太宽 */
+    z-index: 1000;
+    font-size: 20px;
+}
+
+.flash-messages .alert {
+    margin-bottom: 10px;
+    text-align: center;
+    animation: fadeOut 3s forwards;
+    color: #e90432;
+    
+}
+@keyframes fadeOut {
+    0%   { opacity: 1; }
+    70%  { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+}
+  </style>
 </head>
 
 <body>
@@ -19,9 +45,25 @@
     
     <main>
         <header class="container-1">
+
+            <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
             <div class="home-icon">
+                <a href="/seller-profile">
                 <i class="fa-solid fa-house home-icon"></i>
+                </a>
             </div>
+            
             <div class="title">
                 <h1>Add Product</h1>
             </div>
@@ -48,7 +90,7 @@
 
                 <section class="container-3">
                     <label for="product-price">Product Price:</label>
-                    <input type="text" id="product-price" name="price">
+                    <input type="text" placeholder="e.g. 2.00" id="product-price" name="price">
                 </section>
 
                 <section class="container-4">
@@ -68,10 +110,13 @@
                 </section>
 
                 <section class="container-6">
-                    <label>Photos: (0/1)</label>
+                    <label>Photos: (1)</label>
                     <div class="photo-upload">
 
-                        <label class="fa-regular fa-image upload-img-icon" ><input type="file" name="product_pic" id="product_pic" accept="image/*"></label>
+                        <label id="product-icon" class="fa-regular fa-image upload-img-icon">
+                            <input type="file" name="product_pic" id="product_pic" accept="image/*">
+                        </label>
+
 
                     </div>
 
