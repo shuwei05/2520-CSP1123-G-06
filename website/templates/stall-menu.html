@@ -159,6 +159,34 @@
       font-size: 0.85rem;
       padding: 5px 12px;
     }
+    .flash-messages {
+    position: absolute;     /* 浮动，不占空间 */
+    top: 0;                 /* 贴住 section 顶部 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;             /* 和 section 宽度差不多 */
+    max-width: 600px;       /* 不会太宽 */
+    z-index: 1000;
+}
+
+.flash-messages .alert {
+    margin-bottom: 10px;
+    text-align: center;
+    animation: fadeOut 4s forwards;
+    color: #939594;
+    
+}
+@keyframes fadeOut {
+  0%   { opacity: 1; transform: translateY(0); }
+  80%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+
+section.staffb {
+    position: relative;   /* 作为 flash-messages 的定位父容器 */
+   
+}
   </style>
 </head>
 <body>
@@ -174,6 +202,19 @@
 
   <!-- Background Banner -->
   <div class="banner">
+
+    <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
     <img src="banner-placeholder.jpg" alt="Banner">
     <a href="map.html" class="back-btn">
       <i class="fa-solid fa-arrow-left"></i>
