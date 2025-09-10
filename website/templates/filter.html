@@ -6,6 +6,25 @@
     <script src="https://kit.fontawesome.com/989b6a6559.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/filter.css') }}">
     <title>Filter Page</title>
+    <style>
+        .flash-messages {
+    position: absolute;     /* 浮动，不占空间 */
+    top: 0;                 /* 贴住 section 顶部 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;             /* 和 section 宽度差不多 */
+    max-width: 600px;       /* 不会太宽 */
+    z-index: 1000;
+}
+
+.flash-messages .alert {
+    margin-bottom: 10px;
+    text-align: center;
+    animation: fadeOut 4s forwards;
+    color: #939594;
+    
+}
+    </style>
 </head>
 <body>
     <header>
@@ -18,6 +37,18 @@
 
     <main>
         <section class="title">
+                    <div class="flash-messages">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ 'danger' if category == 'error' else category }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+
             <div class="return-icon">
                 <a href="/menu"><i class="fa-solid fa-circle-arrow-left"></i></a>
             </div>
