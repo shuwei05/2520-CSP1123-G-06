@@ -363,8 +363,6 @@ def map():
                 "longitude": data.longitude,
                 "background_pic": "/static/uploads/" + data.bg_pic,
             })
-    
-    #user = User.query.get_or_404(current_user.id)
 
     return render_template("map.html",stall_data=stall_data)
 
