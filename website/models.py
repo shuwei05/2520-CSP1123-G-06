@@ -55,3 +55,12 @@ class Product(db.Model):
     stall_id = db.Column(db.Integer, db.ForeignKey('stall.id'), nullable=False)
     product_pic = db.Column(db.String(200), nullable=True)
 
+
+class Review(db.Model):
+    id = db.Column(db.Integer,primary_key=True)
+    review = db.Column(db.String(500),nullable=False)
+    rating = db.Column(db.String(50),nullable=False)
+    review_pic = db.Column(db.String(200),nullable=True)
+    products = db.relationship('Product',backref='review', lazy=True)
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
+    username = db.Column(db.Integer,db.ForeignKey('user.user_name'),nullable=False)
