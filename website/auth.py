@@ -335,7 +335,9 @@ def map():
     coordinates = []
     for coordinate in seller_coordinates:
         coordinates.append(list(coordinate))
-    return render_template("map.html",coordinates=coordinates)
+    
+    user = User.query.get_or_404(current_user.id)
+    return render_template("map.html",coordinates=coordinates,user=user)
 
 
 @auth.route('/menu')
@@ -416,11 +418,21 @@ def food_spin():
     colors = [color_Library[item % len(color_Library)]for item in range(len(items))]
 
     gradientColor = []
-    degree = 360 / len(items)
-    for i,color in enumerate(colors):
-        start = i * degree
-        end = (i + 1) * degree
-        gradientColor.append(f"{color} {start}deg {end}deg")
+    
+    if len(items) > 0:
+        degree = 360 / len(items)
+    else:
+        degree = 360
+    
+    if len(items) > 0:
+        for i,color in enumerate(colors):
+            start = i * degree
+            end = (i + 1) * degree
+            gradientColor.append(f"{color} {start}deg {end}deg")
+    else:
+        start = 0
+        end = 360
+        gradientColor.append(f"#FFB7B2 {start}deg {end}deg")
     
     seperator = "conic-gradient("+",".join(gradientColor) + ")"
     return render_template("spin.html",items=items,seperator=seperator)
