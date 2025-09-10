@@ -355,15 +355,15 @@
     
     <aside id="seller-sidebar" class="seller-info-sidebar">
         <div class="stall-photo">
-            <img class="stall-photo" src="{{ url_for('static',filename='photos/smile.png') }}">
+            <img class="stall-photo" id="stall-bg-pic" src="">
         </div>
 
         <div class="stallname-and-rating">
             <div class="stall-name" id="stallname"></div>
-            <div class="rating">
+            <!--<div class="rating">
                 <p>4.0</p>
                 <p id="star">&#9733;</p>
-            </div>
+            </div>-->
         </div>
 
         <div class="about-and-reviews-tab">
@@ -375,8 +375,7 @@
             <div class="sidebar-content">
                 <div class="stall-details">
                     <p class="stall-status" id="stall-status">Status</p>
-                    <p class="stall-opening-time" id="openinghour">Opening Hours : 12:00 to 18:00</p>
-                    <p class="price-category">RM 10 - RM 20</p>   
+                    <p class="stall-opening-time" id="openinghour">Opening Hours : 12:00 to 18:00</p>   
                 </div>
 
                                 <!-- Reviews + Comment Button -->
@@ -440,6 +439,7 @@
     const ZoomMap = document.getElementById("map")
     const SidebarAppear= document.getElementById("seller-sidebar")
     const ReturnButton = document.getElementById("return")
+    const StallBg = document.getElementById("stall-bg-pic")
 
     for (const stall_info of stall_data){
         const marker = L.marker([stall_info.latitude,stall_info.longitude]).addTo(map);
@@ -458,6 +458,7 @@
             ReturnButton.classList.add("active");
             stallname.textContent = stall_info.stallname;
             openinghour.textContent = `Opening Hours : ${stall_info.openhour} to ${stall_info.closehour} `;
+            StallBg.src = stall_info.background_pic;
             updateStallStatus(stall_info.openhour, stall_info.closehour);
 
         }
