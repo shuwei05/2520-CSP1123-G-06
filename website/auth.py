@@ -331,13 +331,26 @@ def reset_password():
 
 @auth.route("/map", methods=["GET"])
 def map():
-    seller_coordinates = db.session.query(Stall.latitude,Stall.longitude).all()
-    coordinates = []
-    for coordinate in seller_coordinates:
-        coordinates.append(list(coordinate))
+    #seller_coordinates = db.session.query(Stall.latitude,Stall.longitude).all()
+    #coordinates = []
+    #for coordinate in seller_coordinates:
+    #    coordinates.append(list(coordinate))
+
+    stall_info = Stall.query.all()
+    stall_data = []
+    for data in stall_info:
+        stall_data.append({
+            "id": data.id,
+            "stallname": data.stallname,
+            "openhour": data.openhour.strftime("%H:%M"),
+            "closehour": data.closehour.strftime("%H:%M"),
+            "latitude": data.latitude,
+            "longitude": data.longitude
+        })
     
-    user = User.query.get_or_404(current_user.id)
-    return render_template("map.html",coordinates=coordinates,user=user)
+    #user = User.query.get_or_404(current_user.id)
+
+    return render_template("map.html",stall_data=stall_data)
 
 
 @auth.route('/menu')
