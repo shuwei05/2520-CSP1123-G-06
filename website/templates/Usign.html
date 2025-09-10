@@ -21,6 +21,25 @@
 
             
         }
+
+        .flash-messages .alert {
+            margin-bottom: 10px;
+            text-align: center;
+            animation: fadeOut 4s forwards;
+            color: #939594;
+            
+        }
+        @keyframes fadeOut {
+        0%   { opacity: 1; transform: translateY(0); }
+        80%  { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-10px); }
+        }
+
+
+        section.staffb {
+            position: relative;   /* 作为 flash-messages 的定位父容器 */
+        
+        }
     </style>
 </head>
 
