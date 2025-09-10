@@ -359,7 +359,7 @@
         </div>
 
         <div class="stallname-and-rating">
-            <div class="stall-name"><p>Rasa Shiokk</p></div>
+            <div class="stall-name" id="stallname"></div>
             <div class="rating">
                 <p>4.0</p>
                 <p id="star">&#9733;</p>
@@ -375,7 +375,7 @@
             <div class="sidebar-content">
                 <div class="stall-details">
                     <p class="stall-status" id="stall-status">Status</p>
-                    <p class="stall-opening-time">Opening Hours : 12:00 to 18:00</p>
+                    <p class="stall-opening-time" id="openinghour">Opening Hours : 12:00 to 18:00</p>
                     <p class="price-category">RM 10 - RM 20</p>   
                 </div>
 
@@ -411,9 +411,8 @@
 
 </body>
 
-<!--Map JavaScript-->
-<script id="coordinates-data" type="application/json">
-    {{ (coordinates | tojson | safe) }}
+<script id="stall-data" type="application/json">
+    {{ (stall_data | tojson | safe) }}
 </script>
 
 <script>
@@ -432,40 +431,45 @@
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map)
 
-    const coordinates = JSON.parse(
-        document.getElementById("coordinates-data").textContent
+    const stall_data = JSON.parse(
+        document.getElementById("stall-data").textContent
     );
 
-    for (const[latitude,longitude] of coordinates){
-        const marker = L.marker([latitude,longitude]).addTo(map);
+    const stallname = document.getElementById("stallname")
+    const openinghour = document.getElementById("openinghour")
+    const ZoomMap = document.getElementById("map")
+    const SidebarAppear= document.getElementById("seller-sidebar")
+    const ReturnButton = document.getElementById("return")
+
+    for (const stall_info of stall_data){
+        const marker = L.marker([stall_info.latitude,stall_info.longitude]).addTo(map);
         
         //Zoom Map When Click
         marker.on("click",function() {
-            map.setView([latitude,longitude],19);
-
-            document.getElementById("map").classList.add("map-zoom");
-            document.getElementById("seller-sidebar").classList.add("active");
-            document.getElementById("return").classList.add("active");
-
-            exitZoomMap() 
+            EnterZoomMap(stall_info);
+            map.once("click",exitZoomMap); 
         })
     }
 
+    function EnterZoomMap(stall_info) {
+            map.setView([stall_info.latitude,stall_info.longitude],19);
+            ZoomMap.classList.add("map-zoom");
+            SidebarAppear.classList.add("active");
+            ReturnButton.classList.add("active");
+            stallname.textContent = stall_info.stallname;
+            openinghour.textContent = `Opening Hours : ${stall_info.openhour} to ${stall_info.closehour} `;
+            updateStallStatus(stall_info.openhour, stall_info.closehour);
+
+        }
     function exitZoomMap() {
-        map.once("click", function() {
-            document.getElementById("map").classList.remove("map-zoom");
-            document.getElementById("seller-sidebar").classList.remove("active");
-            document.getElementById("return").classList.remove("active")
+            ZoomMap.classList.remove("map-zoom");
+            SidebarAppear.classList.remove("active");
+            ReturnButton.classList.remove("active")
             map.setView([2.92790,101.64188],17);
-        })
-    }
+        }
 
-    document.getElementById("return").addEventListener("click",function() {
-        document.getElementById("map").classList.remove("map-zoom");
-        document.getElementById("seller-sidebar").classList.remove("active");
-        document.getElementById("return").classList.remove("active")
-        map.setView([2.92790,101.64188],17); 
-    });
+    ReturnButton.addEventListener("click", exitZoomMap);
+    
 
 
 
@@ -499,28 +503,28 @@
     });
 
         function updateStallStatus(openHour, closeHour) {
-    const now = new Date();
-    const currentTime = now.getHours() * 60 + now.getMinutes(); // 转分钟方便比较
+            const now = new Date();
+            const currentTime = now.getHours() * 60 + now.getMinutes(); // 转分钟方便比较
 
-    const [openH, openM] = openHour.split(":").map(Number);
-    const [closeH, closeM] = closeHour.split(":").map(Number);
+            const [openH, openM] = openHour.split(":").map(Number);
+            const [closeH, closeM] = closeHour.split(":").map(Number);
 
-    const openTime = openH * 60 + openM;
-    const closeTime = closeH * 60 + closeM;
+            const openTime = openH * 60 + openM;
+            const closeTime = closeH * 60 + closeM;
 
-    const statusElement = document.getElementById("stall-status");
+            const statusElement = document.getElementById("stall-status");
 
-    if (currentTime >= openTime && currentTime <= closeTime) {
-        statusElement.textContent = "Open";
-        statusElement.style.color = "green";
-    } else {
-        statusElement.textContent = "Closed";
-        statusElement.style.color = "red";
-    }
-    }
+        if (currentTime >= openTime && currentTime <= closeTime) {
+            statusElement.textContent = "Open";
+            statusElement.style.color = "green";
+        } else {
+            statusElement.textContent = "Closed";
+            statusElement.style.color = "red";
+        }
+        }
 
     // 假设你 stall 营业时间是 12:00 - 18:00
-    updateStallStatus("12:00", "18:00");
+    //updateStallStatus("12:00", "18:00");
 
 
 </script>
