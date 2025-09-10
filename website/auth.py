@@ -370,8 +370,7 @@ def menu():
 @auth.route('/view-details/<int:product_id>')
 def view_details(product_id):
     product = Product.query.get_or_404(product_id)
-    stall = Stall.query.get(product.stall_id)  # get stall info
-    return render_template('view-details.html', product=product, stall=stall)
+    return render_template('view-details.html', product=product)
 
 @auth.route('/view-map/<int:product_id>')
 def view_map(product_id):
