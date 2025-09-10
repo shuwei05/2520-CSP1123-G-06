@@ -36,7 +36,7 @@ class Stall(db.Model, UserMixin):
     location = db.Column(db.String(50),nullable=False,unique=True)
     openday =  db.Column(db.String(50),nullable=False)
     contact = db.Column(db.String(50),nullable=False,unique=True)
-    instagram = db.Column(db.String(50),nullable=False,unique=True)
+    instagram = db.Column(db.String(50),nullable=False)
     products = db.relationship('Product', backref='stall' , lazy=True)
     
 
