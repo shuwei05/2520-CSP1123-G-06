@@ -183,7 +183,7 @@ def login():
             else:
                 flash('Incorrect password, try again.', category='error')
         else:
-            flash('Email does not exist.', category='error')
+            flash('User does not exist.', category='error')
     return render_template('login.html', text='Login Page')
 
 
@@ -244,9 +244,6 @@ def deny_stall(stall_id):
 def aboutus():
     return render_template('aboutus.html', text='About Us')
 
-@auth.route('/forgot-password')
-def forgot_password():
-    return render_template('reset-password.html', text='Forgot Password')
 
 @auth.route('/logout', methods=['GET','POST']) 
 @login_required
@@ -311,18 +308,29 @@ def add_product():
 @auth.route('/reset-password', methods=["GET" , "POST"])
 def reset_password():
         if request.method == 'POST':
-            email = request.form.get('email')
-            check_email = User.query.filter_by(email=email).first()
-            new_password = request.form.get('password1')
+            email = request.form.get('email','').strip()
+            password1 = request.form.get('password1','').strip()
+            password2 = request.form.get('password2','').strip()
 
-            if check_email:
-                check_email.password1 = generate_password_hash(new_password, method='sha256')
-                db.session.commit()
-                flash ("Password has changed successfully." , category='success')
-                return redirect(url_for('auth.login'))
-            else:
-                flash('This email has not registered any account. Please register an account', category='info')
+            user = User.query.filter_by(email=email).first()
+
+            if not user:
+                flash('This email has not registered any account.Please sign up first.', category='error')
                 return redirect(url_for('auth.reset_password'))
+            
+            if len(password1) < 8:
+                flash('Password must be more than 8 characters.', category='error')
+                return redirect(url_for('auth.reset_password'))
+
+            if password1 != password2:
+                flash('Password does not match.Please try again.', category='error')
+                return redirect(url_for('auth.reset_password'))
+            
+            user.password1 = generate_password_hash(password1, method='pbkdf2:sha256')
+            db.session.commit()
+
+            flash('Password has been reset successfully.Please login.')
+            return redirect(url_for('auth.login'))
         
         return render_template('reset-password.html', text='Reset Password')
     
