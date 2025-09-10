@@ -339,24 +339,30 @@ def reset_password():
 
 @auth.route("/map", methods=["GET"])
 def map():
-    #seller_coordinates = db.session.query(Stall.latitude,Stall.longitude).all()
-    #coordinates = []
-    #for coordinate in seller_coordinates:
-    #    coordinates.append(list(coordinate))
-
+    defaultBg = "/static/photos/noBg.jpg"
     stall_info = Stall.query.all()
     stall_data = []
     for data in stall_info:
-        stall_data.append({
+        if data.bg_pic == None:
+            stall_data.append({
             "id": data.id,
             "stallname": data.stallname,
             "openhour": data.openhour.strftime("%H:%M"),
             "closehour": data.closehour.strftime("%H:%M"),
             "latitude": data.latitude,
-            "longitude": data.longitude
+            "longitude": data.longitude,
+            "background_pic": defaultBg,
         })
-    
-    #user = User.query.get_or_404(current_user.id)
+        else:
+            stall_data.append({
+                "id": data.id,
+                "stallname": data.stallname,
+                "openhour": data.openhour.strftime("%H:%M"),
+                "closehour": data.closehour.strftime("%H:%M"),
+                "latitude": data.latitude,
+                "longitude": data.longitude,
+                "background_pic": "/static/uploads/" + data.bg_pic,
+            })
 
     return render_template("map.html",stall_data=stall_data)
 
