@@ -120,12 +120,48 @@
     .sign a:hover {
       text-decoration: underline;
     }
+
+    .flash-messages {
+    position: absolute;     /* 浮动，不占空间 */
+    top: 100px;                 /* 贴住 section 顶部 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;             /* 和 section 宽度差不多 */
+    max-width: 600px;       /* 不会太宽 */
+    z-index: 1000;
+}
+
+.flash-messages .alert {
+    margin-bottom: 10px;
+    text-align: center;
+    animation: fadeOut 4s forwards;
+    color: #261f1f;
+    
+}
+@keyframes fadeOut {
+  0%   { opacity: 1; transform: translateY(0); }
+  80%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
   </style>
 </head>
 <body>
   <div class="logo2">
     <img src="{{ url_for('static', filename='photos/mmulogo2.png') }}" alt="mmu logo">
   </div>
+
+  <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
   <div class="wrapper">
     <!-- 顶部切换按钮 -->
     <div class="tab-header">
