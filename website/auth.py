@@ -423,7 +423,7 @@ def filter():
             )
 
         filtered_products = query.all()
-        return render_template('filter.html', products=filtered_products, selected_cuisines=selected_cuisines, selected_types=selected_types)
+        return render_template('menu.html', products=filtered_products, selected_cuisines=selected_cuisines, selected_types=selected_types)
 
     return render_template('filter.html', products=[], selected_cuisines=[], selected_types=[])
 
