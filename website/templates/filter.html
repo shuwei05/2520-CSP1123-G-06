@@ -62,29 +62,37 @@
             </div>
         </section>
         
-        <form>
+        <form class="form-box" method="POST" action="{{ url_for('auth.filter') }}" enctype="multipart/form-data">
             <div class="container">
                 <section class="cuisine">
                     <label class="option-title">Cuisine</label>
                     <div>
-                        <label class="product-cuisine">Malay Cuisine<input type="checkbox"></label>
-                        <label class="product-cuisine">Chinese Cuisine<input type="checkbox"></label>
-                        <label class="product-cuisine">Western Cuisine<input type="checkbox"></label>
-                        <label class="product-cuisine">Drinks<input type="checkbox"></label>
-                        <label class="product-cuisine">Dessert<input type="checkbox"></label>
+                        <label class="product-cuisine">Malay Cuisine<input type="checkbox" name="cuisine" value="Malay Cuisine"></label>
+                        <label class="product-cuisine">Chinese Cuisine<input type="checkbox" name="cuisine" value="Chinese Cuisine"></label>
+                        <label class="product-cuisine">Western Cuisine<input type="checkbox" name="cuisine" value="Western Cuisine"></label>
+                        <label class="product-cuisine">Drinks<input type="checkbox" name="cuisine" value="Drinks"></label>
+                        <label class="product-cuisine">Dessert<input type="checkbox" name="cuisine" value="Dessert"></label>
                     </div>
                 </section>
 
                 <div class="dashed-border-line"></div>
                 
+                <section class="type">
+                    <label class="option-title">Types</label>
+                    <div>
+                        <label class="product-type">Food<input type="checkbox" name="type" value="Food"></label>
+                        <label class="product-type">Beverages<input type="checkbox" name="type" value="Beverages"></label>
+                    </div>
+                </section>
+                <!--
                 <section class="review">
                     <label class="option-title">Star</label>
                     <div class="star-review">
-                        <input type="radio" name="rating" id="5-star"> <!--radio = only 1 can selected-->
+                        <input type="radio" name="rating" id="5-star"> 
                         <label for="5-star"></label>
-                        <input type="radio" name="rating" id="4-star"> <!--name put the same so that only can choose 1 option-->
+                        <input type="radio" name="rating" id="4-star"> 
                         <label for="4-star"></label>
-                        <input type="radio" name="rating" id="3-star"> <!--id must equal to for, which mean the label is for that input-->
+                        <input type="radio" name="rating" id="3-star">
                         <label for="3-star"></label>
                         <input type="radio" name="rating" id="2-star">
                         <label for="2-star"></label>
@@ -104,9 +112,9 @@
                         <label for="medium">RM 10 - RM 20</label>
                         <input type="radio" name="price-select" id="high">
                         <label for="high">RM 20 above</label>
-                    </div><!--!!!!!!!!--> 
+                    </div>
                 </section>
-
+                -->
                 <section class="apply">
                     <button type="submit">Apply</button>
                 </section>
