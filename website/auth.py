@@ -397,11 +397,12 @@ def seller_profile():
     products = Product.query.filter_by(stall_id=current_user.id).all()
     return render_template('seller-profile.html', stall=stall ,products=products)
 
-@auth.route('/stall-menu' , methods=['GET', 'POST'])
-@role_required('stall')
-def stall_menu():
-    products = Product.query.filter_by(stall_id=current_user.id).all()
-    return render_template('stall-menu.html', products=products)
+@auth.route('/stall-menu/<int:stall_id>' , methods=['GET', 'POST'])
+@role_required('user')
+def stall_menu(stall_id):
+    stall = Stall.query.get_or_404(stall_id)
+    products = Product.query.filter_by(stall_id=stall.id).all()
+    return render_template('stall-menu.html', stall=stall, products=products)
 
 @auth.route('/filter', methods=['GET', 'POST'])
 @role_required('user')
