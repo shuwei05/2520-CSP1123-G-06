@@ -61,4 +61,4 @@ class Review(db.Model):
     review = db.Column(db.String(500),nullable=False)
     rating = db.Column(db.String(50),nullable=False)
     review_pic = db.Column(db.String(200),nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
