@@ -195,74 +195,19 @@
         }
 
         .comment {
-            position: fixed;     /* ✅ 永远浮在右下角 */
-            bottom: 30px;
-            right: 20px;
-            z-index: 1000;
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
             }
 
-            .comment input {
-                display: none;
-            }
-
-            .comment label {
-                display: flex;
-                width: 50px;
-                height: 50px;
-                box-shadow: 0 0 3px rgba(0,0,0,0.3);
-                justify-content: center;
-                align-items: center;
-                border-radius: 10px;
-                cursor: pointer;
-                background: white;
-                font-size: 24px;
-            }
-
-            .comment-area {
-                display: none;
-                margin-top: 10px;
-                background: white;
-                padding: 10px;
-                border-radius: 8px;
-                box-shadow: 0 0 5px rgba(0,0,0,0.2);
-                position: absolute;
-                bottom: 70px;
-                right: 0;
-                width: 250px;
-            }
-
-            .comment input:checked ~ .comment-area {
-                display: block;
-            }
-
-
-        .submit-btn {
-            margin-top: 8px;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
+        .comment a {
+            font-size: 40px;        /* ✅ 调大尺寸 */
+            color: #000000;         /* ✅ 纯黑 */
+            text-decoration: none;
         }
 
-        .submit-btn:hover {
-            background-color: #0056b3;
-        }
 
-        .comment input:checked + label {
-            background-color: rgb(247, 247, 247);
-        }
-
-        .comment-area:active + label {
-            background-color: rgb(240, 240, 240);
-            box-shadow: inset 0 2px 3px rgba(0,0,0,0.1);
-        }
         
-        .comment input:checked ~ .comment-area {
-            display: block;
-        }
-
 
 
         /* Reviews List */
@@ -380,6 +325,13 @@
 
                                 <!-- Reviews + Comment Button -->
                 <div class="reviews">
+
+                    <div class="comment">
+                        <a href="/review">
+                            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+                        </a>
+                    </div>
+
                     <div class="reviews-list" id="reviews-list">
                         <!-- Example review -->
                         <div class="review-item">
@@ -391,19 +343,7 @@
                         </div>
                     </div>
 
-                    <!-- Comment button -->
-                    <div class="comment">
-                        <input type="checkbox" id="comment">
-                        <label for="comment">&#10010;</label>
-
-                        <div class="comment-area">
-                            <form id="comment-form">
-                                <textarea name="review_text" placeholder="Write your comment here..." required></textarea>
-                                <button type="submit" class="submit-btn">Post</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                    
 
     </aside>
     <button id="return" class="return-button">&#10094;</button>
