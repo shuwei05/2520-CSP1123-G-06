@@ -398,7 +398,7 @@ def seller_profile():
     return render_template('seller-profile.html', stall=stall ,products=products)
 
 @auth.route('/stall-menu' , methods=['GET', 'POST'])
-@role_required('stall')
+@role_required('user')
 def stall_menu():
     products = Product.query.filter_by(stall_id=current_user.id).all()
     return render_template('stall-menu.html', products=products)
