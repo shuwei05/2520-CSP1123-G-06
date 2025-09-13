@@ -38,6 +38,10 @@ class Stall(db.Model, UserMixin):
     contact = db.Column(db.String(50),nullable=False,unique=True)
     instagram = db.Column(db.String(50),nullable=False)
     products = db.relationship('Product', backref='stall' , lazy=True)
+    rating = db.Column(db.Float, default=0.0)
+    rating_total = db.Column(db.Integer, default=0)
+    rating_count = db.Column(db.Integer, default=0)
+
     
 
     approval_status = db.Column(db.Boolean, default=False)
@@ -62,3 +66,4 @@ class Review(db.Model):
     rating = db.Column(db.String(50),nullable=False)
     review_pic = db.Column(db.String(200),nullable=True)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
+    stall_id = db.Column(db.Integer,db.ForeignKey('stall.id'),nullable=False)

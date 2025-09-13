@@ -336,7 +336,7 @@
                 <div class="reviews">
 
                     <div class="comment">
-                        <a href="/review">
+                        <a id="review-link" href="#">
                             <i class="fa fa-plus-square-o" aria-hidden="true"></i>
                         </a>
                     </div>
@@ -416,6 +416,8 @@
             openinghour.textContent = `Opening Hours : ${stall_info.openhour} to ${stall_info.closehour} `;
             StallBg.src = stall_info.background_pic;
             updateStallStatus(stall_info.openhour, stall_info.closehour);
+
+            document.getElementById("review-link").href = `/review/${stall_info.id}`;
 
             history.pushState({}, "", `/map/${stall_info.id}`);
 
