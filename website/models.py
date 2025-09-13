@@ -67,3 +67,6 @@ class Review(db.Model):
     review_pic = db.Column(db.String(200),nullable=True)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
     stall_id = db.Column(db.Integer,db.ForeignKey('stall.id'),nullable=False)
+
+    user = db.relationship('User', backref='reviews')
+

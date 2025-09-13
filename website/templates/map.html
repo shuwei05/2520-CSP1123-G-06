@@ -282,6 +282,31 @@
             line-height: 1.4;
         }
 
+        .review-rating {
+        margin-top: 5px;
+        }
+
+        .star {
+        font-size: 18px;
+        color: #ccc; /* empty star color */
+        }
+
+        .star.filled {
+        color: #FFD700; /* gold for filled stars */
+        }
+
+    .review-photo {
+    margin-top: 10px;
+    }
+
+    .review-photo img {
+    max-width: 200px;   /* adjust size */
+    max-height: 150px;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
     .nav-center {
     position: absolute;
     left: 50%;
@@ -373,10 +398,10 @@
             <a id="link-to-stall" href=""><span id="stallname"></span></a>
 
 
-            <!--<div class="rating">
+            <div class="rating">
                 <p>4.0</p>
                 <p id="star">&#9733;</p>
-            </div>-->
+            </div>
         </div>
 
         <div class="about-and-reviews-tab">
@@ -402,11 +427,37 @@
 
                     <div class="reviews-list" id="reviews-list">
                         <!-- Example review -->
-                        <div class="review-item">
-                            <div class="review-avatar">A</div>
-                            <div class="review-content">
-                                <p class="review-user">Alice</p>
-                                <p class="review-text">Nasi lemak very delicious 😋</p>
+                         {% if reviews %}
+                            {% for review in reviews %}
+                            <div class="review-item">
+                                <div class="review-avatar">👤</div>
+                                <div class="review-content">
+                                    <p class="review-user">{{review.user.user_name}}</p>
+                                    <p class="review-text">{{review.review}}</p>
+                                    <p class="rating"></p>
+
+                                    <div class="review-rating">
+                                            <div class="star-rating">
+                                            {# filled stars #}
+                                            {% for i in range(review.rating | int) %}
+                                                <span class="star filled">★</span>
+                                            {% endfor %}
+
+                                            {# empty stars #}
+                                            {% for i in range(5 - (review.rating | int)) %}
+                                                <span class="star">★</span>
+                                            {% endfor %}
+                                        </div>
+
+                                        {% if review.review_pic %}
+                                            <div class="review-photo">
+                                            <img src="{{ url_for('static', filename='uploads/' ~ review.review_pic) }}" alt="Review photo">
+                                            </div>
+                                        {% endif %}
+                                    {% else %}
+                                    <p>No reviews yet.</p>
+                                {% endfor %}
+                            {% endif %}
                             </div>
                         </div>
                     </div>
@@ -448,7 +499,6 @@
     const SidebarAppear= document.getElementById("seller-sidebar")
     const ReturnButton = document.getElementById("return")
     const StallBg = document.getElementById("stall-bg-pic")
-    const stallPrefix = document.getElementById("stall-prefix")
     const stallMenu = document.getElementById("link-to-stall")
 
 
@@ -470,8 +520,7 @@
             stallname.textContent = stall_info.stallname;
             stallMenu.href = `/stall-menu/${stall_info.id}`;
 
-            const prefix = `ST-${stall_info.id}`;
-            stallPrefix.textContent = prefix + " - ";
+
             stallname.textContent = stall_info.stallname;
 
             openinghour.textContent = `Opening Hours : ${stall_info.openhour} to ${stall_info.closehour} `;

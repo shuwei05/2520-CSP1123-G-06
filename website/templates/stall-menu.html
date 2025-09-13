@@ -306,7 +306,8 @@
         {% endif %}
 
         <h3>{{ product.product_name }}</h3>
-        <p>{{ product.product_des }}</p>
+        <p><strong>Product Description:</strong>{{ product.product_des }}</p>
+        <p><strong>Product Price:</strong>RM {{ product.price }}</p>
 
        <a href="{{ url_for('auth.view_details', product_id=product.id) }}" class="fancy-btn">
         View Details

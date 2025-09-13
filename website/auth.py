@@ -343,6 +343,12 @@ def reset_password():
 def map(stall_id):
     defaultBg = "/static/photos/noBg.jpg"
     stall_info = Stall.query.all()
+
+    if stall_id:
+        reviews = Review.query.filter_by(stall_id=stall_id).all()
+    else:
+        reviews = []
+
     stall_data = []
     for data in stall_info:
         if data.bg_pic == None:
@@ -366,7 +372,7 @@ def map(stall_id):
                 "background_pic": "/static/uploads/" + data.bg_pic,
             })
 
-    return render_template("map.html",stall_data=stall_data,selected_stall_id=stall_id)
+    return render_template("map.html",stall_data=stall_data,selected_stall_id=stall_id,reviews=reviews)
 
 
 @auth.route('/menu')
@@ -447,7 +453,7 @@ def review(stall_id):
 
             db.session.commit()
             flash('Review submitted successfully!') 
-            return redirect(url_for('map'))
+            return redirect(url_for('auth.map'))
 
     return(render_template('review.html', stall=stall))
 
