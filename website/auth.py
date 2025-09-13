@@ -337,28 +337,35 @@ def reset_password():
 
 
 
-@auth.route("/map", methods=["GET"])
-def map():
-    #seller_coordinates = db.session.query(Stall.latitude,Stall.longitude).all()
-    #coordinates = []
-    #for coordinate in seller_coordinates:
-    #    coordinates.append(list(coordinate))
-
+@auth.route("/map", defaults={"stall_id": None}, methods=["GET"])
+@auth.route("/map/<int:stall_id>", methods=["GET"])
+def map(stall_id):
+    defaultBg = "/static/photos/noBg.jpg"
     stall_info = Stall.query.all()
     stall_data = []
     for data in stall_info:
-        stall_data.append({
+        if data.bg_pic == None:
+            stall_data.append({
             "id": data.id,
             "stallname": data.stallname,
             "openhour": data.openhour.strftime("%H:%M"),
             "closehour": data.closehour.strftime("%H:%M"),
             "latitude": data.latitude,
-            "longitude": data.longitude
-        })
-    
-    #user = User.query.get_or_404(current_user.id)
+            "longitude": data.longitude,
+            "background_pic": defaultBg,
+            })
+        else:
+            stall_data.append({
+                "id": data.id,
+                "stallname": data.stallname,
+                "openhour": data.openhour.strftime("%H:%M"),
+                "closehour": data.closehour.strftime("%H:%M"),
+                "latitude": data.latitude,
+                "longitude": data.longitude,
+                "background_pic": "/static/uploads/" + data.bg_pic,
+            })
 
-    return render_template("map.html",stall_data=stall_data)
+    return render_template("map.html",stall_data=stall_data,selected_id=stall_id)
 
 
 @auth.route('/menu')
@@ -391,11 +398,12 @@ def seller_profile():
     products = Product.query.filter_by(stall_id=current_user.id).all()
     return render_template('seller-profile.html', stall=stall ,products=products)
 
-@auth.route('/stall-menu' , methods=['GET', 'POST'])
-@role_required('stall')
-def stall_menu():
-    products = Product.query.filter_by(stall_id=current_user.id).all()
-    return render_template('stall-menu.html', products=products)
+@auth.route('/stall-menu/<int:stall_id>' , methods=['GET', 'POST'])
+@role_required('user')
+def stall_menu(stall_id):
+    stall = Stall.query.get_or_404(stall_id)
+    products = Product.query.filter_by(stall_id=stall.id).all()
+    return render_template('stall-menu.html', stall=stall, products=products)
 
 @auth.route('/filter', methods=['GET', 'POST'])
 @role_required('user')
@@ -417,7 +425,7 @@ def filter():
             )
 
         filtered_products = query.all()
-        return render_template('filter.html', products=filtered_products, selected_cuisines=selected_cuisines, selected_types=selected_types)
+        return render_template('menu.html', products=filtered_products, selected_cuisines=selected_cuisines, selected_types=selected_types)
 
     return render_template('filter.html', products=[], selected_cuisines=[], selected_types=[])
 

@@ -215,37 +215,40 @@ section.staffb {
             {% endwith %}
         </div>
 
-    <img src="banner-placeholder.jpg" alt="Banner">
-    <a href="map.html" class="back-btn">
+      <img src="{{ url_for('static', filename='uploads/' ~ stall.bg_pic) }}" alt="Banner">
+      <a href="{{ url_for('auth.map') }}" class="back-btn">
       <i class="fa-solid fa-arrow-left"></i>
     </a>
 
 
     <!-- Info Box -->
     <div class="info-box">
-      <img src="avatar.jpg" alt="Store Avatar" class="avatar">
+      <img src="{{ url_for('static', filename='uploads/' ~ stall.bg_pic if stall.bg_pic else 'photos/noBg.jpg') }}" 
+       alt="Store Avatar" class="avatar">
       <div class="info-text">
-        <h2>Rasa Shiokk</h2>
-        <p><em>MMU Starbees</em></p>
+        <h2>{{ stall.stallname }}</h2>
         <p>⭐ 4.0</p>
-        <p>RM1 - RM20</p>
     </div>
   </div>
 
   <!-- Food Menu -->
   <div class="menu">
-    {% if products %}  
-    {% for product in products %}
-    <div class="menu-item">
-      {% if product.product_pic %} 
-      <img src="food1.jpg" alt="Food 1">
-      {% endif %}
+  {% for product in products %}
+        <div class="menu-item">
+          {% if product.product_pic %}
+          <img src="{{ url_for('static', filename='uploads/' ~ product.product_pic) }}" alt="{{ product.product_name }}">
+        {% else %}
+          <img src="{{ url_for('static', filename='photos/noBg.jpg') }}" alt="No image">
+        {% endif %}
+      
 
-      <h3>{{ product["product_name"] }}</h3>
-      <p>{{ product["product_des"] }}</p>
+      <h3>{{ product.product_name }}</h3>
+      <p>{{ product.product_des }}</p>
 
-      <a href="/view-details" class="btn btn-primary btn-sm">View Details</a>
-      {% endif %}
+      <a href="{{ url_for('auth.view_details', product_id=product.id )}}" class="btn btn-primary btn-sm">View Details</a>
+      <a href="{{ url_for('auth.map', stall_id=stall.id )}}" class="btn btn-primary btn-sm">View Details</a>
+
+  {% endfor %}
     </div>
 
    

@@ -96,6 +96,8 @@
         .stall-name {
             margin-right: 10px;
             font-weight: bold;
+            color: #000000;
+            font-size: 30px;
         }
 
         .rating {
@@ -195,74 +197,19 @@
         }
 
         .comment {
-            position: fixed;     /* ✅ 永远浮在右下角 */
-            bottom: 30px;
-            right: 20px;
-            z-index: 1000;
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
             }
 
-            .comment input {
-                display: none;
-            }
-
-            .comment label {
-                display: flex;
-                width: 50px;
-                height: 50px;
-                box-shadow: 0 0 3px rgba(0,0,0,0.3);
-                justify-content: center;
-                align-items: center;
-                border-radius: 10px;
-                cursor: pointer;
-                background: white;
-                font-size: 24px;
-            }
-
-            .comment-area {
-                display: none;
-                margin-top: 10px;
-                background: white;
-                padding: 10px;
-                border-radius: 8px;
-                box-shadow: 0 0 5px rgba(0,0,0,0.2);
-                position: absolute;
-                bottom: 70px;
-                right: 0;
-                width: 250px;
-            }
-
-            .comment input:checked ~ .comment-area {
-                display: block;
-            }
-
-
-        .submit-btn {
-            margin-top: 8px;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
+        .comment a {
+            font-size: 40px;        /* ✅ 调大尺寸 */
+            color: #000000;         /* ✅ 纯黑 */
+            text-decoration: none;
         }
 
-        .submit-btn:hover {
-            background-color: #0056b3;
-        }
 
-        .comment input:checked + label {
-            background-color: rgb(247, 247, 247);
-        }
-
-        .comment-area:active + label {
-            background-color: rgb(240, 240, 240);
-            box-shadow: inset 0 2px 3px rgba(0,0,0,0.1);
-        }
         
-        .comment input:checked ~ .comment-area {
-            display: block;
-        }
-
 
 
         /* Reviews List */
@@ -355,15 +302,17 @@
     
     <aside id="seller-sidebar" class="seller-info-sidebar">
         <div class="stall-photo">
-            <img class="stall-photo" src="{{ url_for('static',filename='photos/smile.png') }}">
+            <img class="stall-photo" id="stall-bg-pic" src="">
         </div>
 
         <div class="stallname-and-rating">
-            <div class="stall-name" id="stallname"></div>
-            <div class="rating">
+            <span id="stall-prefix"></span>
+            <span id="stallname"></span>
+
+            <!--<div class="rating">
                 <p>4.0</p>
                 <p id="star">&#9733;</p>
-            </div>
+            </div>-->
         </div>
 
         <div class="about-and-reviews-tab">
@@ -375,12 +324,18 @@
             <div class="sidebar-content">
                 <div class="stall-details">
                     <p class="stall-status" id="stall-status">Status</p>
-                    <p class="stall-opening-time" id="openinghour">Opening Hours : 12:00 to 18:00</p>
-                    <p class="price-category">RM 10 - RM 20</p>   
+                    <p class="stall-opening-time" id="openinghour">Opening Hours : 12:00 to 18:00</p>   
                 </div>
 
                                 <!-- Reviews + Comment Button -->
                 <div class="reviews">
+
+                    <div class="comment">
+                        <a href="/review">
+                            <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+                        </a>
+                    </div>
+
                     <div class="reviews-list" id="reviews-list">
                         <!-- Example review -->
                         <div class="review-item">
@@ -392,19 +347,7 @@
                         </div>
                     </div>
 
-                    <!-- Comment button -->
-                    <div class="comment">
-                        <input type="checkbox" id="comment">
-                        <label for="comment">&#10010;</label>
-
-                        <div class="comment-area">
-                            <form id="comment-form">
-                                <textarea name="review_text" placeholder="Write your comment here..." required></textarea>
-                                <button type="submit" class="submit-btn">Post</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                    
 
     </aside>
     <button id="return" class="return-button">&#10094;</button>
@@ -440,6 +383,9 @@
     const ZoomMap = document.getElementById("map")
     const SidebarAppear= document.getElementById("seller-sidebar")
     const ReturnButton = document.getElementById("return")
+    const StallBg = document.getElementById("stall-bg-pic")
+    const stallPrefix = document.getElementById("stall-prefix");
+
 
     for (const stall_info of stall_data){
         const marker = L.marker([stall_info.latitude,stall_info.longitude]).addTo(map);
@@ -457,8 +403,16 @@
             SidebarAppear.classList.add("active");
             ReturnButton.classList.add("active");
             stallname.textContent = stall_info.stallname;
+
+            const prefix = `ST-${stall_info.id}`;
+            stallPrefix.textContent = prefix + " - ";
+            stallname.textContent = stall_info.stallname;
+
             openinghour.textContent = `Opening Hours : ${stall_info.openhour} to ${stall_info.closehour} `;
+            StallBg.src = stall_info.background_pic;
             updateStallStatus(stall_info.openhour, stall_info.closehour);
+
+            history.pushState({}, "", `/map/${stall_info.id}`);
 
         }
     function exitZoomMap() {
@@ -466,11 +420,26 @@
             SidebarAppear.classList.remove("active");
             ReturnButton.classList.remove("active")
             map.setView([2.92790,101.64188],17);
+
+            history.pushState({}, "", "/map");
+
         }
 
     ReturnButton.addEventListener("click", exitZoomMap);
     
+   stall_data.forEach(stall => {
+        const marker = L.marker([stall.latitude, stall.longitude]).addTo(map);
+        marker.on("click", () => EnterZoomMap(stall));
+    });
 
+    const pathParts = window.location.pathname.split("/");
+    if (pathParts.length === 3 && pathParts[1] === "map") {
+        const selectedId = parseInt(pathParts[2]);
+        const stall = stall_data.find(s => s.id === selectedId);
+        if (stall) {
+            EnterZoomMap(stall);
+        }
+    }
 
 
     document.getElementById("comment-form").addEventListener("submit", function(e){
