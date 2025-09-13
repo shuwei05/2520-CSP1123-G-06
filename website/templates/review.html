@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Reviews page</title>
+  <title>Add Reviews Page</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
   <style>
     * {
@@ -12,10 +12,13 @@
       box-sizing: border-box;
       font-family: Arial, sans-serif;
     }
+
     body {
-      background: #f9f9f9;
+      background: #f0f2f5;
     }
-    .navbar{
+
+    /* Navbar */
+    .navbar {
       position: fixed;
       top:0 ;
       left: 0;
@@ -28,15 +31,19 @@
       padding: 0 20px;
       z-index: 999;
     }
-    .logo img{
+
+    .logo img {
       height: 65px;
       transform: translateX(-10px);
     }
+
     .nav-icons a {
       color: black;
       text-decoration: none;
       font-size: 35px;
     }
+
+    /* Back button */
     .back-btn {
       position: absolute;
       top: 100px;
@@ -52,71 +59,156 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      text-decoration: none;
       color: black;
+      text-decoration: none;
     }
-    .content-box {
-      width: 800px;
-      margin: 150px auto 50px auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+
+    /* Flash messages */
+    .flash-messages {
+      position: fixed;
+      top: 90px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 500px;
+      z-index: 1000;
       text-align: center;
-      min-height: 300px;
-      
     }
+
+    .flash-messages .alert {
+      background: #fff7e6;
+      padding: 12px 20px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      color: #555;
+      animation: fadeOut 4s forwards;
+    }
+
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      70% { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+
+    /* Content Box */
+    .content-box {
+      width: 90%;
+      max-width: 600px;
+      margin: 140px auto 50px auto;
+      background: #fff;
+      padding: 30px 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .content-box h2 {
+      margin-bottom: 25px;
+      font-size: 28px;
+      color: #333;
+    }
+
     textarea {
       width: 100%;
-      height: 100px;
-      padding: 10px;
-      border-radius: 10px;
+      height: 120px;
+      padding: 12px;
+      border-radius: 12px;
       border: 1px solid #ccc;
       resize: none;
       font-size: 16px;
-      margin-bottom: 45px;
+      margin-bottom: 20px;
+      transition: border 0.3s, box-shadow 0.3s;
     }
-    button {
-      padding: 10px 30px;
-      background: rgb(164, 231, 250);
-      border: none;
-      border-radius: 8px;
+
+    textarea:focus {
+      border-color: #2575fc;
+      outline: none;
+      box-shadow: 0 0 5px rgba(37,117,252,0.3);
+    }
+
+    input[type="file"] {
+      margin-bottom: 20px;
       cursor: pointer;
-      font-size: 16px;
-      margin-bottom: 30px;
+      font-size: 14px;
     }
+
+    /* Button */
+    button {
+      padding: 10px 35px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      color: #fff;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #2575fc, #6a11cb);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
+
+    /* Rating */
+    .rating {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-direction: row-reverse;
+    }
+
+    .rating input {
+      display: none;
+    }
+
+    .rating label {
+      font-size: 2.2rem;
+      color: #ccc;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+  
+    .rating label:hover,
+    .rating label:hover ~ label {
+      color: gold;
+    }
+
+    /* 选中高亮所有左边星星 */
+    .rating input:checked + label,
+    .rating input:checked + label ~ label {
+      color: gold;
+    }
+    /* Review list (optional) */
     .review-list {
       margin-top: 30px;
       text-align: left;
     }
+
     .review-item {
       background: #f4f4f4;
       padding: 10px 15px;
       border-radius: 10px;
       margin-bottom: 10px;
     }
+
     .review-item strong {
       color: #333;
     }
-    .rating {
-      direction: rtl;  /* right to left so 5 is leftmost */
-      unicode-bidi: bidi-override;
+
+    /* Responsive */
+    @media (max-width: 650px) {
+      .content-box {
+        width: 95%;
+        padding: 20px;
+      }
     }
-    .rating input {
-      display: none;
-    }
-    .rating label {
-      font-size: 2rem;
-      color: #ccc;
-      cursor: pointer;
-    }
-    .rating input:checked ~ label {
-      color: gold;
-    }
-    .rating label:hover,
-    .rating label:hover ~ label {
-      color: gold;
-    }
+
   </style>
 </head>
 <body>
@@ -131,17 +223,18 @@
     </div>
   </div>
 
+  <!-- Flash Messages -->
   <div class="flash-messages">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ 'danger' if category == 'error' else category }}">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-      </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ 'danger' if category == 'error' else category }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
 
   <!-- Back Button -->
   <a class="back-btn" href="/map">  
@@ -152,36 +245,37 @@
   <div class="content-box">
     <h2>Leave a Review</h2>
 
-    <!-- Review Form -->
     <form action="{{ url_for('auth.review', stall_id=stall.id) }}" method="POST" enctype="multipart/form-data">
-        <!--Rating Form-->
-        <div class="rating">
-            <input type="radio" name="rating" id="star5" value="5" required>
-            <label for="star5" title="5 stars">★</label>
+      
+      <!-- Rating -->
+      <div class="rating">
+        <input type="radio" name="rating" id="star5" value="5" required>
+        <label for="star5" title="5 stars">★</label>
 
-            <input type="radio" name="rating" id="star4" value="4">
-            <label for="star4" title="4 stars">★</label>
+        <input type="radio" name="rating" id="star4" value="4">
+        <label for="star4" title="4 stars">★</label>
 
-            <input type="radio" name="rating" id="star3" value="3">
-            <label for="star3" title="3 stars">★</label>
+        <input type="radio" name="rating" id="star3" value="3">
+        <label for="star3" title="3 stars">★</label>
 
-            <input type="radio" name="rating" id="star2" value="2">
-            <label for="star2" title="2 stars">★</label>
+        <input type="radio" name="rating" id="star2" value="2">
+        <label for="star2" title="2 stars">★</label>
 
-            <input type="radio" name="rating" id="star1" value="1">
-            <label for="star1" title="1 star">★</label>
-        </div>
+        <input type="radio" name="rating" id="star1" value="1">
+        <label for="star1" title="1 star">★</label>
+      </div>
 
-       <input type="file" name="review_pic" accept="image/*" required>
 
+      <!-- File Upload -->
+      <input type="file" name="review_pic" accept="image/*" required>
+
+      <!-- Review Text -->
       <textarea name="review" placeholder="Write your review here..."></textarea>
-      <button type="submit">Add</button>
 
+      <!-- Submit Button -->
+      <button type="submit">Add Review</button>
 
     </form>
-
-
-
 
   </div>
 

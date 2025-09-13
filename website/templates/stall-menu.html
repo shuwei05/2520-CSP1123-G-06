@@ -93,10 +93,10 @@
     }
 
     .info-box img.avatar {
-  width: 150px;          
+  width: 200px;          
   height: 150px;         
   border-radius: 15px;
-  margin-right: 15px;  
+  margin-right: 25px;  
   object-fit: cover;
 }
 
@@ -104,11 +104,13 @@
       margin-bottom: 5px;
       font-size: 20px;
       white-space: nowrap;
+      margin-left: 30px; 
     }
 
     .info-text p {
       font-size: 13px;
       color: #555;
+       margin-left: 30px;
     }
 
     /* Menu Grid */
@@ -116,7 +118,7 @@
   margin-top: 220px;
   padding: 20px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 自动响应式 */
+  grid-template-columns: repeat(3, 1fr); /* 自动响应式 */
   gap: 50px;
   max-width: 1200px;
   margin-left: auto;
@@ -286,8 +288,7 @@
 
     <!-- Info Box -->
     <div class="info-box">
-      <img src="{{ url_for('static', filename='uploads/' ~ stall.bg_pic if stall.bg_pic else 'photos/noBg.jpg') }}" 
-       alt="Store Avatar" class="avatar">
+      <img src="{{ url_for('static', filename='uploads/' ~ stall.prof_pic) }}" alt="Avatar" class="avatar">
       <div class="info-text">
         <h2>{{ stall.stallname }}</h2>
         <p>⭐ 4.0</p>
