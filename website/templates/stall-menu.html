@@ -246,6 +246,8 @@ section.staffb {
       <p>{{ product.product_des }}</p>
 
       <a href="{{ url_for('auth.view_details', product_id=product.id )}}" class="btn btn-primary btn-sm">View Details</a>
+      <a href="{{ url_for('auth.map', stall_id=stall.id )}}" class="btn btn-primary btn-sm">View Details</a>
+
   {% endfor %}
     </div>
 
