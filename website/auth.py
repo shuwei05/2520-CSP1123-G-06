@@ -338,7 +338,8 @@ def reset_password():
 
 
 @auth.route("/map", methods=["GET"])
-def map():
+def map(stall):
+    stall = Stall.query.get_or_404(stall)
     defaultBg = "/static/photos/noBg.jpg"
     stall_info = Stall.query.all()
     stall_data = []
@@ -364,7 +365,7 @@ def map():
                 "background_pic": "/static/uploads/" + data.bg_pic,
             })
 
-    return render_template("map.html",stall_data=stall_data)
+    return render_template("map.html",stall_data=stall_data,stall=stall)
 
 
 @auth.route('/menu')
