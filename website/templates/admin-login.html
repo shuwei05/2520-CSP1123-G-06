@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <title>Admin Login</title>
   <style>
     body {
@@ -43,6 +44,7 @@
     .input-box {
       margin: 15px 0;
       text-align: left;
+      position: relative;
     }
 
     .input-box label {
@@ -54,8 +56,8 @@
     }
 
     .input-box input {
-      width: 92%;
-      padding: 10px;
+      width: 100%;
+      padding: 10px 40px 10px 10px; 
       border-radius: 15px;
       border: 2px solid #ccc;
       outline: none;  /* removes default browser focus outline */
@@ -109,6 +111,18 @@
     70%  { opacity: 1; }
     100% { opacity: 0; visibility: hidden; }
 }
+
+.eye-icon {
+  position: absolute;
+  right: 12px;  /* 调整一下位置，确保在输入框里面 */
+  top: 50%;
+  transform: translateY(1px);
+  cursor: pointer;
+  color: #555;
+}
+.eye-icon i {
+  font-size: 20px;
+}
   </style>
 </head>
 <body>
@@ -139,6 +153,9 @@
       <div class="input-box">
         <label for="password">Password</label>
         <input type="password" id="password" name="admin_password" placeholder="Enter password" required>
+         <span class="eye-icon" onclick="togglePassword()">
+            <i id="eye-icon" class="fa fa-eye-slash"></i>
+          </span>
       </div>
 
       <button type="submit" class="btn">Login</button>
@@ -146,7 +163,24 @@
     <p class="note">Only authorized administrators can log in.</p>
   </div>
 
-  
+  <script>
+function togglePassword() {
+  const passwordInput = document.getElementById("password");
+  const eyeIcon = document.getElementById("eye-icon");
+
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    eyeIcon.classList.remove("fa-eye-slash");
+    eyeIcon.classList.add("fa-eye");   // 👁️ 打开眼睛
+  } else {
+    passwordInput.type = "password";
+    eyeIcon.classList.remove("fa-eye");
+    eyeIcon.classList.add("fa-eye-slash");  // 🙈 闭上眼睛
+  }
+}
+
+</script>
+
       
    
 
