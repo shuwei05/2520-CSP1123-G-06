@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seller Login</title>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <style>
     body {
       display: flex;
@@ -143,6 +144,18 @@
   80%  { opacity: 1; transform: translateY(0); }
   100% { opacity: 0; transform: translateY(-10px); }
 }
+
+.eye-icon {
+  position: absolute;
+  right: 65px;  /* 调整一下位置，确保在输入框里面 */
+  top: 47%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #555;
+}
+.eye-icon i {
+  font-size: 14px;
+}
   </style>
 </head>
 <body>
@@ -178,8 +191,12 @@
         </div>
 
         <div class="input-box">
-          <input type="password" placeholder="Password" name="password1"required>
-        </div>
+        <input type="password" id="password" placeholder="Password" name="password1" required>
+        <span class="eye-icon" onclick="togglePassword()">
+          <i id="eye-icon" class="fa fa-eye-slash"></i>
+        </span>
+      </div>
+
         <div class="forgot">
           <a href="/reset-password">Forgot Password?</a>
         </div>
@@ -191,5 +208,22 @@
 
     </div>
   </div>
+  <script>
+function togglePassword() {
+  const passwordInput = document.getElementById("password");
+  const eyeIcon = document.getElementById("eye-icon");
+
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    eyeIcon.classList.remove("fa-eye-slash");
+    eyeIcon.classList.add("fa-eye");   // 👁️ 打开眼睛
+  } else {
+    passwordInput.type = "password";
+    eyeIcon.classList.remove("fa-eye");
+    eyeIcon.classList.add("fa-eye-slash");  // 🙈 闭上眼睛
+  }
+}
+
+</script>
 </body>
 </html>

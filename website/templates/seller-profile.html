@@ -206,6 +206,31 @@
     .logout-btn:hover {
       background-color: #0056b3;
     }
+
+    .flash-messages {
+    
+    position: absolute;     /* 浮动，不占空间 */
+    top: 40px;                 /* 贴住 section 顶部 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;             /* 和 section 宽度差不多 */
+    max-width: 600px;       /* 不会太宽 */
+    z-index: 1000;
+    font-size: 20px;
+}
+
+.flash-messages .alert {
+    margin-bottom: 10px;
+    text-align: center;
+    animation: fadeOut 3s forwards;
+    color: #4d4b4b;
+    
+}
+@keyframes fadeOut {
+    0%   { opacity: 1; }
+    70%  { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+}
   </style>
 </head>
 <body>
@@ -221,6 +246,20 @@
 
   <!-- Banner -->
   <div class="banner">
+
+    <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+
     <img src="{{ url_for('static', filename='uploads/' ~ stall.bg_pic) }}" alt="Banner" class="Banner">
 
     <!-- Seller Info Card -->

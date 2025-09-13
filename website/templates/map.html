@@ -96,13 +96,15 @@
             font-size: 18px;
             box-shadow: 0 2px 2px rgba(0,0,0,0.1);
             background-color: rgb(246, 246, 246);
+            font-size: 25px;
         }
         
-        .stall-name {
+        .stall-link {
             margin-right: 10px;
             font-weight: bold;
             color: #000000;
             font-size: 30px;
+            
         }
 
         .rating {
@@ -281,11 +283,55 @@
     margin-right: 30px;
     }
 
+    .flash-messages {
+                position: fixed;       /* 改成固定，跟随页面 */
+                top: 80px;             /* 刚好在 nav 底下 */
+                left: 50%;
+                transform: translateX(-50%);
+                width: 80%;
+                max-width: 600px;
+                z-index: 2000;  
+                font-size: 30px;
+            }
+
+
+        .flash-messages .alert {
+            margin-bottom: 10px;
+            text-align: center;
+            animation: fadeOut 3s forwards;
+            color: #313030;
+            
+        }
+        @keyframes fadeOut {
+            0%   { opacity: 1; }
+            70%  { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+
     </style>
 </head>
 <body>
     <nav>
+
+
+
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
         <div class="navbar">
+
+
+
+
             <div class="logo">
                 <img src="{{ url_for('static',filename='photos/logo.png') }}" alt="mmu logo">
             </div>
@@ -312,7 +358,7 @@
 
         <div class="stallname-and-rating">
             <span id="stall-prefix"></span>
-            <span id="stallname"></span>
+            <a href="/stall-menu" id="stallname" class="stall-link"></a>
 
             <!--<div class="rating">
                 <p>4.0</p>
@@ -328,15 +374,15 @@
     
             <div class="sidebar-content">
                 <div class="stall-details">
-                    <p class="stall-status" id="stall-status">Status</p>
-                    <p class="stall-opening-time" id="openinghour">Opening Hours : 12:00 to 18:00</p>   
+                    <p class="stall-status" id="stall-status"></p>
+                    <p class="stall-opening-time" id="openinghour"></p>   
                 </div>
 
                                 <!-- Reviews + Comment Button -->
                 <div class="reviews">
 
                     <div class="comment">
-                        <a href="/review">
+                        <a id="review-link" href="#">
                             <i class="fa fa-plus-square-o" aria-hidden="true"></i>
                         </a>
                     </div>
@@ -351,7 +397,6 @@
                             </div>
                         </div>
                     </div>
-
                     
 
     </aside>
@@ -417,6 +462,8 @@
             openinghour.textContent = `Opening Hours : ${stall_info.openhour} to ${stall_info.closehour} `;
             StallBg.src = stall_info.background_pic;
             updateStallStatus(stall_info.openhour, stall_info.closehour);
+
+            document.getElementById("review-link").href = `/review/${stall_info.id}`;
 
             history.pushState({}, "", `/map/${stall_info.id}`);
 
