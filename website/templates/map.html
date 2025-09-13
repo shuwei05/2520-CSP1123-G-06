@@ -89,6 +89,18 @@
             height: 100%;
         }
         /*Stall Name & Rating*/
+        #link-to-stall {
+            text-decoration: none;
+        }
+
+        #link-to-stall:active {
+            color: black;
+        }
+
+        #link-to-stall:visited {
+            color: black;
+        }
+
         .stallname-and-rating {
             display: flex;
             padding: 20px;
@@ -358,7 +370,8 @@
 
         <div class="stallname-and-rating">
             <span id="stall-prefix"></span>
-            <a href="/stall-menu" id="stallname" class="stall-link"></a>
+            <a id="link-to-stall" href=""><span id="stallname"></span></a>
+
 
             <!--<div class="rating">
                 <p>4.0</p>
@@ -435,7 +448,8 @@
     const SidebarAppear= document.getElementById("seller-sidebar")
     const ReturnButton = document.getElementById("return")
     const StallBg = document.getElementById("stall-bg-pic")
-    const stallPrefix = document.getElementById("stall-prefix");
+    const stallPrefix = document.getElementById("stall-prefix")
+    const stallMenu = document.getElementById("link-to-stall")
 
 
     for (const stall_info of stall_data){
@@ -454,6 +468,7 @@
             SidebarAppear.classList.add("active");
             ReturnButton.classList.add("active");
             stallname.textContent = stall_info.stallname;
+            stallMenu.href = `/stall-menu/${stall_info.id}`;
 
             const prefix = `ST-${stall_info.id}`;
             stallPrefix.textContent = prefix + " - ";
@@ -535,10 +550,10 @@
 
     ReturnButton.addEventListener("click", exitZoomMap);
     
-   stall_data.forEach(stall => {
-        const marker = L.marker([stall.latitude, stall.longitude]).addTo(map);
-        marker.on("click", () => EnterZoomMap(stall));
-    });
+    //stall_data.forEach(stall => {
+    //    const marker = L.marker([stall.latitude, stall.longitude]).addTo(map);
+    //    marker.on("click", () => EnterZoomMap(stall));
+    //});
 
     const pathParts = window.location.pathname.split("/");
     if (pathParts.length === 3 && pathParts[1] === "map") {
@@ -546,6 +561,7 @@
         const stall = stall_data.find(s => s.id === selectedId);
         if (stall) {
             EnterZoomMap(stall);
+            map.once("click",exitZoomMap);
         }
     }
 
