@@ -1,5 +1,5 @@
 from flask import Blueprint ,  render_template ,request , flash ,redirect, url_for , current_app
-from .models import User , Stall , Product
+from .models import User , Stall , Product , Review
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from . import db   
@@ -291,7 +291,8 @@ def add_product():
 
             if product_file and product_file.filename != "":
                 ext = os.path.splitext(product_file.filename)[1]
-                product_filename =f"{new_product.id}{ext}"
+                safe_name = new_product.product_name.replace(" ", "_")  
+                product_filename =f"{safe_name}_{new_product.id}{ext}"
                 product_file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], product_filename))
                 new_product.product_pic = product_filename
                 db.session.commit()
@@ -365,7 +366,7 @@ def map(stall_id):
                 "background_pic": "/static/uploads/" + data.bg_pic,
             })
 
-    return render_template("map.html",stall_data=stall_data,selected_id=stall_id)
+    return render_template("map.html",stall_data=stall_data,selected_stall_id=stall_id)
 
 
 @auth.route('/menu')
@@ -404,6 +405,51 @@ def stall_menu(stall_id):
     stall = Stall.query.get_or_404(stall_id)
     products = Product.query.filter_by(stall_id=stall.id).all()
     return render_template('stall-menu.html', stall=stall, products=products)
+
+@auth.route('/review/<int:stall_id>', methods=['GET', 'POST'])
+@role_required('user')
+def review(stall_id):
+    stall = Stall.query.get_or_404(stall_id)
+
+    if request.method == 'POST':
+        stall = Stall.query.get_or_404(stall_id)
+        review = request.form.get('review','').strip()
+        rating = request.form.get('rating')
+        review_pic = request.files.get('review_pic')
+
+        if len(review) < 5:
+            flash('Review must more than 5 words!')
+        elif not rating or not rating.isdigit() or int(rating) not in range(1, 6):
+            flash('Please pick a rating between 1-5 stars.')
+        elif not review_pic:
+            flash('Please upload a photo about the stall')
+        else:
+            new_review = Review(
+                stall_id=stall.id,
+                user_id=current_user.id,
+                review=review,
+                rating=rating,
+                review_pic=None
+            )
+            db.session.add(new_review)
+            db.session.flush()
+
+            ext = os.path.splitext(review_pic.filename)[1]
+            filename = f"review_{new_review.id}{ext}"
+            upload_path = os.path.join(current_app.config["UPLOAD_FOLDER"], filename)
+            review_pic.save(upload_path)
+
+            new_review.review_pic = filename
+
+            stall.rating_count += 1
+            stall.rating_total += int(rating)
+            stall.rating = stall.rating_total / stall.rating_count
+
+            db.session.commit()
+            flash('Review submitted successfully!') 
+            return redirect(url_for('map'))
+
+    return(render_template('review.html', stall=stall))
 
 @auth.route('/filter', methods=['GET', 'POST'])
 @role_required('user')
