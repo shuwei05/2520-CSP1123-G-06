@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
     <meta name="viewport" content="width=1200, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <style>
@@ -68,6 +70,22 @@ section.staffb {
    
 }
 
+.eye-icon {
+  position: absolute;
+  right: 65px;  /* 调整一下位置，确保在输入框里面 */
+  top: 47%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #555;
+}
+.eye-icon i {
+  font-size: 18px;
+}
+
+.password-box {
+  position: relative;
+}
+
 
     </style>
 </head>
@@ -114,8 +132,25 @@ section.staffb {
                 <input type="text" name= "stallowner" placeholder="Stall Owner name" required>
                 <input type="text" name="email" placeholder="Email" required>
                 <input type="text" name="location" placeholder="Location/Address" required>
-                <input type="text" name="password1" placeholder="Password" required>
-                <input type="text" name="password2" placeholder="Comfirm Password" required>
+
+
+
+                <div class="password-box">
+                  <input type="password" id="password1" name="password1" placeholder="Password" required>
+                  <span class="eye-icon" onclick="togglePassword('password1','eye1')">
+                    <i id="eye1" class="fa fa-eye-slash"></i>
+                  </span>
+                </div>
+
+                <!-- Confirm Password with eye -->
+                <div class="password-box">
+                  <input type="password" id="password2" name="password2" placeholder="Confirm Password" required>
+                  <span class="eye-icon" onclick="togglePassword('password2','eye2')">
+                    <i id="eye2" class="fa fa-eye-slash"></i>
+                  </span>
+                </div>
+
+
                 <input type="text" name="openday" placeholder="Openday                                                   e.g: Monday - Saturday" required>
                 <input type="text" name="contact" placeholder="Contact Number">
                 <input type="text" name="instagram" placeholder="Instagram">
@@ -353,6 +388,27 @@ document.addEventListener("DOMContentLoaded", function() {
                 position();
             });
         }
+
+
+
+
+        
+    // 密码眼睛切换
+    function togglePassword(inputId, eyeId) {
+      const input = document.getElementById(inputId);
+      const eye = document.getElementById(eyeId);
+
+      if (input.type === "password") {
+        input.type = "text";
+        eye.classList.remove("fa-eye-slash");
+        eye.classList.add("fa-eye");
+      } else {
+        input.type = "password";
+        eye.classList.remove("fa-eye");
+        eye.classList.add("fa-eye-slash");
+      }
+    }
+    </script>
     </script>
 </body>
 </html>
