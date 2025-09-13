@@ -12,6 +12,11 @@
     
     <!--Map CSS-->
     <style>
+        /*marker color*/
+        .huechange {
+            filter: hue-rotate(120deg);
+        }
+
         body,html {
             margin: 0;
             padding: 0;
@@ -246,7 +251,7 @@
             font-size: 16px;
         }
 
-/* User + Text */
+        /* User + Text */
         .review-content {
             flex: 1;
         }
@@ -263,18 +268,18 @@
             line-height: 1.4;
         }
 
-.nav-center {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 25px;
-}
+    .nav-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 25px;
+    }
 
-.nav-right {
-  margin-left: auto;
-  font-size: 35px;
-  margin-right: 30px;
-}
+    .nav-right {
+    margin-left: auto;
+    font-size: 35px;
+    margin-right: 30px;
+    }
 
     </style>
 </head>
@@ -359,6 +364,7 @@
 </script>
 
 <script>
+    //map and seller location
     const bounds = L.latLngBounds(
         L.latLng(2.92416147468388,101.63546562194826), //SW
         L.latLng(2.931511848931281,101.64844751358034), //NE
@@ -424,6 +430,61 @@
             history.pushState({}, "", "/map");
 
         }
+
+    //user location
+    let userMarker;
+    const initialPosition = [2.929026, 101.641983]; //DTC as initial
+    navigator.geolocation.getCurrentPosition(success, error);
+
+    function success(pos) {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+            const userPosition = L.latLng(lat,lng);
+
+            if (!userMarker) {
+                if(bounds.contains(userPosition)) {
+                    
+                    userMarker = L.marker([lat,lng]).addTo(map);
+                    userMarker._icon.classList.add("huechange");
+                    position();
+                } else {
+                    alert("You are not in area of MMU!");
+                    userMarker = L.marker(initialPosition,{
+                    draggable: true
+                    }).addTo(map);
+                    userMarker._icon.classList.add("huechange");
+                    position();
+                }
+            }
+
+            else {
+                if(bounds.contains(userPosition)) {
+                    userMarker.setLatLng([lat,lng]);
+                position();
+            }}
+        }
+
+        function error(err) {
+            if (err.code === 1) {
+                alert("Please allow geolocation access")
+            } else {
+                alert("Cannot get current location")
+            }
+            
+            userMarker = L.marker(initialPosition,{
+                    draggable: true
+                    }).addTo(map);
+            userMarker._icon.classList.add("huechange");
+            position();
+        }
+
+        //later delete, confirm the lat lng got change or not only
+        function position() {
+            const GetPosition = userMarker.getLatLng();
+            console.log(GetPosition.lat,GetPosition.lng)
+            }
+
+
 
     ReturnButton.addEventListener("click", exitZoomMap);
     
