@@ -10,40 +10,18 @@
         .pink-section{
             position: relative;
         }
-        .container.mt-3{
-             position: absolute;     /* 脱离文档流 */
-            top: 100px;              /* 距离 pink section 顶部 */
-            left: 50%;              /* 水平居中 */
-            transform: translateX(-50%);
-            
-            color: white;
-            z-index: 1000;          /* 确保浮在最上层 */
-            width: fit-content;
-            min-width: 250px;
-            text-align: center;
-            border-radius: 8px;
-
-             /* 动画部分 */
-            opacity: 1;
-            animation: fadeOut 4s forwards; /* 5秒后自动淡出 */
-        }
-        @keyframes fadeOut {
-            0%   { opacity: 1; }
-            70%  { opacity: 1; }   /* 前4秒保持可见 */
-            100% { opacity: 0; }   /* 最后1秒渐渐消失 */
-            }
+        
 
             .flash-messages {
-    
-            position: absolute;     /* 浮动，不占空间 */
-            top: 40px;                 /* 贴住 section 顶部 */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80%;             /* 和 section 宽度差不多 */
-            max-width: 600px;       /* 不会太宽 */
-            z-index: 1000;
-            font-size: 20px;
-        }
+                position: fixed;       /* 改成固定，跟随页面 */
+                top: 80px;             /* 刚好在 nav 底下 */
+                left: 50%;
+                transform: translateX(-50%);
+                width: 80%;
+                max-width: 600px;
+                z-index: 2000;         /* 保证在 nav 上面 */
+            }
+
 
         .flash-messages .alert {
             margin-bottom: 10px;
@@ -73,14 +51,7 @@
         </div>
     </nav>
      
-    
-
-    <section class="pink-section">
-
-    
-
-
-        <div class="flash-messages">
+    <div class="flash-messages">
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
@@ -91,6 +62,14 @@
                 {% endif %}
             {% endwith %}
         </div>
+
+
+    <section class="pink-section">
+
+    
+            
+
+       
 
 
 
