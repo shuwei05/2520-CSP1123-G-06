@@ -502,10 +502,10 @@
 
     ReturnButton.addEventListener("click", exitZoomMap);
     
-   stall_data.forEach(stall => {
-        const marker = L.marker([stall.latitude, stall.longitude]).addTo(map);
-        marker.on("click", () => EnterZoomMap(stall));
-    });
+    //stall_data.forEach(stall => {
+    //    const marker = L.marker([stall.latitude, stall.longitude]).addTo(map);
+    //    marker.on("click", () => EnterZoomMap(stall));
+    //});
 
     const pathParts = window.location.pathname.split("/");
     if (pathParts.length === 3 && pathParts[1] === "map") {
@@ -513,6 +513,7 @@
         const stall = stall_data.find(s => s.id === selectedId);
         if (stall) {
             EnterZoomMap(stall);
+            map.once("click",exitZoomMap);
         }
     }
 
