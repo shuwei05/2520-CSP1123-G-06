@@ -372,6 +372,9 @@ def map(stall_id):
                 "background_pic": "/static/uploads/" + data.bg_pic,
             })
 
+    if request.args.get("ajax") == "1":
+        return render_template("reviews.html", reviews=reviews)
+    
     return render_template("map.html",stall_data=stall_data,selected_stall_id=stall_id,reviews=reviews)
 
 
