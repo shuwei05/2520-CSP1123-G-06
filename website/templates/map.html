@@ -532,6 +532,37 @@
 
             history.pushState({}, "", `/map/${stall_info.id}`);
 
+            fetch(`/api/reviews/${stall_info.id}`)
+
+                .then(res => res.json())
+                .then(data => {
+                    const list = document.getElementById("reviews-list");
+                    list.innerHTML = ""; // clear old reviews
+
+                    if (data.length === 0) {
+                        list.innerHTML = "<p>No reviews yet.</p>";
+                    } else {
+                        data.forEach(review => {
+                            const reviewItem = document.createElement("div");
+                            reviewItem.classList.add("review-item");
+
+                            reviewItem.innerHTML = `
+                                <div class="review-avatar">👤</div>
+                                <div class="review-content">
+                                    <p class="review-user">${review.user}</p>
+                                    <p class="review-text">${review.text}</p>
+                                    <div class="star-rating">
+                                        ${"★".repeat(review.rating)}${"☆".repeat(5 - review.rating)}
+                                    </div>
+                                    ${review.review_pic ? 
+                                        `<div class="review-photo"><img src="/static/uploads/${review.review_pic}"></div>` 
+                                        : ""}
+                                </div>
+                            `;
+                            list.appendChild(reviewItem);
+                        });
+                    }
+            });
         }
     function exitZoomMap() {
             ZoomMap.classList.remove("map-zoom");
