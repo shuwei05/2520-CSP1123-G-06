@@ -560,9 +560,7 @@
                     position();
                 } else {
                     alert("You are not in area of MMU!");
-                    userMarker = L.marker(initialPosition,{
-                    draggable: true
-                    }).addTo(map);
+                    userMarker = L.marker(initialPosition).addTo(map);
                     userMarker._icon.classList.add("huechange");
                     position();
                 }
@@ -582,9 +580,7 @@
                 alert("Cannot get current location")
             }
             
-            userMarker = L.marker(initialPosition,{
-                    draggable: true
-                    }).addTo(map);
+            userMarker = L.marker(initialPosition).addTo(map);
             userMarker._icon.classList.add("huechange");
             position();
         }
