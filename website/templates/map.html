@@ -239,6 +239,7 @@
             height: 300px;
             overflow-y: auto;   /* ✅ 滚动条 */
             padding: 10px;
+            display: block;
         }
 
         /* Each Review */
@@ -429,7 +430,6 @@
 
                     <div class="reviews-list" id="reviews-list">
                         <!-- Example review -->
-                         {% if reviews %}
                             {% for review in reviews %}
                             <div class="review-item">
                                 <div class="review-avatar">👤</div>
@@ -440,28 +440,27 @@
 
                                     <div class="review-rating">
                                             <div class="star-rating">
-                                            {# filled stars #}
-                                            {% for i in range(review.rating | int) %}
-                                                <span class="star filled">★</span>
-                                            {% endfor %}
+                                                {# filled stars #}
+                                                {% for i in range(review.rating | int) %}
+                                                    <span class="star filled">★</span>
+                                                {% endfor %}
 
-                                            {# empty stars #}
-                                            {% for i in range(5 - (review.rating | int)) %}
-                                                <span class="star">★</span>
-                                            {% endfor %}
-                                        </div>
-
-                                        {% if review.review_pic %}
-                                            <div class="review-photo">
-                                            <img src="{{ url_for('static', filename='uploads/' ~ review.review_pic) }}" alt="Review photo">
+                                                {# empty stars #}
+                                                {% for i in range(5 - (review.rating | int)) %}
+                                                    <span class="star">★</span>
+                                                {% endfor %}
                                             </div>
-                                        {% endif %}
-                                    {% else %}
-                                    <p>No reviews yet.</p>
-                                {% endfor %}
-                            {% endif %}
+
+                                            {% if review.review_pic %}
+                                                <div class="review-photo">
+                                                    <img src="{{ url_for('static', filename='uploads/' ~ review.review_pic) }}" alt="Review photo">
+                                                </div>
+                                            {% endif %}
+                                </div>
                             </div>
-                        </div>
+                                {% else %}
+                                    <p>No reviews yet.</p>
+                            {% endfor %}
                     </div>
                     
 
@@ -529,10 +528,41 @@
             StallBg.src = stall_info.background_pic;
             updateStallStatus(stall_info.openhour, stall_info.closehour);
 
-            document.getElementById("review-link").href = `/review/${stall_info.id}`;
+            document.getElementById("review-link").href = `/map/${stall_info.id}`;
 
             history.pushState({}, "", `/map/${stall_info.id}`);
 
+            fetch(`/api/reviews/${stall_info.id}`)
+
+                .then(res => res.json())
+                .then(data => {
+                    const list = document.getElementById("reviews-list");
+                    list.innerHTML = ""; // clear old reviews
+
+                    if (data.length === 0) {
+                        list.innerHTML = "<p>No reviews yet.</p>";
+                    } else {
+                        data.forEach(review => {
+                            const reviewItem = document.createElement("div");
+                            reviewItem.classList.add("review-item");
+
+                            reviewItem.innerHTML = `
+                                <div class="review-avatar">👤</div>
+                                <div class="review-content">
+                                    <p class="review-user">${review.user}</p>
+                                    <p class="review-text">${review.text}</p>
+                                    <div class="star-rating">
+                                        ${"★".repeat(review.rating)}${"☆".repeat(5 - review.rating)}
+                                    </div>
+                                    ${review.review_pic ? 
+                                        `<div class="review-photo"><img src="/static/uploads/${review.review_pic}"></div>` 
+                                        : ""}
+                                </div>
+                            `;
+                            list.appendChild(reviewItem);
+                        });
+                    }
+            });
         }
     function exitZoomMap() {
             ZoomMap.classList.remove("map-zoom");
@@ -612,35 +642,6 @@
         }
     }
 
-
-    document.getElementById("comment-form").addEventListener("submit", function(e){
-        e.preventDefault(); // 阻止刷新
-        const textarea = this.querySelector("textarea");
-        const text = textarea.value.trim();
-        if(text === "") return;
-
-        // 模拟用户名（可以随机或固定）
-        const username = "User";
-        const avatar = username.charAt(0).toUpperCase();
-
-        // 创建新的评论
-        const newReview = document.createElement("div");
-        newReview.classList.add("review-item");
-        newReview.innerHTML = `
-            <div class="review-avatar">${avatar}</div>
-            <div class="review-content">
-                <p class="review-user">${username}</p>
-                <p class="review-text">${text}</p>
-            </div>
-        `;
-
-        // 插入到列表
-        document.getElementById("reviews-list").appendChild(newReview);
-
-        // 清空输入框 & 关闭输入框
-        textarea.value = "";
-        document.getElementById("comment").checked = false;
-    });
 
         function updateStallStatus(openHour, closeHour) {
             const now = new Date();

@@ -1,4 +1,4 @@
-from flask import Blueprint ,  render_template ,request , flash ,redirect, url_for , current_app
+from flask import Blueprint ,  render_template ,request , flash ,redirect, url_for , current_app, jsonify
 from .models import User , Stall , Product , Review
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
@@ -374,6 +374,19 @@ def map(stall_id):
 
     return render_template("map.html",stall_data=stall_data,selected_stall_id=stall_id,reviews=reviews)
 
+@auth.route("/api/reviews/<int:stall_id>")
+def api_reviews(stall_id):
+    reviews = Review.query.filter_by(stall_id=stall_id).all()
+    result = []
+    for r in reviews:
+        result.append({
+            "id": r.id,
+            "text": r.review,
+            "rating": int(r.rating),
+            "review_pic": r.review_pic,
+            "user": r.user.user_name if r.user else "Anonymous"
+        })
+    return jsonify(result)
 
 @auth.route('/menu')
 @role_required('user')
