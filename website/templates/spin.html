@@ -231,6 +231,7 @@
                 <div class="spin-items"
                      data-name="{{ item.product_name}}"
                      data-stall="{{ item.stall_name }}"
+                     data-stall-id="{{ item.stall_id }}"
                      data-hour="{{ item.stall_hour }}"
                      style="--total: {{items|length}}; --index: {{index}};">
                     {{ item.product_name }}
@@ -285,6 +286,9 @@
                     resultFood.textContent = selectedFood.dataset.name;
                     resultStall.textContent = selectedFood.dataset.stall;
                     resultHour.textContent = selectedFood.dataset.hour;
+
+                    resultStall.href = `/map/${selectedFood.dataset.stallId}`;
+
                 
                     resultInterface.style.display = "block";
                     spinWheel.removeEventListener("transitionend",FoodInfo);

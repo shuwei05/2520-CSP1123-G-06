@@ -423,7 +423,8 @@ def seller_profile():
 def stall_menu(stall_id):
     stall = Stall.query.get_or_404(stall_id)
     products = Product.query.filter_by(stall_id=stall.id).all()
-    return render_template('stall-menu.html', stall=stall, products=products)
+    review = Review.query.filter_by(stall_id=stall.id).all()
+    return render_template('stall-menu.html', stall=stall, products=products , review=review)
 
 @auth.route('/review/<int:stall_id>', methods=['GET', 'POST'])
 @role_required('user')
@@ -497,7 +498,7 @@ def filter():
 @auth.route("/spin",methods=["GET","POST"])
 @role_required('user')
 def food_spin():
-    items = [{"product_name": product.product_name,"stall_name":stall.stallname,"stall_hour":f"{stall.openhour} - {stall.closehour}"}
+    items = [{"product_name": product.product_name,"stall_name":stall.stallname,"stall_id": stall.id,"stall_hour":f"{stall.openhour} - {stall.closehour}"}
              for product,stall in db.session.query(Product,Stall) #check for 2 database
              .join(Stall, Product.stall_id == Stall.id)
              .all()] #join the relationship

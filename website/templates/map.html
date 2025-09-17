@@ -528,7 +528,7 @@
             StallBg.src = stall_info.background_pic;
             updateStallStatus(stall_info.openhour, stall_info.closehour);
 
-            document.getElementById("review-link").href = `/map/${stall_info.id}`;
+            document.getElementById("review-link").href = `/review/${stall_info.id}`;
 
             history.pushState({}, "", `/map/${stall_info.id}`);
 
