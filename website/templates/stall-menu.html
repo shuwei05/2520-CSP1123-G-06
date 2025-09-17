@@ -101,8 +101,8 @@
 }
 
     .info-text h2 {
-      margin-bottom: 5px;
-      font-size: 20px;
+      
+      font-size: 30px;
       white-space: nowrap;
       margin-left: 30px; 
     }
@@ -111,6 +111,7 @@
       font-size: 13px;
       color: #555;
        margin-left: 30px;
+       margin-bottom: 30px;
     }
 
     /* Menu Grid */
@@ -253,6 +254,42 @@
 }
 
 
+
+
+.stall-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 12px;
+  margin-left: 30px; /* aligns with text */
+}
+
+.btn-review {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #fff;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+  transition: all 0.25s ease;
+}
+
+.btn-review:hover {
+  background: linear-gradient(135deg, #0056b3, #003d80);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+
+.btn-review.add {
+  background: linear-gradient(135deg, #1f01e1, #0e39c7);
+}
+
+.btn-review.add:hover {
+  background: linear-gradient(135deg, #0e39c7, #081f77);
+}
   </style>
 </head>
 <body>
@@ -288,13 +325,18 @@
 
     <!-- Info Box -->
     <div class="info-box">
-      <img src="{{ url_for('static', filename='uploads/' ~ stall.prof_pic) }}" alt="Avatar" class="avatar">
-      <div class="info-text">
-        <h2>{{ stall.stallname }}</h2>
-        <p>⭐ {{ stall.rating }}</p>
-      </div>
+  <img src="{{ url_for('static', filename='uploads/' ~ stall.prof_pic) }}" alt="Avatar" class="avatar">
+  <div class="info-text">
+    <h2>{{ stall.stallname }}</h2>
+    <p>⭐ {{ stall.rating }}</p>
+
+    <div class="stall-actions">
+      <a href="/map/{{ stall.id }}" class="btn-review">View Reviews</a>
+      <a href="/review/{{ stall.id }}" class="btn-review add">Add Review</a>
     </div>
   </div>
+</div>
+
 
   <!-- Food Menu -->
   <div class="menu">
