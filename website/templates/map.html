@@ -577,7 +577,10 @@
     //user location
     let userMarker;
     const initialPosition = [2.929026, 101.641983]; //DTC as initial
-    navigator.geolocation.getCurrentPosition(success, error);
+    navigator.geolocation.getCurrentPosition(success, error,{
+        enableHighAccuracy: true,
+        timeout: 10000 //10 seconds
+    });
 
     function success(pos) {
             const lat = pos.coords.latitude;
