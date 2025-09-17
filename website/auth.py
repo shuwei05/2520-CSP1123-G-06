@@ -100,6 +100,11 @@ def Ssignup():
             flash('Email already registered. Please use another one.', category='error')
             return render_template('Ssign.html', text='Signup Page')
 
+        existing_contact = Stall.query.filter_by(contact=contact).first()
+        if existing_contact:    
+            flash('Phone number already registered. Please use another one.', category='error')
+            return render_template('Ssign.html', text='Signup Page')
+
         existing_location = Stall.query.filter_by(latitude=latitude,longitude=longitude).first()
         if existing_location:
             flash("Same location",category="error")

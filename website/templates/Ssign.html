@@ -323,7 +323,10 @@ document.addEventListener("DOMContentLoaded", function() {
         let marker;
         const initialPosition = [2.9275634396053176,101.64166688919067];
         
-        navigator.geolocation.getCurrentPosition(success, error);
+        navigator.geolocation.getCurrentPosition(success, error,{
+        enableHighAccuracy: true,
+        timeout: 10000 //10 seconds
+        });
 
         function success(pos) {
             const lat = pos.coords.latitude;
