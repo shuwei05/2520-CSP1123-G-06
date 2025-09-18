@@ -406,12 +406,13 @@
         </div>
 
         <div class="stallname-and-rating">
-            <span id="stall-prefix"></span>
             <a id="link-to-stall" href=""><span id="stallname"></span></a>
 
 
             <div class="rating">
-                <p>4.0</p>
+                <a id="link-to-stall">
+                    <span id="stall-rating"></span>
+                </a>
                 <p id="star">&#9733;</p>
             </div>
         </div>
@@ -504,6 +505,7 @@
     );
 
     const stallname = document.getElementById("stallname")
+    const stallrating = document.getElementById("stall-rating")
     const openinghour = document.getElementById("openinghour")
     const ZoomMap = document.getElementById("map")
     const SidebarAppear= document.getElementById("seller-sidebar")
@@ -532,6 +534,7 @@
 
 
             stallname.textContent = stall_info.stallname;
+            stallrating.textContent = `${stall_info.rating} `;
 
             openinghour.textContent = `Opening Hours : ${stall_info.openhour} to ${stall_info.closehour} `;
             StallBg.src = stall_info.background_pic;
