@@ -70,3 +70,8 @@ class Review(db.Model):
 
     user = db.relationship('User', backref='reviews')
 
+
+class Webreview(db.Model):
+    id = db.Column(db.Integer,primary_key=True)
+    review_text = db.Column(db.String(500),nullable=False)
+    review_name = db.Column(db.String(50),nullable=False)

@@ -1,5 +1,5 @@
 from flask import Blueprint ,  render_template ,request , flash ,redirect, url_for , current_app, jsonify
-from .models import User , Stall , Product , Review
+from .models import User , Stall , Product , Review , Webreview
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from . import db   
@@ -245,9 +245,26 @@ def deny_stall(stall_id):
     return redirect(url_for('auth.admin_dashboard'))
 
 
-@auth.route('/aboutus')
+@auth.route('/aboutus' , methods=['GET', 'POST'])
 def aboutus():
-    return render_template('aboutus.html', text='About Us')
+    webreview  = Webreview.query.all()
+    if request.method == 'POST':
+        review_text = request.form.get('review_text','').strip()
+        review_name = request.form.get('review_name','').strip()
+        if len(review_text) < 5:
+            flash('Review must more than 5 words!')
+        else:
+            new_webreview = Webreview(
+                review_text=review_text,
+                review_name=review_name
+            )
+            db.session.add(new_webreview)
+            db.session.commit()
+            flash('Review submitted successfully!') 
+            return redirect(url_for('auth.aboutus'))
+    
+    reviews = [{"text": r.review_text, "user": r.review_name} for r in webreview]
+    return render_template('aboutus.html', text='About Us', reviews=reviews)
 
 
 @auth.route('/logout', methods=['GET','POST']) 
