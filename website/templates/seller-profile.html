@@ -265,8 +265,7 @@
     <!-- Seller Info Card -->
     <div class="seller-card">
       <div class="seller-info">
-        <h2>Seller’s Profile</h2>
-        <p class="name">{{ current_user.stall_owner }}</p>
+        <h2>{{ current_user.stallname }}    ⭐{{current_user.rating}}</h2>
         <p class="email">{{ current_user.email }}</p>
       </div>
       <div class="seller-shop">
@@ -279,7 +278,8 @@
   <!-- Content -->
   <div class="content-box">
     <h3>Your Location :</h3>
-    <img src="map-placeholder.jpg" alt="Map" class="map">
+    <a href="/map/{{ current_user.id }}"><button class="btn-review add">View Location</button></a>
+    </div>
 
     <h3>Your Product :</h3>
     <div class="products">
