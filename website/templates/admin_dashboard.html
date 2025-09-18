@@ -164,10 +164,7 @@ body {
 
         <p><b>Stall Description:</b> {{ stall.stall_des }}</p>
 
-        <div class="map">
-          <p><b>Stall Location:</b></p>
-          <img src="{{ url_for('static', filename='uploads/' ~ (stall.map_pic or 'map_placeholder.png')) }}" alt="Stall Location">
-        </div>
+        
 
         <div class="actions">
           <form method="POST" action="{{ url_for('auth.approve_stall', stall_id=stall.id) }}">
