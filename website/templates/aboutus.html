@@ -308,14 +308,12 @@
     <section class="testimonials">
     <h2>What People Say</h2>
     <div class="testimonial-list" id="testimonial-list">
-      <div class="testimonial-box">
-        <p>"MMU Starbees makes it so easy to find food between classes!"</p>
-        <h4>- Aisyah, MMU Student</h4>
-      </div>
-      <div class="testimonial-box">
-        <p>"I love how I can check reviews before trying new stalls."</p>
-        <h4>- Daniel, Lecturer</h4>
-      </div>
+      {% for r in reviews %}
+        <div class="testimonial-box">
+          <p>"{{ r.text }}"</p>
+          <h4>- {{ r.user }}</h4>
+        </div>
+      {% endfor %}
     </div>
       <button class="add-testimonial-btn" onclick="openForm()">+ Add Your Review</button>
 
@@ -323,13 +321,13 @@
 
       <!-- testimonial form -->
       <div class="testimonial-modal" id="testimonial-modal">
-      <div class="testimonial-form">
+      <form class="testimonial-form" action="{{ url_for('auth.aboutus') }}" method="POST">
         <span class="close-btn" onclick="closeForm()">&times;</span>
         <h3>Add Your Review</h3>
-        <input type="text" id="userName" placeholder="Your Name" required>
-        <textarea id="userReview" rows="3" placeholder="Write your review..." required></textarea>
-        <button onclick="addTestimonial()">Submit</button>
-      </div>
+        <input type="text" id="userName" name="review_name" placeholder="Your Name" required>
+        <textarea id="userReview" rows="3" name="review_text" placeholder="Write your review..." required></textarea>
+        <button type="submit">Submit</button>
+      </form>
     </div>
     
 
