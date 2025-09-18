@@ -105,7 +105,7 @@
             display: flex;
             padding: 20px;
             align-items: flex-end;
-            font-size: 20px;
+            font-size: 18px;
             box-shadow: 0 2px 2px rgba(0,0,0,0.1);
             background-color: rgb(246, 246, 246);
             font-size: 25px;
@@ -239,7 +239,6 @@
             height: 300px;
             overflow-y: auto;   /* ✅ 滚动条 */
             padding: 10px;
-            display: block;
         }
 
         /* Each Review */
@@ -323,7 +322,7 @@
     margin-right: 30px;
     }
 
-        .flash-messages {
+    .flash-messages {
                 position: fixed;       /* 改成固定，跟随页面 */
                 top: 80px;             /* 刚好在 nav 底下 */
                 left: 50%;
@@ -348,15 +347,6 @@
             100% { opacity: 0; visibility: hidden; }
         }
 
-        .star-rating{
-            color: #FFD700;
-            
-        }
-
-
-
-       
-        
     </style>
 </head>
 <body>
@@ -406,13 +396,12 @@
         </div>
 
         <div class="stallname-and-rating">
+            <span id="stall-prefix"></span>
             <a id="link-to-stall" href=""><span id="stallname"></span></a>
 
 
             <div class="rating">
-                <a id="link-to-stall">
-                    <span id="stall-rating"></span>
-                </a>
+                <p>4.0</p>
                 <p id="star">&#9733;</p>
             </div>
         </div>
@@ -505,7 +494,6 @@
     );
 
     const stallname = document.getElementById("stallname")
-    const stallrating = document.getElementById("stall-rating")
     const openinghour = document.getElementById("openinghour")
     const ZoomMap = document.getElementById("map")
     const SidebarAppear= document.getElementById("seller-sidebar")
@@ -534,47 +522,18 @@
 
 
             stallname.textContent = stall_info.stallname;
-            stallrating.textContent = `${stall_info.rating} `;
 
             openinghour.textContent = `Opening Hours : ${stall_info.openhour} to ${stall_info.closehour} `;
             StallBg.src = stall_info.background_pic;
             updateStallStatus(stall_info.openhour, stall_info.closehour);
 
-            document.getElementById("review-link").href = `/review/${stall_info.id}`;
+            document.getElementById("review-link").href = `/map/${stall_info.id}`;
+
+            window.location.href = `/map/${stall_info.id}`;
+
 
             history.pushState({}, "", `/map/${stall_info.id}`);
 
-            fetch(`/api/reviews/${stall_info.id}`)
-
-                .then(res => res.json())
-                .then(data => {
-                    const list = document.getElementById("reviews-list");
-                    list.innerHTML = ""; // clear old reviews
-
-                    if (data.length === 0) {
-                        list.innerHTML = "<p>No reviews yet.</p>";
-                    } else {
-                        data.forEach(review => {
-                            const reviewItem = document.createElement("div");
-                            reviewItem.classList.add("review-item");
-
-                            reviewItem.innerHTML = `
-                                <div class="review-avatar">👤</div>
-                                <div class="review-content">
-                                    <p class="review-user">${review.user}</p>
-                                    <p class="review-text">${review.text}</p>
-                                    <div class="star-rating">
-                                        ${"★".repeat(review.rating)}${"☆".repeat(5 - review.rating)}
-                                    </div>
-                                    ${review.review_pic ? 
-                                        `<div class="review-photo"><img src="/static/uploads/${review.review_pic}"></div>` 
-                                        : ""}
-                                </div>
-                            `;
-                            list.appendChild(reviewItem);
-                        });
-                    }
-            });
         }
     function exitZoomMap() {
             ZoomMap.classList.remove("map-zoom");
@@ -589,47 +548,26 @@
     //user location
     let userMarker;
     const initialPosition = [2.929026, 101.641983]; //DTC as initial
-    navigator.geolocation.getCurrentPosition(success, error,{
-        enableHighAccuracy: true,
-        timeout: 10000 //10 seconds
-    });
+    navigator.geolocation.getCurrentPosition(success, error);
 
     function success(pos) {
             const lat = pos.coords.latitude;
             const lng = pos.coords.longitude;
-            const accuracy = pos.coords.accuracy;
             const userPosition = L.latLng(lat,lng);
 
             if (!userMarker) {
-                if (accuracy > 100) {
-                    alert("The location is inaccurate.");
-                    userMarker = L.marker(initialPosition, {
-                        title: "You are Here!",
-                    })
-                    .bindPopup("You are Here!")
-                    .addTo(map);
+                if(bounds.contains(userPosition)) {
+                    
+                    userMarker = L.marker([lat,lng]).addTo(map);
                     userMarker._icon.classList.add("huechange");
                     position();
                 } else {
-                    if(bounds.contains(userPosition)) {
-                        
-                        userMarker = L.marker([lat,lng], {
-                            title: "You are Here!",
-                        })
-                        .bindPopup("You are Here!")
-                        .addTo(map);
-                        userMarker._icon.classList.add("huechange");
-                        position();
-                    } else {
-                        alert("You are not in area of MMU!");
-                        userMarker = L.marker(initialPosition, {
-                            title: "You are Here!",
-                        })
-                        .bindPopup("You are Here!")
-                        .addTo(map);
-                        userMarker._icon.classList.add("huechange");
-                        position();
-                    }
+                    alert("You are not in area of MMU!");
+                    userMarker = L.marker(initialPosition,{
+                    draggable: true
+                    }).addTo(map);
+                    userMarker._icon.classList.add("huechange");
+                    position();
                 }
             }
 
@@ -647,11 +585,9 @@
                 alert("Cannot get current location")
             }
             
-            userMarker = L.marker(initialPosition, {
-                        title: "You are Here!",
-                    })
-                    .bindPopup("You are Here!")
-                    .addTo(map);
+            userMarker = L.marker(initialPosition,{
+                    draggable: true
+                    }).addTo(map);
             userMarker._icon.classList.add("huechange");
             position();
         }

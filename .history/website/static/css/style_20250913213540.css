@@ -206,23 +206,15 @@
     
 }
 
-.blue-box h1 {
-  font-size: 120px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 6px;
-  color: #0a0a0a;
-  font-family: 'Playfair Display', serif; /* premium serif font */
-  position: relative;
-  display: inline-block;
-  margin-bottom: 50px;
-
+.blue-box h1{
+    font-size: 100px;
+    font-weight: 300;
+    margin-top: 0;
+    letter-spacing: 3px;
+    font-family: 'Montserrat',sans-serif;
+    transform: translateY(-60px);
+    text-transform: uppercase;
 }
-
-
-
-
-
 
 .blue-box p{
     font-size: 20px;
