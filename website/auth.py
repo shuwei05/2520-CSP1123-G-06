@@ -356,7 +356,35 @@ def reset_password():
             return redirect(url_for('auth.login'))
         
         return render_template('reset-password.html', text='Reset Password')
-    
+
+@auth.route('/seller-reset-password', methods=["GET" , "POST"])
+def seller_reset_password():
+        if request.method == 'POST':
+            email = request.form.get('email','').strip()
+            password1 = request.form.get('password1','').strip()
+            password2 = request.form.get('password2','').strip()
+
+            seller = Stall.query.filter_by(email=email).first()
+
+            if not seller:
+                flash('This email has not registered any account.Please sign up first.', category='error')
+                return redirect(url_for('auth.seller_reset_password'))
+            
+            if len(password1) < 8:
+                flash('Password must be more than 8 characters.', category='error')
+                return redirect(url_for('auth.seller_reset_password'))
+
+            if password1 != password2:
+                flash('Password does not match.Please try again.', category='error')
+                return redirect(url_for('auth.seller_reset_password'))
+            
+            seller.password1 = generate_password_hash(password1, method='pbkdf2:sha256')
+            db.session.commit()
+
+            flash('Password has been reset successfully.Please login.')
+            return redirect(url_for('auth.Slogin'))
+        
+        return render_template('seller-reset-password.html', text='Reset Password')
 
 
 
