@@ -493,8 +493,6 @@ def review(stall_id):
             flash('Review must more than 5 words!')
         elif not rating or not rating.isdigit() or int(rating) not in range(1, 6):
             flash('Please pick a rating between 1-5 stars.')
-        elif not review_pic:
-            flash('Please upload a photo about the stall')
         else:
             new_review = Review(
                 stall_id=stall.id,
