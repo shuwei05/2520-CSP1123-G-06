@@ -131,6 +131,14 @@ body {
             <div class="logo">
                 <img src="{{ url_for('static',filename='photos/logo.png') }}" alt="mmu logo">
             </div>
+
+            <div>
+              <form action="{{ url_for('auth.logout') }}" method="POST">
+                <button type="submit" class="btn approve" style="padding:8px 20px; border-radius:20px; margin-right: 60px;">
+                  Logout
+                </button>
+              </form>
+            </div>
         </div>
     </nav>
 

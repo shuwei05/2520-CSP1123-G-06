@@ -110,8 +110,8 @@
 
   <!-- 顶部 Header 只显示 Logo -->
   <nav class="navbar">
-    <a class="navbar-brand logo" >
-      <img src="{{ url_for('static', filename='photos/logo.png') }}" alt="logo">
+    <a class="navbar-brand logo" href="{{ url_for('auth.map') }}">
+        <img src="{{ url_for('static', filename='photos/logo.png') }}" alt="logo">
     </a>
   </nav> 
 

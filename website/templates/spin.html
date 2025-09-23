@@ -212,7 +212,9 @@
     <nav>
         <div class="navbar">
             <div class="logo">
-                <img src="{{ url_for('static',filename='photos/logo.png') }}" alt="mmu logo">
+                <a href="{{ url_for('auth.map') }}">
+                  <img src="{{ url_for('static',filename='photos/logo.png') }}" alt="mmu logo">
+                </a>
             </div> 
         </div>
     </nav>
