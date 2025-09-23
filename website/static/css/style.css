@@ -295,7 +295,8 @@
     color: rgb(0, 0, 0);
     flex: 1;  /* takes equal space */
     text-align: center;
-    transform: translateY(40px);
+    transform: translate(-30px , 45px);
+    
     font-family: 'Montserrat',sans-serif;
 }
 
@@ -350,9 +351,12 @@
     font-weight: 300;
     margin-top: 0;
     letter-spacing: 3px;
-    font-family: 'Montserrat',sans-serif;
+    font-family: 'Playfair Display', serif;
     transform: translateY(-60px);
-    text-transform: uppercase;
+   
+    text-transform: capitalize;
+    display: inline-block;
+    color: #222;
 }
 
 .white-box p{
