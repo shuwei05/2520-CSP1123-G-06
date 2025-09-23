@@ -534,7 +534,7 @@
 
 
             stallname.textContent = stall_info.stallname;
-            stallrating.textContent = `${stall_info.rating} `;
+            stallrating.textContent = parseFloat(stall_info.rating).toFixed(2);
 
             openinghour.textContent = `Opening Hours : ${stall_info.openhour} to ${stall_info.closehour} `;
             StallBg.src = stall_info.background_pic;
