@@ -156,7 +156,9 @@
   <!-- Navbar -->
   <div class="navbar">
     <div class="logo">
-      <img src="{{ url_for('static', filename='photos/logo.png') }}" alt="MMU logo">
+      <a href="{{ url_for('auth.map') }}">
+        <img src="{{ url_for('static', filename='photos/logo.png') }}" alt="MMU logo">
+      </a>
     </div>
     <div class="nav-icons">
       <a href="/profile"><i class="fa-solid fa-user"></i></a>

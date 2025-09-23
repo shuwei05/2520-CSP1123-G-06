@@ -294,7 +294,7 @@
     <!-- Seller Info Card -->
     <div class="seller-card">
       <div class="seller-info">
-        <h2>{{ current_user.stallname }}    ⭐{{current_user.rating}}</h2>
+        <h2>{{ current_user.stallname }}    ⭐{{"{:.2f}".format(current_user.rating)}}</h2>
         <p class="email">{{ current_user.email }}</p>
       </div>
       <div class="seller-shop">

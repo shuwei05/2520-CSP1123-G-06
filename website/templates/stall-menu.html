@@ -328,7 +328,7 @@
   <img src="{{ url_for('static', filename='uploads/' ~ stall.prof_pic) }}" alt="Avatar" class="avatar">
   <div class="info-text">
     <h2>{{ stall.stallname }}</h2>
-    <p>⭐ {{ stall.rating }}</p>
+    <p>⭐ {{ "{:.2f}".format(stall.rating) }}</p>
 
     <div class="stall-actions">
       <a href="/map/{{ stall.id }}" class="btn-review">View Reviews</a>
