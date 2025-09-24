@@ -602,7 +602,12 @@
 
             if (!userMarker) {
                 if (accuracy > 100) {
-                    alert("The location is inaccurate.");
+                    
+                    if(!sessionStorage.getItem("locationAlertShown")) {
+                        alert("The location is inaccurate.");
+                        sessionStorage.setItem("locationAlertShown","true");
+                    }
+
                     userMarker = L.marker(initialPosition, {
                         title: "You are Here!",
                     })
@@ -621,7 +626,10 @@
                         userMarker._icon.classList.add("huechange");
                         position();
                     } else {
-                        alert("You are not in area of MMU!");
+                         if(!sessionStorage.getItem("locationAlertShown")) {
+                            alert("You are not in area of MMU!");
+                            sessionStorage.setItem("locationAlertShown","true");
+                        }
                         userMarker = L.marker(initialPosition, {
                             title: "You are Here!",
                         })
@@ -642,9 +650,16 @@
 
         function error(err) {
             if (err.code === 1) {
-                alert("Please allow geolocation access")
+                if(!sessionStorage.getItem("locationAlertShown")) {
+                    alert("Please allow geolocation access");
+                    sessionStorage.setItem("locationAlertShown","true");
+                }
             } else {
-                alert("Cannot get current location")
+                if(!sessionStorage.getItem("locationAlertShown")) {
+                    alert("Cannot get current location");
+                    sessionStorage.setItem("locationAlertShown","true");
+                }
+                
             }
             
             userMarker = L.marker(initialPosition, {
