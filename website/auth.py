@@ -84,16 +84,19 @@ def Ssignup():
         prof_file = request.files.get("prof_pic")
         bg_file = request.files.get("bg_pic")
 
-        prof_filename = None
-        bg_filename = None
+        if not prof_file or prof_file.filename == "":
+            flash("Profile picture is required.", category="error")
+            return render_template("Ssign.html", text="Signup Page")
 
-        if prof_file and prof_file.filename != "":
-            prof_filename = secure_filename(prof_file.filename)
-            prof_file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], prof_filename))
+        if not bg_file or bg_file.filename == "":
+            flash("Background picture is required.", category="error")
+            return render_template("Ssign.html", text="Signup Page")
 
-        if bg_file and bg_file.filename != "":
-            bg_filename = secure_filename(bg_file.filename)
-            bg_file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], bg_filename))
+        prof_filename = secure_filename(prof_file.filename)
+        bg_filename = secure_filename(bg_file.filename)
+
+        prof_file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], prof_filename))
+        bg_file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], bg_filename))
 
         existing_stall = Stall.query.filter_by(email=email).first()
         if existing_stall:
