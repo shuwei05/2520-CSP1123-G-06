@@ -224,7 +224,18 @@ def admin():
 @role_required('admin')
 def admin_dashboard():
     pending_stalls = Stall.query.filter_by(approval_status=False).all()
-    return render_template('admin_dashboard.html', pending_stalls=pending_stalls)
+    reviews = db.session.query(Review, Stall).join(Stall, Review.stall_id == Stall.id).all()
+
+    return render_template('admin_dashboard.html',reviews=reviews, pending_stalls=pending_stalls)
+
+@auth.route('delete/<int:review_id>', methods=['POST'])
+@role_required('admin')
+def delete(review_id):
+    review = Review.query.get_or_404(review_id)
+    db.session.delete(review)
+    db.session.commit()
+    flash(f'Review"{review.id}" has been deleted.',category='info')
+    return redirect(url_for('auth.admin_dashboard'))
 
 @auth.route('/approve_stall/<int:stall_id>', methods=['POST'])
 @role_required('admin')
