@@ -227,8 +227,8 @@ def admin():
 @role_required('admin')
 def admin_dashboard():
     pending_stalls = Stall.query.filter_by(approval_status=False).all()
-    reviews = db.session.query(Review, Stall).join(Stall, Review.stall_id == Stall.id).all()
-
+    reviews = db.session.query(Review, Stall).join(Stall, Review.stall_id == Stall.id).order_by(Review.id.desc()).all()
+                                            
     return render_template('admin_dashboard.html',reviews=reviews, pending_stalls=pending_stalls)
 
 @auth.route('delete/<int:review_id>', methods=['POST'])
