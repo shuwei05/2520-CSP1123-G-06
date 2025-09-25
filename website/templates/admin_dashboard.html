@@ -42,7 +42,8 @@ body {
       padding: 25px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       max-width: 600px;
-      margin: 120px auto;
+      margin: 100px auto;
+     
     }
 
     .seller-info {
@@ -122,6 +123,52 @@ body {
     70%  { opacity: 1; }
     100% { opacity: 0; visibility: hidden; }
 }
+
+
+
+.reviews-section {
+  max-height: 300px;   /* adjust as needed */
+  overflow-y: auto;
+  margin: 20px auto;
+  padding: 15px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  width: 90%;
+  max-width: 800px;
+}
+
+.review-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.review-card:last-child {
+  border-bottom: none;
+}
+
+.review-text p {
+  margin: 3px 0;
+  font-size: 14px;
+}
+
+.review-actions .btn.deny {
+  padding: 6px 15px;
+  font-size: 13px;
+  border-radius: 15px;
+}
+
+.stall-list {
+  max-height: 600px;   /* adjust as needed */
+  overflow-y: auto;
+  padding-right: 10px; /* space for scrollbar */
+}
+
+
     </style>
 
 </head>
@@ -154,11 +201,11 @@ body {
             {% endwith %}
         </div>
 
-     <h2 style="margin-top:100px; text-align:center;">Pending Seller Requests</h2>
-
+     <h2 style="margin-top:100px; text-align:center;font-size: 30px">Pending Seller Requests</h2>
+<div class="stall-list">
     {% for stall in pending_stalls %}
     <div class="card">
-        <h3>Stall Registration Request</h3>
+        
 
         <div class="stall-info">
           <img src="{{ url_for('static', filename='uploads/' ~ (stall.prof_pic or 'default.png')) }}" alt="Stall Picture">
@@ -186,5 +233,33 @@ body {
     {% else %}
        <p style="text-align:center; margin-top:50px;">No pending stalls.</p>
     {% endfor %}
+</div>
+
+    <h2 style="margin-top:50px; text-align:center;font-size: 40px">User Reviews</h2>
+
+<div class="reviews-section">
+  {% if reviews %}
+    {% for review ,stall in reviews|sort(attribute='id', reverse=true) %}
+    <div class="review-card">
+      <div class="review-text">
+        <p><strong>Stall : </strong>{{ stall.stallname }}</p>
+        <p><b>{{ review.user.user_name }}</b> 
+        <p>{{ review.review }}</p>
+        <p>{{ review.rating}}★ </p>
+
+      </div>
+      <div class="review-actions">
+        <form method="POST" action="{{ url_for('auth.delete', review_id=review.id) }}">
+          <button type="submit" class="btn deny">Delete</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <p style="text-align:center; margin-top:20px;">No reviews available.</p>
+  {% endif %}
+</div>
+
+
 </body>
 </html>
