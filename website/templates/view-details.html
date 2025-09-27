@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Item Detail</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f9f9f9;
+    }
+
+    /* Navbar */
+    .navbar{
+      position: fixed;
+      top:0 ;
+      left: 0;
+      height: 80px;
+      width: 100%;
+      background: rgb(164, 231, 250);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;   /* ✅ 左右分布 */
+      padding: 0 20px;
+      z-index: 999;
+    }
+
+    .logo img{
+      height: 65px;
+      transform: translateX(-10px);
+    }
+
+    .nav-icons a {
+      color: black;
+      text-decoration: none;
+      font-size: 35px;
+    }
+
+    /* Back Button */
+    .back-btn {
+      position: absolute;
+      top: 100px;
+      left: 30px;
+      background: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      color: black;
+    }
+
+    /* Content Box */
+    .content-box {
+      width: 800px;
+      margin: 150px auto 50px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+   .content-box p {
+    font-size: 16px;
+    color: #444;
+    margin: 8px 0;
+    text-align: left;       /* ✅ 全部靠左 */
+    line-height: 1.6;
+  }
+
+    .content-box h3 {
+      font-size: 28px;        /* 更大 */
+      font-weight: bold;      /* 加粗 */
+      color: #2c3e50;         /* 深蓝灰色 */
+      text-align: center;     /* 居中 */
+      margin-bottom: 20px;    /* 和图片拉开距离 */
+    }
+
+
+    .image-gallery {
+      margin: 0 auto 25px auto;   /* 居中 + 底部留空隙 */
+      display: flex;
+      justify-content: center;
+    }
+
+    .image-gallery img {
+      width: 150px;
+      height: 150px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .details {
+      text-align: left;
+      margin-top: 20px;
+      line-height: 1.8;
+    }
+
+    .details p {
+      font-size: 15px;
+      color: #333;
+    }
+
+    /*  Price + Rating 一行 */
+    .price-rating {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .price-rating p {
+      font-size: 18px;
+      font-weight: bold;
+      color: #000000;  /* 绿色价格 */
+    }
+
+    .rating {
+      color: gold;
+      font-size: 18px;
+      white-space: nowrap;
+    }
+
+    .image-gallery {
+      margin: 20px auto;
+      display: flex;
+      justify-content: center;
+    }
+
+    .image-gallery img {
+      width: 250px;   /* ✅ 图片更大 */
+      height: 250px;
+      object-fit: cover;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="logo">
+      <a href="{{ url_for('auth.map') }}">
+        <img src="{{ url_for('static', filename='photos/logo.png') }}" alt="MMU logo">
+      </a>
+    </div>
+    <div class="nav-icons">
+      <a href="/profile"><i class="fa-solid fa-user"></i></a>
+    </div>
+  </div>
+
+  <!-- Back Button -->
+  <a class="back-btn" onclick="history.back()">  
+    <i class="fa-solid fa-arrow-left"></i>
+  </a>
+
+  <!-- Content Box -->
+<div class="content-box">
+
+  <!-- 标题 -->
+  <h3>{{ product.stall.stallname }} - {{product.product_name}}</h3>
+
+  <!-- 照片放在标题下面 -->
+  <div class="image-gallery">
+    {% if product.product_pic %}
+      <img src="{{ url_for('static', filename='uploads/' ~ product.product_pic) }}" 
+           alt="{{ product.product_name }}">
+    {% elif product.stall.prof_pic %}
+      <img src="{{ url_for('static', filename='uploads/' ~ product.stall.prof_pic) }}" 
+           alt="{{ product.stall.stallname }}">
+    {% else %}
+      <img src="{{ url_for('static', filename='uploads/default.png') }}" alt="No picture">
+    {% endif %}
+  </div>
+
+  <!-- 价格 + 评分 -->
+  <div class="price-rating">
+    <p><strong>Price:</strong> RM {{ product.price }}</p>
+    
+  </div>
+
+  <!-- 详情资料 -->
+  <p><strong>Product Description:</strong> {{ product.product_des }}</p>
+  <p><strong>Product Cuisine:</strong> {{  product.product_cuisine }}</p>
+  <p><strong>Location:</strong> {{ product.stall.location }}</p>
+  <p><strong>Opening Hours:</strong> {{product.stall.openhour}} – {{product.stall.closehour}} </p>
+  <p><strong>Opening Days:</strong> {{product.stall.openday}}</p>
+  <p><strong>Contact:</strong> {{product.stall.contact}}</p>
+  <p><strong>IG:</strong> {{product.stall.instagram}}</p>
+
+</div>
+
+
+
+  </div>
+</body>
+</html>

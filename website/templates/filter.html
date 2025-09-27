@@ -4,53 +4,97 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/989b6a6559.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="filter.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/filter.css') }}">
     <title>Filter Page</title>
+    <style>
+        .flash-messages {
+    position: absolute;     /* 浮动，不占空间 */
+    top: 30px;                 /* 贴住 section 顶部 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;             /* 和 section 宽度差不多 */
+    max-width: 600px;       /* 不会太宽 */
+    z-index: 1000;
+}
+
+.flash-messages .alert {
+    margin-bottom: 10px;
+    text-align: center;
+    animation: fadeOut 4s forwards;
+    color: #939594;
+    
+}
+@keyframes fadeOut {
+    0%   { opacity: 1; }
+    70%  { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+}
+    </style>
 </head>
 <body>
     <header>
         <nav class="navbar">
             <div class="logo">
-                <img src="logo.png" alt="mmu logo">
+                <a href="{{ url_for('auth.map') }}">
+                    <img src="{{ url_for('static', filename='photos/logo.png') }}" alt="mmu logo">
+                </a>
             </div>   
         </nav>
     </header>
 
     <main>
         <section class="title">
+                    <div class="flash-messages">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ 'danger' if category == 'error' else category }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+
             <div class="return-icon">
-                <i class="fa-solid fa-circle-arrow-left">
-                    <a href="#"></a>
-                </i>
+                <a href="/menu"><i class="fa-solid fa-circle-arrow-left"></i></a>
             </div>
             <div class="filter">
                 <h1>Filter</h1>
             </div>
         </section>
         
-        <form>
+        <form class="form-box" method="POST" action="{{ url_for('auth.filter') }}" enctype="multipart/form-data">
             <div class="container">
                 <section class="cuisine">
                     <label class="option-title">Cuisine</label>
                     <div>
-                        <label class="product-cuisine">Malay Cuisine<input type="checkbox"></label>
-                        <label class="product-cuisine">Chinese Cuisine<input type="checkbox"></label>
-                        <label class="product-cuisine">Western Cuisine<input type="checkbox"></label>
-                        <label class="product-cuisine">Drinks<input type="checkbox"></label>
-                        <label class="product-cuisine">Dessert<input type="checkbox"></label>
+                        <label class="product-cuisine">Malay Cuisine<input type="checkbox" name="cuisine" value="Malay Cuisine"></label>
+                        <label class="product-cuisine">Chinese Cuisine<input type="checkbox" name="cuisine" value="Chinese Cuisine"></label>
+                        <label class="product-cuisine">Western Cuisine<input type="checkbox" name="cuisine" value="Western Cuisine"></label>
+                        <label class="product-cuisine">Drinks<input type="checkbox" name="cuisine" value="Drinks"></label>
+                        <label class="product-cuisine">Dessert<input type="checkbox" name="cuisine" value="Dessert"></label>
                     </div>
                 </section>
 
                 <div class="dashed-border-line"></div>
                 
+                <section class="type">
+                    <label class="option-title">Types</label>
+                    <div>
+                        <label class="product-type">Food<input type="checkbox" name="type" value="Food"></label>
+                        <label class="product-type">Beverages<input type="checkbox" name="type" value="Beverages"></label>
+                    </div>
+                </section>
+                <!--
                 <section class="review">
                     <label class="option-title">Star</label>
                     <div class="star-review">
-                        <input type="radio" name="rating" id="5-star"> <!--radio = only 1 can selected-->
+                        <input type="radio" name="rating" id="5-star"> 
                         <label for="5-star"></label>
-                        <input type="radio" name="rating" id="4-star"> <!--name put the same so that only can choose 1 option-->
+                        <input type="radio" name="rating" id="4-star"> 
                         <label for="4-star"></label>
-                        <input type="radio" name="rating" id="3-star"> <!--id must equal to for, which mean the label is for that input-->
+                        <input type="radio" name="rating" id="3-star">
                         <label for="3-star"></label>
                         <input type="radio" name="rating" id="2-star">
                         <label for="2-star"></label>
@@ -70,9 +114,9 @@
                         <label for="medium">RM 10 - RM 20</label>
                         <input type="radio" name="price-select" id="high">
                         <label for="high">RM 20 above</label>
-                    </div><!--!!!!!!!!--> 
+                    </div>
                 </section>
-
+                -->
                 <section class="apply">
                     <button type="submit">Apply</button>
                 </section>

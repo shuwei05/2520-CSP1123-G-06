@@ -23,8 +23,8 @@ body{
 }
 
 .logo img{
-    height: 85px;
-    transform: translateX(-50px);
+    height: 65px;
+    transform: translateX(-10px);
 }
 
 /*Header*/
@@ -48,6 +48,10 @@ body{
     justify-content: center;
 }
 
+.return-icon a:visited {
+    color: black;
+}
+
 /*General*/
 form {
     display: flex;
@@ -68,18 +72,18 @@ form {
 }
 
 /*Cuisine*/
-.cuisine label {
+.cuisine label,.type label {
     padding-bottom: 15px;
 }
 
-.product-cuisine {
+.product-cuisine,.product-type {
     display: flex;
     justify-content: space-between;
     font-size: 1.4rem;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
 }
 
-.product-cuisine input {
+.product-cuisine input,.product-type input {
     transform: scale(1.5);
     cursor: pointer;
 }

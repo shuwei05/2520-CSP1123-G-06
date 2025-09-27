@@ -4,82 +4,187 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seller Add Product Page</title>
-   <link rel="stylesheet" href="add_product.css">
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/add_product.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <style>
+    .flash-messages {
+    
+    position: absolute;     /* 浮动，不占空间 */
+    top: 40px;                 /* 贴住 section 顶部 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;             /* 和 section 宽度差不多 */
+    max-width: 600px;       /* 不会太宽 */
+    z-index: 1000;
+    font-size: 20px;
+}
+
+.flash-messages .alert {
+    margin-bottom: 10px;
+    text-align: center;
+    animation: fadeOut 3s forwards;
+    color: #4d4b4b;
+    
+}
+@keyframes fadeOut {
+    0%   { opacity: 1; }
+    70%  { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+}
+  </style>
 </head>
 
 <body>
     <nav>
         <div class="navbar">
             <div class="logo">
-                <img src="logo.png" alt="mmu logo">
+                <img src="{{ url_for('static', filename='photos/logo.png') }}" alt="mmu logo">
             </div>   
         </div>
     </nav>
     
     <main>
         <header class="container-1">
+
+            <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
             <div class="home-icon">
+                <a href="/seller-profile">
                 <i class="fa-solid fa-house home-icon"></i>
+                </a>
             </div>
+            
             <div class="title">
                 <h1>Add Product</h1>
             </div>
         </header>
 
-        <form>
+        <form class="form-box" method="POST" action="{{ url_for('auth.add_product') }}" enctype="multipart/form-data">
             <div class="container">
                 <section class="container-2">
                     <div class="product-name">
                         <label for="product-name">Product Name:</label>
-                        <input type="text" id="product-name">
+                        <input type="text" id="product-name" name="product_name">
                     </div>
 
                     <div class="product-type">
                         <label id="pt-text">Product Type:</label>
                         <div id="pt-selection">
-                            <label class="product-type-checkbox">Food<input type="checkbox"></label>
-                            <label class="product-type-checkbox">Beverages<input type="checkbox"></label>
+                            <label class="product-type-checkbox">Food<input type="checkbox" name ="product_type" value="Food"></label>
+
+                            <label class="product-type-checkbox">Beverages<input type="checkbox"  name ="product_type" value="Beverages"></label>
+
                         </div>
                     </div>
                 </section>
 
                 <section class="container-3">
                     <label for="product-price">Product Price:</label>
-                    <input type="text" id="product-price">
+                    <input type="text" placeholder="e.g. 2.00" id="product-price" name="price">
                 </section>
 
                 <section class="container-4">
                     <div id="text">
                         <label>Product Cuisine:</label>
                     </div>
-                    <label class="product-cuisine">Malay Cuisine<input type="checkbox"></label>
-                    <label class="product-cuisine">Chinese Cuisine<input type="checkbox"></label>
-                    <label class="product-cuisine">Western Cuisine<input type="checkbox"></label>
-                    <label class="product-cuisine">Drinks<input type="checkbox"></label>
-                    <label class="product-cuisine">Dessert<input type="checkbox"></label>
+                    <label class="product-cuisine">Malay Cuisine<input type="checkbox" name="product_cuisine" value="Malay Cuisine"></label>
+                    <label class="product-cuisine">Chinese Cuisine<input type="checkbox" name="product_cuisine" value="Chinese Cuisine"></label>
+                    <label class="product-cuisine">Western Cuisine<input type="checkbox" name="product_cuisine" value="Western Cuisine"></label>
+                    <label class="product-cuisine">Drinks<input type="checkbox" name="product_cuisine" value="Drinks"></label>
+                    <label class="product-cuisine">Dessert<input type="checkbox" name="product_cuisine" value="Dessert"></label>
                 </section>
 
                 <section class="container-5">
-                    <label for="product-des">Product Ingredients/Descriptions:</label>
-                    <textarea id="product-des"></textarea>
+                    <label for="product_des">Product Ingredients/Descriptions:</label>
+                    <textarea name="product_des"></textarea>
                 </section>
 
                 <section class="container-6">
-                    <label>Photos: (0/1)</label>
+                    <label>Photos: (1)</label>
                     <div class="photo-upload">
-                        <label class="fa-regular fa-image upload-img-icon"><input type="file" accept="image/*"></label>
+
+                        <label id="product-icon" class="fa-regular fa-image upload-img-icon">
+                            <input type="file" name="product_pic" id="product_pic" accept="image/*">
+                        </label>
+
+
                     </div>
+
+                    <img id="product-preview" src="#" alt="Product Preview" style="max-width:200px; display:none;">
+                    <p class="file-name" id="product_pic_name"></p>
+                    <button type="button" id="product-clear" class="btn btn-sm btn-outline-secondary">Clear</button>
                 </section>
 
                 <section class="container-7">
                     <button type="submit">ADD</button>
-                </section>
-            </div>    
+                </section> 
+            </div> 
         </form>
     </main>
 
+    <script>
+            // Function for preview
+            function previewImage(input, previewId, iconId, fileNameId) {
+            const file = input.files[0];
+            const preview = document.getElementById(previewId);
+            const icon = document.getElementById(iconId);
+            const fileName = document.getElementById(fileNameId);
 
+            if(file){
+                // 显示预览图
+                preview.src = URL.createObjectURL(file);
+                preview.style.display = "block";
+
+                // 隐藏图标
+                icon.style.display = "none";
+
+                // 显示文件名
+                fileName.innerText = file.name;
+            } else {
+                // 恢复默认
+                preview.style.display = "none";
+                icon.style.display = "inline";
+                fileName.innerText = "No file chosen";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("product_pic").addEventListener("change", function() {
+            // Call the previewImage function when a file is chosen
+            // Arguments:
+            //  this                → the file input element itself
+            //  "product-preview"   → target element to display the image preview
+            //  "product-icon"      → an icon that may be hidden/changed after upload
+            //  "product_pic_name"  → element where the file name will be shown
+                previewImage(this,  "product-preview", "product-icon", "product_pic_name");
+            });
+
+        });
+
+
+            document.getElementById("product-clear").addEventListener("click", function() {
+            const input = document.getElementById("product_pic");       // File input field
+            const preview = document.getElementById("product-preview"); // Image preview element
+            const icon = document.getElementById("product-icon");       // Placeholder icon
+            const fileName = document.getElementById("product_pic_name"); // Text showing chosen file name
+
+            input.value = "";           // 清空 input
+            preview.style.display = "none"; // 隐藏图片
+            icon.style.display = "inline";  // 显示图标
+            fileName.innerText = "No file chosen"; // 恢复文字
+        });
+
+    </script>
     
 </body>
 </html>

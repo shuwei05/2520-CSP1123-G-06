@@ -24,8 +24,8 @@ body{
 }
 
 .logo img{
-    height: 85px;
-    transform: translateX(-50px);
+    height: 65px;
+    transform: translateX(-10px);
 }
 
 /*Content*/
@@ -122,11 +122,8 @@ form {
     font-weight: normal;
     font-size: 22px;
     line-height: 40px;
-}
-
-.product-cuisine {
     display: flex;
-    justify-content: space-between;   
+    justify-content: space-between;
 }
 
 .container-4 {
@@ -194,6 +191,13 @@ form {
 .home-icon {
     padding-top: 2.308vw;
     padding-left: 2.308vw;
+    
+}
+
+.home-icon a{
+    color: black;
+    text-decoration: none;
+
 }
 
 .container {

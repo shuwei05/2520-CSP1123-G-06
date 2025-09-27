@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <title>Admin Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      flex-direction: column;
+    }
+
+    .login-box {
+      background: #fff;
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      width: 350px;
+      text-align: center;
+      margin: auto; /* 居中 */
+    }
+
+    .login-box img {
+      
+      width: 160px;
+      margin-bottom: 15px;
+    }
+
+    .login-box h2 {
+      margin-bottom: 20px;
+      color: #1a73e8;
+      font-size: 30px;
+      transform: translateY(-15px);
+    }
+
+    .input-box {
+      margin: 15px 0;
+      text-align: left;
+      position: relative;
+    }
+
+    .input-box label {
+      font-size: 14px;
+      font-weight: bold;
+      color: #333;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .input-box input {
+      width: 100%;
+      padding: 10px 40px 10px 10px; 
+      border-radius: 15px;
+      border: 2px solid #ccc;
+      outline: none;  /* removes default browser focus outline */
+    }
+
+    .input-box input:focus {
+      border-color: #1a73e8;
+    }
+
+    .btn {
+      margin-top: 20px;
+      padding: 12px;
+      width: 100%;
+      border: none;
+      border-radius: 25px;
+      background: #1a73e8;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #155fc0;
+    }
+
+    .note {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #666;
+    }
+
+    /* Flash 提示放最底部 */
+    .container.mt-3 {
+      position: absolute;
+      top: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      z-index: 999;
+      animation: fadeOut 3s forwards; ;
+    }
+
+    .container.mt-3 .alert {
+      width: 350px;
+    }
+
+    @keyframes fadeOut {
+    0%   { opacity: 1; }
+    70%  { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+}
+
+.eye-icon {
+  position: absolute;
+  right: 12px;  /* 调整一下位置，确保在输入框里面 */
+  top: 50%;
+  transform: translateY(1px);
+  cursor: pointer;
+  color: #555;
+}
+.eye-icon i {
+  font-size: 20px;
+}
+  </style>
+</head>
+<body>
+  
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+         {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+         {% endfor %}
+        {% endif %}
+    {% endwith %}
+    </div>
+    
+
+  <div class="login-box">
+    <img src="{{ url_for('static', filename='photos/mmulogo3.png') }}" alt="MMU Logo">
+    <h2>Admin Login</h2>
+    <form action="/admin-login" method="POST">
+      <div class="input-box">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="admin_name" placeholder="Enter admin username" required>
+      </div>
+
+      <div class="input-box">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="admin_password" placeholder="Enter password" required>
+         <span class="eye-icon" onclick="togglePassword()">
+            <i id="eye-icon" class="fa fa-eye-slash"></i>
+          </span>
+      </div>
+
+      <button type="submit" class="btn">Login</button>
+    </form>
+    <p class="note">Only authorized administrators can log in.</p>
+  </div>
+
+  <script>
+function togglePassword() {
+  const passwordInput = document.getElementById("password");
+  const eyeIcon = document.getElementById("eye-icon");
+
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    eyeIcon.classList.remove("fa-eye-slash");
+    eyeIcon.classList.add("fa-eye");   // 👁️ 打开眼睛
+  } else {
+    passwordInput.type = "password";
+    eyeIcon.classList.remove("fa-eye");
+    eyeIcon.classList.add("fa-eye-slash");  // 🙈 闭上眼睛
+  }
+}
+
+</script>
+
+      
+   
+
+</body>
+</html>

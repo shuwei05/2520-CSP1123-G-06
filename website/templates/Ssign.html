@@ -10,6 +10,84 @@
      <!--Leaflet-->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <meta name="viewport" content="width=1200, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <style>
+    body {
+  min-width: 1200px; /* 页面至少 1200px 宽 */
+   
+}
+
+        .image-box {
+    display: flex;
+    flex-direction: column; /* 上下排列：icon/图片在上，文件名在下 */
+    align-items: center;
+    gap: 8px; /* 图片和文件名之间的间距 */
+}
+
+.image-box img {
+    max-width: 130px; /* 调整图片宽度 */
+    max-height: 150px; /* 调整图片高度 */
+    display: none; /* 默认隐藏，JS 控制显示 */
+    border-radius: 8px; /* 可选，圆角 */
+}
+
+.file-name {
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+}
+
+.flash-messages {
+    position: absolute;     /* 浮动，不占空间 */
+    top: 0;                 /* 贴住 section 顶部 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;             /* 和 section 宽度差不多 */
+    max-width: 600px;       /* 不会太宽 */
+    z-index: 1000;
+}
+
+.flash-messages .alert {
+    margin-bottom: 10px;
+    text-align: center;
+    animation: fadeOut 4s forwards;
+    color: #939594;
+    
+}
+@keyframes fadeOut {
+  0%   { opacity: 1; transform: translateY(0); }
+  80%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+
+section.staffb {
+    position: relative;   /* 作为 flash-messages 的定位父容器 */
+   
+}
+
+.eye-icon {
+  position: absolute;
+  right: 65px;  /* 调整一下位置，确保在输入框里面 */
+  top: 47%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #555;
+}
+.eye-icon i {
+  font-size: 18px;
+}
+
+.password-box {
+  position: relative;
+}
+
+
+    </style>
 </head>
 <body>
     <nav>
@@ -20,19 +98,22 @@
         </div>
     </nav>  
 
-<div class="flash-messages">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ 'danger' if category == 'error' else category }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-</div>
+
 
     <section class="staffb">
+
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
         <h1>
             Register your stall<br>
             <span class="highlight">with us!</span>
@@ -50,35 +131,70 @@
                 <input type="text" name="stallname" placeholder="Stall name" required>
                 <input type="text" name= "stallowner" placeholder="Stall Owner name" required>
                 <input type="text" name="email" placeholder="Email" required>
-                <input type="text" name="password1" placeholder="Password" required>
-                <input type="text" name="password2" placeholder="Comfirm Password" required>
-                
+                <input type="text" name="location" placeholder="Location/Address" required>
+
+
+
+                <div class="password-box">
+                  <input type="password" id="password1" name="password1" placeholder="Password" required>
+                  <span class="eye-icon" onclick="togglePassword('password1','eye1')">
+                    <i id="eye1" class="fa fa-eye-slash"></i>
+                  </span>
+                </div>
+
+                <!-- Confirm Password with eye -->
+                <div class="password-box">
+                  <input type="password" id="password2" name="password2" placeholder="Confirm Password" required>
+                  <span class="eye-icon" onclick="togglePassword('password2','eye2')">
+                    <i id="eye2" class="fa fa-eye-slash"></i>
+                  </span>
+                </div>
+
+
+                <input type="text" name="openday" placeholder="Openday                                                   e.g: Monday - Saturday" required>
+                <input type="text" name="contact" placeholder="Contact Number">
+                <input type="text" name="instagram" placeholder="Instagram">
+
                 <div class="operating-hours">
-                    <input type="text" name="openhour" placeholder="Open Hours" required>
-                    <input type="text" name="closehour" placeholder="Close Hours" required>
+                    <input type="text" name="openhour" placeholder="Open Hours       e.g: 10:00" required>
+                    <input type="text" name="closehour" placeholder="Close Hours        e.g: 14:00" required>
                 </div>
 
-                <textarea placeholder="Stall Description" required></textarea>
+                <textarea placeholder="Stall Description" name="stall_des" required></textarea>
             </div>
+    
 
-            <div class="image-upload">
+    <div class="image-upload">
+        <div class="image-box">
+            <p class="upload-title">Stall Image:</p>
+            <label class="upload-area" for="prof_pic">
+                
+                <i id="stall-icon"  class="fa-solid fa-image"></i>
+                <input type="file" name="prof_pic" id="prof_pic" accept="image/*">
+            </label>
+            
+            <img id="stall-preview" src="#" alt="Stall Preview"
+            style="max-width:200px; display:none;">
+            <p class="file-name" id="prof_pic_name">No file chosen</p>
+             <button type="button" id="stall-clear" class="btn btn-sm btn-outline-secondary">Clear</button>   
+        </div>
 
-                <div class="image-box">
-                    <p class="upload-title">Stall Image:</p>
-                    <label class="upload-area">
-                        <i class="fa-solid fa-image"></i>
-                        <input type="file" id="prof_pic" accept="image/*">
-                    </label>
-                </div>
 
-                <div class="image-box">
-                    <p class="upload-title">Background Image:</p>
-                    <label class="upload-area">
-                        <i class="fa-solid fa-image"></i>
-                        <input type="file" id="bg_pic" accept="image/*"> 
-                    </label>
-                </div>
-            </div>
+        <div class="image-box">
+            <p class="upload-title">Background Image:</p>
+            <label class="upload-area" for="bg_pic">
+                <i  id="bg-icon" class="fa-solid fa-image"></i>
+                <input type="file" name="bg_pic" id="bg_pic" accept="image/*"> 
+            </label>
+            
+            <!-- Preview image -->
+            <img id="bg-preview" src="#" alt="Background Preview"
+             style="max-width:400px; display:none;">
+            <p class="file-name" id="bg_pic_name">No file chosen</p>
+            <button type="button" id="bg-clear" class="btn btn-sm btn-outline-secondary">Clear</button>
+                
+        </div>
+    </div>
 
             <div class="map-section">
                 <p class="map-title">📍 Pin Your Location Here:</p>
@@ -99,31 +215,103 @@
 
     </section>
 
-    <script>
-        // 预览上传的图片
-        function previewImage(input, previewId) {
-            const file = input.files[0];// 获取用户选择的第一个文件
-            if (file) {
-                // 把这个文件转换成一个临时的 URL，然后设置到 img 的 src 上
-                document.getElementById(previewId).src = URL.createObjectURL(file);
-            }
-        }
-        // 当用户上传 stall image 时，触发预览
-        document.getElementById("prof_pic").addEventListener("change", function() {
-            previewImage(this, "stall-preview");
-        });
-        // 当用户上传 background image 时，触发预览
-        document.getElementById("bg_pic").addEventListener("change", function() {
-            previewImage(this, "bg-preview");
-        });
+            <script>
+            // Function for preview
+            function previewImage(input, previewId, iconId, fileNameId) {
+    const file = input.files[0];
+    const preview = document.getElementById(previewId);
+    const icon = document.getElementById(iconId);
+    const fileName = document.getElementById(fileNameId);
+
+    if(file){
+        // 显示预览图
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+
+        // 隐藏图标
+        icon.style.display = "none";
+
+        // 显示文件名
+        fileName.innerText = file.name;
+    } else {
+        // 恢复默认
+        preview.style.display = "none";
+        icon.style.display = "inline";
+        fileName.innerText = "No file chosen";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("prof_pic").addEventListener("change", function() {
+        previewImage(this, "stall-preview", "stall-icon", "prof_pic_name");
+    });
+    // 1. When user selects a file for profile picture input
+    // Call previewImage() to show a preview of the selected picture
+    document.getElementById("bg_pic").addEventListener("change", function() {
+        previewImage(this, "bg-preview", "bg-icon", "bg_pic_name");
+    });
+});
+
+
+    document.getElementById("stall-clear").addEventListener("click", function() {
+    const input = document.getElementById("prof_pic");
+    const preview = document.getElementById("stall-preview");
+    const icon = document.getElementById("stall-icon");
+    const fileName = document.getElementById("prof_pic_name");
+
+    input.value = "";           // 清空 input
+    preview.style.display = "none"; // 隐藏图片
+    icon.style.display = "inline";  // 显示图标
+    fileName.innerText = "No file chosen"; // 恢复文字
+});
+
+
+    document.getElementById("bg-clear").addEventListener("click", function() {
+    const input = document.getElementById("bg_pic");
+    const preview = document.getElementById("bg-preview");
+    const icon = document.getElementById("bg-icon");
+    const fileName = document.getElementById("bg_pic_name");
+
+    input.value = "";           // 清空 input
+    preview.style.display = "none"; // 隐藏图片
+    icon.style.display = "inline";  // 显示图标
+    fileName.innerText = "No file chosen"; // 恢复文字
+});
+
+
     </script>
-</body>
-</html>
 
     <!--Map JavaScript-->
    <script>
-        const map = L.map("map");
+        const bounds = L.latLngBounds(
+            L.latLng(2.92416147468388,101.63546562194826), //SW
+            L.latLng(2.931511848931281,101.64844751358034), //NE
+        )
+
+        const map = L.map("map", {
+            maxBounds:bounds,
+            maxBoundsViscosity:0.5
+        });
         map.setView([2.92836,101.64188],16);
+
+        const CampusPolygon = L.polygon([
+            [2.9308261017708594,101.64134502410889],
+            [2.9307403833462593,101.64306163787842],
+            [2.9294760358209055,101.64351224899293],
+            [2.928876005987246,101.64334058761598],
+            [2.9286188502458277,101.64542198181154],
+            [2.926797328720634,101.64615154266359],
+            [2.924482920629856,101.64608716964723],
+            [2.9245257800823707,101.64278268814088],
+            [2.924932944799449,101.64254665374757],
+            [2.9249543745173034,101.64108753204347],
+            [2.9265830318759347,101.64031505584718],
+            [2.927525937686099,101.63904905319215],
+            [2.928918865271738,101.63909196853639],
+            [2.9290260134757933,101.64012193679811],
+        ]);
+
+        const CampusGeoJSON = L.geoJSON(CampusPolygon.toGeoJSON()); //addtomap put here to show polygon
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 20, //Setting Max Zoom to 20(Enough)
@@ -133,25 +321,40 @@
         //https://youtu.be/NyjMmNCtKf4?si=SwNnJNahhkbyNH-h
         //marker
         let marker;
+        const initialPosition = [2.9275634396053176,101.64166688919067];
         
-        navigator.geolocation.watchPosition(success, error);
+        navigator.geolocation.getCurrentPosition(success, error,{
+        enableHighAccuracy: true,
+        timeout: 10000 //10 seconds
+        });
 
         function success(pos) {
             const lat = pos.coords.latitude;
             const lng = pos.coords.longitude;
+            const userPosition = L.latLng(lat,lng);
 
             if (!marker) {
-                marker = L.marker([lat,lng],{
-                draggable: true
-                }).addTo(map);
-
-                marker.on("dragend",position);
+                if(bounds.contains(userPosition)) {
+                    
+                    marker = L.marker([lat,lng],{
+                    draggable: true
+                    }).addTo(map);
+                    MarkerRestrict();
+                    position();
+                } else {
+                    marker = L.marker(initialPosition,{
+                    draggable: true
+                    }).addTo(map);
+                    MarkerRestrict();
+                    position();
+                }
             }
 
             else {
-                marker.setLatLng([lat,lng]);
+                if(bounds.contains(userPosition)) {
+                    marker.setLatLng([lat,lng]);
                 position();
-            }
+            }}
         }
 
         function error(err) {
@@ -160,6 +363,13 @@
             } else {
                 alert("Cannot get current location")
             }
+            
+            //error also can have an initial point
+            marker = L.marker(initialPosition,{
+                    draggable: true
+                    }).addTo(map);
+            MarkerRestrict();
+            position();
         }
 
         function position() {
@@ -169,4 +379,39 @@
             console.log(GetPosition.lat,GetPosition.lng)
             }
 
+        function MarkerRestrict() {
+            marker.on("dragend", function() {
+                const CurrentPosition = marker.getLatLng();
+                const InsideCampus = leafletPip.pointInLayer([CurrentPosition.lng, CurrentPosition.lat],CampusGeoJSON); //leaflet format is lng lat
+
+                if (InsideCampus.length === 0) {
+                    alert("Please select location inside campus!");
+                    marker.setLatLng(initialPosition);
+                }
+                position();
+            });
+        }
+
+
+
+
+        
+    // 密码眼睛切换
+    function togglePassword(inputId, eyeId) {
+      const input = document.getElementById(inputId);
+      const eye = document.getElementById(eyeId);
+
+      if (input.type === "password") {
+        input.type = "text";
+        eye.classList.remove("fa-eye-slash");
+        eye.classList.add("fa-eye");
+      } else {
+        input.type = "password";
+        eye.classList.remove("fa-eye");
+        eye.classList.add("fa-eye-slash");
+      }
+    }
     </script>
+    </script>
+</body>
+</html>
